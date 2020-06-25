@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
+import Link from 'next/link';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,8 +17,11 @@ const useStyles = makeStyles((theme) => ({
     menuButton: {
         marginRight: theme.spacing(2),
     },
+    rightSideContainer: {
+        marginLeft: 'auto',
+    },
     title: {
-        flexGrow: 1,
+        marginRight: '5%',
     },
 }));
 
@@ -40,7 +44,17 @@ const Header = () => {
                         <Typography variant='h6' className={classes.title}>
                             News
                         </Typography>
-                        <Button color='inherit'>Login</Button>
+                        <Link href='/'>
+                            <Button color='inherit'>Advertisements</Button>
+                        </Link>
+                        <div className={classes.rightSideContainer}>
+                            <Link href='/login'>
+                                <Button color='inherit'>Login</Button>
+                            </Link>
+                            <Link href='/register'>
+                                <Button color='inherit'>Register</Button>
+                            </Link>
+                        </div>
                     </Toolbar>
                 </AppBar>
             </nav>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import Layout from '../../components/Layout';
 import axios from 'axios';
@@ -6,22 +6,16 @@ import { Post } from '../api/posts/[post]';
 import {
     Container,
     Grid,
-    CardMedia,
     Card,
     CardContent,
     Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ImageModal from '../../components/ImageModal';
+import ImageCarousel from '../../components/ImageCarousel';
+import ImageProduct from '../../components/ImageProduct';
 
 const useStyles = makeStyles((theme) => ({
-    imageContainer: {
-        width: '100%',
-        height: '400px',
-    },
-    image: {
-        height: '100%',
-    },
     outerPostsContainer: {
         paddingTop: theme.spacing(3),
     },
@@ -31,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     infoContainer: {
         height: '400px',
     },
+    carouselGrid: {
+        marginTop: '3%',
+    },
 }));
 
 export interface AdvertisementProps {
@@ -39,6 +36,7 @@ export interface AdvertisementProps {
 
 const Advertisement = ({ post }: AdvertisementProps) => {
     const [imageModalState, setImageModalState] = useState(false);
+    const [mainImageIndex, setMainImage] = useState(0);
 
     const handleOpenImageModal = () => {
         setImageModalState(true);
@@ -56,23 +54,39 @@ const Advertisement = ({ post }: AdvertisementProps) => {
             ) : (
                 <Container>
                     <ImageModal
-                        images={[post.picture]}
+                        images={post!.pictures}
                         open={imageModalState}
                         handleClose={handleCloseImageModal}
+                        mainImageIndex={mainImageIndex}
                     />
                     <div className={classes.outerPostsContainer}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} lg={4}>
-                                <Card className={classes.imageContainer}>
-                                    <CardMedia
-                                        onClick={() => handleOpenImageModal()}
-                                        className={classes.image}
-                                        image={`/photos/phones/${post.picture}`}
+                            <Grid container item xs={12} md={6} lg={5}>
+                                <Grid item xs={12} sm={12} lg={12}>
+                                    <ImageProduct
                                         title={post.name}
+                                        images={post.pictures}
+                                        mainImageIndex={mainImageIndex}
+                                        handleOpenImageModal={
+                                            handleOpenImageModal
+                                        }
+                                        setMainImageIndex={setMainImage}
                                     />
-                                </Card>
+                                </Grid>
+                                <Grid
+                                    className={classes.carouselGrid}
+                                    item
+                                    xs={12}
+                                    lg={12}
+                                >
+                                    <ImageCarousel
+                                        setMainImage={setMainImage}
+                                        images={post.pictures}
+                                        mainImageIndex={mainImageIndex}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} lg={8}>
+                            <Grid item xs={12} md={6} lg={7}>
                                 <Card className={classes.infoContainer}>
                                     <CardContent>
                                         <Typography variant='h4'>

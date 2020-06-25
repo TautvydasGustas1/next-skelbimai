@@ -5,7 +5,7 @@ export interface Post {
     price: Number;
     description: string;
     date_added: Date;
-    picture: string;
+    pictures: string[];
 }
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,6 +16,6 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         price: 100,
         description: 'Labai geras telefonas',
         date_added: '2010-10-10',
-        picture: 'phone1.jpg',
+        pictures: ['phone1.jpg', 'photo3.jpg', 'photo4.jpg', 'phone.jpg'],
     });
 };
