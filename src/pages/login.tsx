@@ -13,6 +13,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { Form, Formik, Field } from 'formik';
 import Link from 'next/link';
+import { object, string } from 'yup';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     Card: {
@@ -27,13 +29,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export interface LoginInterface {
-    email: string;
+    username: string;
     password: string;
 }
 
 const initialValues: LoginInterface = {
-    email: '',
+    username: '',
     password: '',
+};
+
+const handleSubmit = async (values: LoginInterface, resolve: () => void) => {
+    await axios
+        .post('/users/v1/login', values)
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((errors) => {
+            console.log(errors);
+        })
+        .finally(() => {
+            resolve();
+        });
 };
 
 const login = () => {
@@ -45,10 +61,20 @@ const login = () => {
                     <Card className={classes.Card}>
                         <CardContent>
                             <Formik
+                                validateOnChange={false}
+                                validateOnBlur={false}
+                                validationSchema={object({
+                                    username: string().required(),
+                                    password: string().required().min(6),
+                                })}
                                 initialValues={initialValues}
-                                onSubmit={() => {}}
+                                onSubmit={(values, formikHelpers) => {
+                                    return new Promise((res) => {
+                                        handleSubmit(values, res);
+                                    });
+                                }}
                             >
-                                {({ values }) => (
+                                {({ values, errors, isSubmitting }) => (
                                     <Form>
                                         <Grid container spacing={3}>
                                             <Grid xs={12} item>
@@ -63,10 +89,14 @@ const login = () => {
                                                 <Field
                                                     fullWidth
                                                     as={TextField}
-                                                    label='Email'
-                                                    name='email'
+                                                    label='Username'
+                                                    name='username'
                                                     variant='outlined'
-                                                    type='email'
+                                                    type='username'
+                                                    error={Boolean(
+                                                        errors.username
+                                                    )}
+                                                    helperText={errors.username}
                                                 />
                                             </Grid>
                                             <Grid xs={12} item>
@@ -76,6 +106,10 @@ const login = () => {
                                                     label='Password'
                                                     name='password'
                                                     variant='outlined'
+                                                    error={Boolean(
+                                                        errors.password
+                                                    )}
+                                                    helperText={errors.password}
                                                 />
                                             </Grid>
                                             <Grid
@@ -104,8 +138,10 @@ const login = () => {
                                                     }
                                                 >
                                                     <Button
+                                                        disabled={isSubmitting}
                                                         color='primary'
                                                         variant='outlined'
+                                                        type='submit'
                                                     >
                                                         Login
                                                     </Button>

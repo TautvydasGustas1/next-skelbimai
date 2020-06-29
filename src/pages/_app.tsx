@@ -6,8 +6,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../components/theme';
 import axios, { AxiosRequestConfig } from 'axios';
 import { SWRConfig } from 'swr';
+import 'react-dropzone-uploader/dist/styles.css';
 
-axios.defaults.baseURL = 'htttp://localhost:3000/api';
+axios.defaults.baseURL =
+    'http://advertisement-env-1.eba-hpnkfs5u.us-east-1.elasticbeanstalk.com/api';
 
 const fetcher = (url: AxiosRequestConfig) => axios(url).then((r) => r.data);
 

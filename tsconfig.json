@@ -19,6 +19,7 @@
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
-        "src/components/Layout.tsx"
+        "src/components/Layout.tsx",
+        "src/components/ImagesDropzone.js"
     ]
 }

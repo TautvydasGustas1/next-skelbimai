@@ -1,16 +1,15 @@
 import React from 'react';
+import { Formik, Form, Field } from 'formik';
 import {
     Box,
     Card,
     CardContent,
-    Grid,
     TextField,
+    Grid,
     makeStyles,
-    Typography,
     Button,
+    Typography,
 } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik';
-import ImagesDropzone from './ImagesDropzone';
 
 const useStyles = makeStyles((theme) => ({
     Card: {
@@ -21,81 +20,78 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export interface RegisterInterface {
+export interface IProfile {
     name: string;
-    price: number;
-    description?: string;
-    pictures?: File;
+    phone: string;
+    city: string;
+    email: string;
 }
 
-const initialValues: RegisterInterface = {
+const initialValues: IProfile = {
     name: '',
-    price: 0,
-    description: '',
-    pictures: undefined,
+    phone: '',
+    city: '',
+    email: '',
 };
 
-const AdCreateForm = () => {
+const EditProfileForm = () => {
     const classes = useStyles();
     return (
         <Box>
             <Card className={classes.Card}>
+                <Box textAlign='center' p={3}>
+                    <Typography variant='h4'>Update profile</Typography>
+                </Box>
                 <CardContent>
-                    <Box p={3}>
-                        <Typography variant='h4' align='center'>
-                            Create an ad
-                        </Typography>
-                    </Box>
                     <Formik initialValues={initialValues} onSubmit={() => {}}>
                         {({ values }) => (
                             <Form>
                                 <Grid container spacing={3}>
-                                    <Grid xs={12} item>
+                                    <Grid item xs={12}>
                                         <Field
                                             fullWidth
-                                            autoComplete='off'
                                             name='name'
-                                            label='Name of product'
                                             as={TextField}
                                             variant='outlined'
-                                        />
+                                            label='Name'
+                                        ></Field>
                                     </Grid>
-                                    <Grid xs={12} item>
+                                    <Grid item xs={12}>
                                         <Field
                                             fullWidth
-                                            name='price'
-                                            label='Price'
+                                            name='phone'
+                                            type='tel'
                                             as={TextField}
-                                            type='number'
                                             variant='outlined'
-                                        />
+                                            label='Phone number'
+                                        ></Field>
                                     </Grid>
-                                    <Grid xs={12} item>
+                                    <Grid item xs={12}>
                                         <Field
                                             fullWidth
-                                            name='description'
-                                            label='Description'
+                                            name='city'
                                             as={TextField}
-                                            multiline
-                                            rows={3}
-                                            rowsMax={10}
                                             variant='outlined'
-                                        />
+                                            label='City name'
+                                        ></Field>
                                     </Grid>
-                                    <Grid xs={12} item>
+                                    <Grid item xs={12}>
                                         <Field
-                                            name='images'
-                                            label='Images'
-                                            as={ImagesDropzone}
-                                        />
+                                            fullWidth
+                                            name='email'
+                                            as={TextField}
+                                            type='email'
+                                            variant='outlined'
+                                            label='Email'
+                                        ></Field>
                                     </Grid>
-                                    <Grid xs={12} item>
+                                    <Grid item xs={12}>
                                         <Box textAlign='center'>
                                             <Button
                                                 color='primary'
                                                 variant='outlined'
                                             >
-                                                Submit
+                                                Update
                                             </Button>
                                         </Box>
                                     </Grid>
@@ -109,4 +105,4 @@ const AdCreateForm = () => {
     );
 };
 
-export default AdCreateForm;
+export default EditProfileForm;
