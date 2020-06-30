@@ -13,6 +13,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { Form, Formik, Field } from 'formik';
 import Link from 'next/link';
+import { string, object, ref } from 'yup';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     Card: {
@@ -26,14 +28,31 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const handleSubmit = async (values: RegisterInterface, resolve: () => void) => {
+    await axios
+        .post('/users/v1/register', {
+            username: values.username,
+            password: values.password,
+        })
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((errors) => {
+            console.log(errors.message);
+        })
+        .finally(() => {
+            resolve();
+        });
+};
+
 export interface RegisterInterface {
-    email: string;
+    username: string;
     password: string;
     password2: string;
 }
 
 const initialValues: RegisterInterface = {
-    email: '',
+    username: '',
     password: '',
     password2: '',
 };
@@ -47,10 +66,27 @@ const register = () => {
                     <Card className={classes.Card}>
                         <CardContent>
                             <Formik
+                                validateOnChange={false}
+                                validateOnBlur={false}
+                                validationSchema={object({
+                                    username: string().required(),
+                                    password: string().required().min(6),
+                                    password2: string()
+                                        .required()
+                                        .oneOf(
+                                            [ref('password')],
+                                            'Passwords do not match'
+                                        )
+                                        .min(6),
+                                })}
                                 initialValues={initialValues}
-                                onSubmit={() => {}}
+                                onSubmit={(values, formikHelpers) => {
+                                    return new Promise((res) => {
+                                        handleSubmit(values, res);
+                                    });
+                                }}
                             >
-                                {({ values }) => (
+                                {({ values, errors, isSubmitting }) => (
                                     <Form>
                                         <Grid container spacing={3}>
                                             <Grid xs={12} item>
@@ -65,9 +101,13 @@ const register = () => {
                                                 <Field
                                                     fullWidth
                                                     as={TextField}
-                                                    label='Email'
-                                                    name='email'
+                                                    label='Username'
+                                                    name='username'
                                                     variant='outlined'
+                                                    error={Boolean(
+                                                        errors.username
+                                                    )}
+                                                    helperText={errors.username}
                                                 />
                                             </Grid>
                                             <Grid xs={12} item>
@@ -77,6 +117,11 @@ const register = () => {
                                                     label='Password'
                                                     name='password'
                                                     variant='outlined'
+                                                    type={'password'}
+                                                    error={Boolean(
+                                                        errors.password
+                                                    )}
+                                                    helperText={errors.password}
                                                 />
                                             </Grid>
                                             <Grid xs={12} item>
@@ -86,6 +131,13 @@ const register = () => {
                                                     label='Repeat password'
                                                     name='password2'
                                                     variant='outlined'
+                                                    type={'password'}
+                                                    error={Boolean(
+                                                        errors.password2
+                                                    )}
+                                                    helperText={
+                                                        errors.password2
+                                                    }
                                                 />
                                             </Grid>
                                             <Grid
@@ -116,6 +168,8 @@ const register = () => {
                                                     <Button
                                                         color='primary'
                                                         variant='outlined'
+                                                        type='submit'
+                                                        disabled={isSubmitting}
                                                     >
                                                         Register
                                                     </Button>

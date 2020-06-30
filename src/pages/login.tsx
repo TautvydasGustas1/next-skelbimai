@@ -45,7 +45,7 @@ const handleSubmit = async (values: LoginInterface, resolve: () => void) => {
             console.log(res);
         })
         .catch((errors) => {
-            console.log(errors);
+            console.log(errors.message);
         })
         .finally(() => {
             resolve();
@@ -106,6 +106,7 @@ const login = () => {
                                                     label='Password'
                                                     name='password'
                                                     variant='outlined'
+                                                    type={'password'}
                                                     error={Boolean(
                                                         errors.password
                                                     )}
