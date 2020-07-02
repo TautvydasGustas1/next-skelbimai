@@ -69,6 +69,15 @@ const EditProfileForm = () => {
                                     <Grid item xs={12}>
                                         <Field
                                             fullWidth
+                                            name='county'
+                                            as={TextField}
+                                            variant='outlined'
+                                            label='County'
+                                        ></Field>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Field
+                                            fullWidth
                                             name='city'
                                             as={TextField}
                                             variant='outlined'

@@ -7,9 +7,10 @@ import theme from '../components/theme';
 import axios, { AxiosRequestConfig } from 'axios';
 import { SWRConfig } from 'swr';
 import 'react-dropzone-uploader/dist/styles.css';
+import { NextPageContext, GetServerSideProps } from 'next';
 
 axios.defaults.baseURL =
-    'http://advertisement-env-1.eba-hpnkfs5u.us-east-1.elasticbeanstalk.com/api';
+    'http://totau-rest-api.us-east-1.elasticbeanstalk.com/';
 
 const fetcher = (url: AxiosRequestConfig) => axios(url).then((r) => r.data);
 
@@ -22,6 +23,7 @@ export default function MyApp(props: any) {
         if (jssStyles) {
             jssStyles.parentElement!.removeChild(jssStyles);
         }
+        console.log(props.re);
     }, []);
 
     return (
@@ -47,6 +49,15 @@ export default function MyApp(props: any) {
         </React.Fragment>
     );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    console.log('reee');
+    return {
+        props: {
+            re: 'asdasd',
+        },
+    };
+};
 
 MyApp.propTypes = {
     Component: PropTypes.elementType.isRequired,

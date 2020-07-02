@@ -30,12 +30,13 @@ const useStyles = makeStyles((theme) => ({
 
 const handleSubmit = async (values: RegisterInterface, resolve: () => void) => {
     await axios
-        .post('/users/v1/register', {
+        .post('/api/users/v1/register', {
             username: values.username,
             password: values.password,
         })
         .then((res) => {
-            console.log(res);
+            console.log(res)
+            
         })
         .catch((errors) => {
             console.log(errors.message);

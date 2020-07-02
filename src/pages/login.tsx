@@ -15,6 +15,8 @@ import { Form, Formik, Field } from 'formik';
 import Link from 'next/link';
 import { object, string } from 'yup';
 import axios from 'axios';
+import Cookie from 'js-cookie';
+import Router from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
     Card: {
@@ -40,9 +42,15 @@ const initialValues: LoginInterface = {
 
 const handleSubmit = async (values: LoginInterface, resolve: () => void) => {
     await axios
-        .post('/users/v1/login', values)
+        .post('/api/users/v1/login', values)
         .then((res) => {
-            console.log(res);
+            //Set cookies
+            Cookie.set('auth', res.data.access_token, {
+                sameSite: 'strict',
+            });
+
+            // Redirect to profile
+            Router.push('/profile');
         })
         .catch((errors) => {
             console.log(errors.message);
