@@ -17,6 +17,7 @@ import { object, string } from 'yup';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import Router from 'next/router';
+import { useAuth } from '../context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
     Card: {
@@ -40,28 +41,34 @@ const initialValues: LoginInterface = {
     password: '',
 };
 
-const handleSubmit = async (values: LoginInterface, resolve: () => void) => {
-    await axios
-        .post('/api/users/v1/login', values)
-        .then((res) => {
-            //Set cookies
-            Cookie.set('auth', res.data.access_token, {
-                sameSite: 'strict',
-            });
-
-            // Redirect to profile
-            Router.push('/profile');
-        })
-        .catch((errors) => {
-            console.log(errors.message);
-        })
-        .finally(() => {
-            resolve();
-        });
-};
-
 const login = () => {
     const classes = useStyles();
+    const [state, dispatch] = useAuth();
+
+    const handleSubmit = async (
+        values: LoginInterface,
+        resolve: () => void
+    ) => {
+        await axios
+            .post('/api/users/v1/login', values)
+            .then((res) => {
+                //Set cookies
+                Cookie.set('auth', res.data.access_token, {
+                    sameSite: 'strict',
+                });
+
+                dispatch({ type: 'setAuth' });
+                // Redirect to profile
+                Router.push('/profile');
+            })
+            .catch((errors) => {
+                console.log(errors.message);
+            })
+            .finally(() => {
+                resolve();
+            });
+    };
+
     return (
         <Layout>
             <Container>

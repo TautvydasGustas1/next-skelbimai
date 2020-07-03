@@ -7,7 +7,7 @@ import theme from '../components/theme';
 import axios, { AxiosRequestConfig } from 'axios';
 import { SWRConfig } from 'swr';
 import 'react-dropzone-uploader/dist/styles.css';
-import { NextPageContext, GetServerSideProps } from 'next';
+import { AuthProvider } from '../context/AuthContext';
 
 axios.defaults.baseURL =
     'http://totau-rest-api.us-east-1.elasticbeanstalk.com/';
@@ -23,7 +23,6 @@ export default function MyApp(props: any) {
         if (jssStyles) {
             jssStyles.parentElement!.removeChild(jssStyles);
         }
-        console.log(props.re);
     }, []);
 
     return (
@@ -43,21 +42,14 @@ export default function MyApp(props: any) {
                 >
                     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                     <CssBaseline />
-                    <Component {...pageProps} />
+                    <AuthProvider>
+                        <Component {...pageProps} />
+                    </AuthProvider>
                 </SWRConfig>
             </ThemeProvider>
         </React.Fragment>
     );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    console.log('reee');
-    return {
-        props: {
-            re: 'asdasd',
-        },
-    };
-};
 
 MyApp.propTypes = {
     Component: PropTypes.elementType.isRequired,

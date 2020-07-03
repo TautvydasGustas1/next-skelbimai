@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { NextPageContext } from 'next';
-import { parseCookies } from './api/parseCookies';
 import {
     Box,
     Container,
@@ -13,9 +12,10 @@ import {
 } from '@material-ui/core';
 import Layout from '../components/Layout';
 import Alert from '@material-ui/lab/Alert';
-import { IUserInfo } from '../interfaces/UserInfoInterface';
+import { IUserInfo } from '../types/UserInfoInterface';
 import Link from 'next/link';
-import Router from 'next/router';
+import TokenService from '../Helpers/TokenHelper';
+import Cookies from 'js-cookie';
 
 export interface IProfileProps {
     jwt: string;
@@ -54,6 +54,8 @@ const Profile = ({ jwt }: IProfileProps) => {
             headers: { Authorization: `Bearer ${jwt}` },
             validateStatus: () => true,
         };
+
+        console.log('sdsdsd');
 
         axios
             .get('/api/users/information/v1', config)
@@ -142,10 +144,11 @@ const Profile = ({ jwt }: IProfileProps) => {
 };
 
 Profile.getInitialProps = async (ctx: NextPageContext) => {
-    const cookies = parseCookies(ctx.req);
-    console.log('Kazkas');
+    const tokenService = new TokenService();
+    const token = await tokenService.authenticateTokenSsr(ctx);
+
     return {
-        jwt: cookies.auth,
+        jwt: token,
     };
 };
 

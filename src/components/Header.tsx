@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,9 +26,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const authRoutes = (
+    <div>
+        <Link href='/login'>
+            <Button color='inherit'>Login</Button>
+        </Link>
+        <Link href='/register'>
+            <Button color='inherit'>Register</Button>
+        </Link>
+    </div>
+);
+
+const notAuthRoutes = (
+    <div>
+        <Button color='inherit'>Logout</Button>
+    </div>
+);
+
 const Header = () => {
     const classes = useStyles();
-
+    const [state, dispatch] = useAuth();
     return (
         <header>
             <nav>
@@ -48,12 +66,9 @@ const Header = () => {
                             <Button color='inherit'>Advertisements</Button>
                         </Link>
                         <div className={classes.rightSideContainer}>
-                            <Link href='/login'>
-                                <Button color='inherit'>Login</Button>
-                            </Link>
-                            <Link href='/register'>
-                                <Button color='inherit'>Register</Button>
-                            </Link>
+                            {!state.isAuthenticated
+                                ? authRoutes
+                                : notAuthRoutes}
                         </div>
                     </Toolbar>
                 </AppBar>
