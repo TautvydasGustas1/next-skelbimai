@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
+import { GetServerSideProps } from 'next';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,15 +38,13 @@ const authRoutes = (
     </div>
 );
 
-const notAuthRoutes = (
-    <div>
-        <Button color='inherit'>Logout</Button>
-    </div>
-);
+export interface HeaderProps {
+    isAuth?: Boolean;
+    logout?: any;
+}
 
-const Header = () => {
+const Header = (isAuth = true, logout: any) => {
     const classes = useStyles();
-    const [state, dispatch] = useAuth();
     return (
         <header>
             <nav>
@@ -66,15 +65,28 @@ const Header = () => {
                             <Button color='inherit'>Advertisements</Button>
                         </Link>
                         <div className={classes.rightSideContainer}>
-                            {!state.isAuthenticated
-                                ? authRoutes
-                                : notAuthRoutes}
+                            {!isAuth ? (
+                                authRoutes
+                            ) : (
+                                <div>
+                                    <Button onClick={logout} color='inherit'>
+                                        Logout
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     </Toolbar>
                 </AppBar>
             </nav>
         </header>
     );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const [state, dispatch] = useAuth();
+    const isAuth = state.isAuthenticated;
+    const logout = dispatch({ type: 'logout' });
+    return { props: { isAuth } };
 };
 
 export default Header;

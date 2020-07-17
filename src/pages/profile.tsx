@@ -15,7 +15,6 @@ import Alert from '@material-ui/lab/Alert';
 import { IUserInfo } from '../types/UserInfoInterface';
 import Link from 'next/link';
 import TokenService from '../Helpers/TokenHelper';
-import Cookies from 'js-cookie';
 
 export interface IProfileProps {
     jwt: string;
@@ -54,8 +53,6 @@ const Profile = ({ jwt }: IProfileProps) => {
             headers: { Authorization: `Bearer ${jwt}` },
             validateStatus: () => true,
         };
-
-        console.log('sdsdsd');
 
         axios
             .get('/api/users/information/v1', config)
