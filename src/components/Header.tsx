@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     AppBar,
     Toolbar,
@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
-import { GetServerSideProps } from 'next';
+import Router from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,8 +43,15 @@ export interface HeaderProps {
     logout?: any;
 }
 
-const Header = (isAuth = true, logout: any) => {
+const Header = () => {
     const classes = useStyles();
+    const [state, dispatch] = useAuth();
+
+    const logoutHandler = () => {
+        dispatch({ type: 'logout' });
+        Router.push('/login');
+    };
+
     return (
         <header>
             <nav>
@@ -65,11 +72,14 @@ const Header = (isAuth = true, logout: any) => {
                             <Button color='inherit'>Advertisements</Button>
                         </Link>
                         <div className={classes.rightSideContainer}>
-                            {!isAuth ? (
+                            {!state.isAuthenticated ? (
                                 authRoutes
                             ) : (
                                 <div>
-                                    <Button onClick={logout} color='inherit'>
+                                    <Button
+                                        onClick={(e) => logoutHandler()}
+                                        color='inherit'
+                                    >
                                         Logout
                                     </Button>
                                 </div>
@@ -80,13 +90,6 @@ const Header = (isAuth = true, logout: any) => {
             </nav>
         </header>
     );
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const [state, dispatch] = useAuth();
-    const isAuth = state.isAuthenticated;
-    const logout = dispatch({ type: 'logout' });
-    return { props: { isAuth } };
 };
 
 export default Header;
