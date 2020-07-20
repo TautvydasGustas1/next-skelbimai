@@ -24,17 +24,25 @@ const useStyles = makeStyles((theme) => ({
 
 const initialValues: IUserInfo = {
   name: "",
-  phone: "",
+  number: "",
   city: "",
   email: "",
   county: "",
 };
 
-const EditProfileForm = () => {
+export interface EditProfileFormProps {
+  jwt: string;
+}
+
+const EditProfileForm = ({ jwt }: EditProfileFormProps) => {
   const classes = useStyles();
 
   const handleSubmit = async (values: IUserInfo, resolve: () => void) => {
-    await Axios.post("/api/users/information/v1", values)
+    const config = {
+      headers: { Authorization: `Bearer ${jwt}` },
+    };
+
+    await Axios.post("/api/users/information/v1", values, config)
       .then((res) => {
         console.log(res);
       })
@@ -78,7 +86,7 @@ const EditProfileForm = () => {
                   <Grid item xs={12}>
                     <Field
                       fullWidth
-                      name="phone"
+                      name="number"
                       type="tel"
                       as={TextField}
                       variant="outlined"

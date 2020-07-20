@@ -26,7 +26,7 @@ const Profile = ({ jwt }: IProfileProps) => {
     city: "",
     county: "",
     email: "",
-    phone: "",
+    number: "",
   });
 
   const [profileUpdated, setProfileUpdated] = useState(false);
@@ -63,7 +63,7 @@ const Profile = ({ jwt }: IProfileProps) => {
             city: res.data.city,
             county: res.data.county,
             email: res.data.email,
-            phone: res.data.phone,
+            number: res.data.number,
           };
 
           setUserInfoState(obj);
@@ -100,7 +100,7 @@ const Profile = ({ jwt }: IProfileProps) => {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body1">
-                      <b>Phone number:</b> {userInfoState.phone}
+                      <b>Phone number:</b> {userInfoState.number}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>

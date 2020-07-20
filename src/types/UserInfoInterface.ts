@@ -1,7 +1,7 @@
 export interface IUserInfo {
-    name: string;
-    city: string;
-    county: string;
-    phone: string;
-    email: string;
+  name: string;
+  city: string;
+  county: string;
+  number: string;
+  email: string;
 }
