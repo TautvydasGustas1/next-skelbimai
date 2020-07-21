@@ -18,8 +18,6 @@ class TokenService {
     };
 
     const res = await axios.get(`/api/users/information/v1`, config);
-    console.log(res);
-
     if (res.status === 200 || res.status === 400) {
       return true;
     }

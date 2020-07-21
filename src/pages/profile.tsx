@@ -119,11 +119,13 @@ const Profile = ({ jwt }: IProfileProps) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <Link href="/profile/edit">
-                      <Button variant="outlined" color={"inherit"}>
-                        Update profile
-                      </Button>
-                    </Link>
+                    <Box textAlign="center">
+                      <Link href="/profile/edit">
+                        <Button variant="outlined" color={"inherit"}>
+                          Update profile
+                        </Button>
+                      </Link>
+                    </Box>
                   </Grid>
                 </Grid>
               </Box>

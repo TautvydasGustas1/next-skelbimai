@@ -53,7 +53,7 @@ const login = () => {
         Cookie.set("auth", res.data.access_token, {
           sameSite: "strict",
         });
-
+        console.log(res);
         dispatch({ type: "setAuth" });
         // Redirect to profile
         Router.push("/profile");

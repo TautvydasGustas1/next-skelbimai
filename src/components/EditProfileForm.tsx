@@ -9,9 +9,12 @@ import {
   makeStyles,
   Button,
   Typography,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { IUserInfo } from "../types/UserInfoInterface";
 import Axios from "axios";
+import Router from "next/router";
 
 const useStyles = makeStyles((theme) => ({
   Card: {
@@ -22,19 +25,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialValues: IUserInfo = {
-  name: "",
-  number: "",
-  city: "",
-  email: "",
-  county: "",
-};
-
 export interface EditProfileFormProps {
   jwt: string;
+  profileData: IUserInfo;
 }
 
-const EditProfileForm = ({ jwt }: EditProfileFormProps) => {
+const EditProfileForm = ({ jwt, profileData }: EditProfileFormProps) => {
   const classes = useStyles();
 
   const handleSubmit = async (values: IUserInfo, resolve: () => void) => {
@@ -42,16 +38,41 @@ const EditProfileForm = ({ jwt }: EditProfileFormProps) => {
       headers: { Authorization: `Bearer ${jwt}` },
     };
 
-    await Axios.post("/api/users/information/v1", values, config)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((errors) => {
-        console.log(errors.message);
-      })
-      .finally(() => {
-        resolve();
-      });
+    if (profileData === undefined) {
+      await Axios.post("/api/users/information/v1", values, config)
+        .then((res) => {
+          // Redirect to profile
+          Router.push("/profile");
+        })
+        .catch((errors) => {
+          console.log(errors.message);
+        })
+        .finally(() => {
+          resolve();
+        });
+    } else {
+      await Axios.put("/api/users/information/v1", values, config)
+        .then((res) => {
+          console.log(res);
+          // Redirect to profile
+          Router.push("/profile");
+        })
+        .catch((errors) => {
+          console.log(errors.message);
+        })
+        .finally(() => {
+          resolve();
+        });
+    }
+  };
+
+  const initialValues: IUserInfo = {
+    name: profileData ? profileData.name : "",
+    number: profileData ? profileData.number : "",
+    city: profileData ? profileData.city : "",
+    email: profileData ? profileData.email : "",
+    county: profileData ? profileData.county : "",
+    id: profileData && profileData.id,
   };
 
   return (
@@ -100,7 +121,13 @@ const EditProfileForm = ({ jwt }: EditProfileFormProps) => {
                       as={TextField}
                       variant="outlined"
                       label="County"
-                    ></Field>
+                      select
+                    >
+                      <MenuItem value="Kazkas">Kazkas</MenuItem>
+                      <MenuItem value="Kazkas">Kazkas</MenuItem>
+                      <MenuItem value="Kazkas">Kazkas</MenuItem>
+                      <MenuItem value="Kazkas">Kazkas</MenuItem>
+                    </Field>
                   </Grid>
                   <Grid item xs={12}>
                     <Field
