@@ -21,6 +21,7 @@ import Router from "next/router";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { drawerWidth } from "../Utils/GlobalVariales";
+import { useAlert } from "../context/AlertContext";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -66,9 +67,17 @@ const authRoutes = (
 
 const Header = () => {
   const [state, dispatch] = useAuth();
+  const [alertState, alertDispatch] = useAlert();
 
   const logoutHandler = () => {
     dispatch({ type: "logout" });
+    alertDispatch({
+      type: "showAlert",
+      payload: {
+        message: "Successfully logged out!",
+        severity: "success",
+      },
+    });
     Router.push("/login");
   };
 

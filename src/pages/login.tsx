@@ -18,6 +18,8 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import Router from "next/router";
 import { useAuth } from "../context/AuthContext";
+import { useAlert } from "../context/AlertContext";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   Card: {
@@ -44,6 +46,7 @@ const initialValues: LoginInterface = {
 const login = () => {
   const classes = useStyles();
   const [state, dispatch] = useAuth();
+  const [alertState, alertDispatch] = useAlert();
 
   const handleSubmit = async (values: LoginInterface, resolve: () => void) => {
     await axios
@@ -53,13 +56,25 @@ const login = () => {
         Cookie.set("auth", res.data.access_token, {
           sameSite: "strict",
         });
-        console.log(res);
         dispatch({ type: "setAuth" });
         // Redirect to profile
+        alertDispatch({
+          type: "showAlert",
+          payload: {
+            message: "Successfully logged in!",
+            severity: "success",
+          },
+        });
         Router.push("/profile");
       })
       .catch((errors) => {
-        console.log(errors.message);
+        alertDispatch({
+          type: "showAlert",
+          payload: {
+            message: errors.response.data.error,
+            severity: "error",
+          },
+        });
       })
       .finally(() => {
         resolve();
@@ -129,7 +144,7 @@ const login = () => {
                         <Box textAlign="right">
                           <Link href="/register">
                             <Button color="primary" size="small">
-                              Forgot a password?
+                              Not yet registered?
                             </Button>
                           </Link>
                         </Box>

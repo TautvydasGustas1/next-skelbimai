@@ -9,6 +9,7 @@ import {
   Typography,
   Grid,
   Button,
+  CircularProgress,
 } from "@material-ui/core";
 import Layout from "../components/Layout";
 import Alert from "@material-ui/lab/Alert";
@@ -30,6 +31,7 @@ const Profile = ({ jwt }: IProfileProps) => {
   });
 
   const [profileUpdated, setProfileUpdated] = useState(false);
+  const [profileEmpty, setProfileEmpty] = useState(true);
 
   const alert = (
     <Box mb={1}>
@@ -65,15 +67,63 @@ const Profile = ({ jwt }: IProfileProps) => {
             email: res.data.email,
             number: res.data.number,
           };
-
           setUserInfoState(obj);
-          setProfileUpdated(true);
+          setProfileEmpty(false);
         }
+        setProfileUpdated(true);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  const loadingIndicator = (
+    <Box p={3} textAlign={"center"}>
+      <CircularProgress />
+    </Box>
+  );
+
+  const profileContent = (
+    <>
+      {profileEmpty && alert}
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            <b>Name:</b> {userInfoState.name}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            <b>Phone number:</b> {userInfoState.number}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            <b>County:</b> {userInfoState.county}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            <b>City:</b> {userInfoState.city}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            <b>Email:</b> {userInfoState.email}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Box textAlign="center">
+            <Link href="/profile/edit">
+              <Button variant="outlined" color={"inherit"}>
+                Update profile
+              </Button>
+            </Link>
+          </Box>
+        </Grid>
+      </Grid>
+    </>
+  );
 
   return (
     <Layout>
@@ -91,43 +141,7 @@ const Profile = ({ jwt }: IProfileProps) => {
                     Personal Information
                   </Typography>
                 </Box>
-                {!profileUpdated && alert}
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Typography variant="body1">
-                      <b>Name:</b> {userInfoState.name}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body1">
-                      <b>Phone number:</b> {userInfoState.number}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body1">
-                      <b>County:</b> {userInfoState.county}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body1">
-                      <b>City:</b> {userInfoState.city}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body1">
-                      <b>Email:</b> {userInfoState.email}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Box textAlign="center">
-                      <Link href="/profile/edit">
-                        <Button variant="outlined" color={"inherit"}>
-                          Update profile
-                        </Button>
-                      </Link>
-                    </Box>
-                  </Grid>
-                </Grid>
+                {!profileUpdated ? loadingIndicator : profileContent}
               </Box>
             </CardContent>
           </Card>

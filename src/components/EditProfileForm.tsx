@@ -50,6 +50,13 @@ const EditProfileForm = ({
       await Axios.post("/api/users/information/v1", values, config)
         .then((res) => {
           // Redirect to profile
+          dispatch({
+            type: "showAlert",
+            payload: {
+              message: "Successfully updated info",
+              severity: "success",
+            },
+          });
           Router.push("/profile");
         })
         .catch((errors) => {
@@ -61,7 +68,13 @@ const EditProfileForm = ({
     } else {
       await Axios.put("/api/users/information/v1", values, config)
         .then((res) => {
-          console.log(res);
+          dispatch({
+            type: "showAlert",
+            payload: {
+              message: "Successfully updated info",
+              severity: "success",
+            },
+          });
           // Redirect to profile
           Router.push("/profile");
         })
@@ -217,20 +230,6 @@ const EditProfileForm = ({
               </Form>
             )}
           </Formik>
-          <Button
-            onClick={(e) =>
-              dispatch({
-                type: "showAlert",
-                payload: {
-                  message: "Successfully updated info",
-                  severity: "success",
-                  time: 3500,
-                },
-              })
-            }
-          >
-            Testas
-          </Button>
         </CardContent>
       </Card>
     </Box>

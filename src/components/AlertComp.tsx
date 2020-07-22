@@ -27,7 +27,9 @@ const AlertComp = () => {
         onClose={handleClose}
         autoHideDuration={state.time}
       >
-        <Alert severity="success">{state.message}</Alert>
+        <Alert variant={"filled"} severity={state.severity}>
+          {state.message}
+        </Alert>
       </Snackbar>
     </div>
   );

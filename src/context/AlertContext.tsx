@@ -5,7 +5,7 @@ export const AlertStateContext = React.createContext({});
 
 const initialState: IAlert = {
   message: "",
-  time: 2000,
+  time: 3000,
   showAlert: false,
   severity: "success",
 };
