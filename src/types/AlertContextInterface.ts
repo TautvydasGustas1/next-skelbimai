@@ -1,5 +1,6 @@
 export interface IAlert {
-    bgColor: String;
-    time: number;
-    message: String;
+  time: number;
+  message: String;
+  severity: String;
+  showAlert: Boolean;
 }

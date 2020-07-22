@@ -1,17 +1,36 @@
-// import React from "react";
-// import Alert from "@material-ui/lab/Alert";
-// import { Snackbar } from "@material-ui/core";
+import React from "react";
+import Alert from "@material-ui/lab/Alert";
+import { Snackbar } from "@material-ui/core";
+import { useAlert } from "../context/AlertContext";
 
-// const AlertComp = () => {
-//   return (
-//     <div>
-//       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-//         <Alert onClose={handleClose} severity="success">
-//           This is a success message!
-//         </Alert>
-//       </Snackbar>
-//     </div>
-//   );
-// };
+const AlertComp = () => {
+  const [state, dispatch] = useAlert();
 
-// export default AlertComp;
+  const handleClose = (
+    event: React.SyntheticEvent | React.MouseEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    dispatch({ type: "closeAlert" });
+  };
+  return (
+    <div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={state.showAlert}
+        onClose={handleClose}
+        autoHideDuration={state.time}
+      >
+        <Alert severity="success">{state.message}</Alert>
+      </Snackbar>
+    </div>
+  );
+};
+
+export default AlertComp;
