@@ -6,6 +6,7 @@ import { NextPageContext } from "next";
 import TokenService from "../../Helpers/TokenHelper";
 import Axios from "axios";
 import { IUserInfo } from "../../types/UserInfoInterface";
+import { ICounties } from "../../types/CountiesInterface";
 
 const useStyles = makeStyles((theme) => ({
   Card: {
@@ -19,15 +20,24 @@ const useStyles = makeStyles((theme) => ({
 export interface ProfileEditProps {
   jwt: string;
   profileData: IUserInfo;
+  countiesWCities: ICounties[];
 }
 
-const ProfileEdit = ({ jwt, profileData }: ProfileEditProps) => {
+const ProfileEdit = ({
+  jwt,
+  profileData,
+  countiesWCities,
+}: ProfileEditProps) => {
   const classes = useStyles();
   return (
     <Layout>
       <Container>
         <Box pt={3}>
-          <EditProfileForm jwt={jwt} profileData={profileData} />
+          <EditProfileForm
+            countiesWCities={countiesWCities}
+            jwt={jwt}
+            profileData={profileData}
+          />
         </Box>
       </Container>
     </Layout>
@@ -38,6 +48,7 @@ ProfileEdit.getInitialProps = async (ctx: NextPageContext) => {
   const tokenService = new TokenService();
   const token = await tokenService.authenticateTokenSsr(ctx);
   let data;
+  let countiesWCities;
 
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -55,9 +66,19 @@ ProfileEdit.getInitialProps = async (ctx: NextPageContext) => {
       console.log(errors.message);
     });
 
+  //Get Counties with citys
+  await Axios.get("/api/counties/v1")
+    .then((res) => {
+      countiesWCities = res.data;
+    })
+    .catch((errors) => {
+      console.log(errors.message);
+    });
+
   return {
     jwt: token,
     profileData: data,
+    countiesWCities,
   };
 };
 

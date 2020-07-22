@@ -9,12 +9,12 @@ import {
   makeStyles,
   Button,
   Typography,
-  Select,
   MenuItem,
 } from "@material-ui/core";
 import { IUserInfo } from "../types/UserInfoInterface";
 import Axios from "axios";
 import Router from "next/router";
+import { ICounties } from "../types/CountiesInterface";
 
 const useStyles = makeStyles((theme) => ({
   Card: {
@@ -28,10 +28,16 @@ const useStyles = makeStyles((theme) => ({
 export interface EditProfileFormProps {
   jwt: string;
   profileData: IUserInfo;
+  countiesWCities: ICounties[];
 }
 
-const EditProfileForm = ({ jwt, profileData }: EditProfileFormProps) => {
+const EditProfileForm = ({
+  jwt,
+  profileData,
+  countiesWCities,
+}: EditProfileFormProps) => {
   const classes = useStyles();
+  //const [citiesState, setCitiesState] = useState(initialState);
 
   const handleSubmit = async (values: IUserInfo, resolve: () => void) => {
     const config = {
@@ -123,10 +129,11 @@ const EditProfileForm = ({ jwt, profileData }: EditProfileFormProps) => {
                       label="County"
                       select
                     >
-                      <MenuItem value="Kazkas">Kazkas</MenuItem>
-                      <MenuItem value="Kazkas">Kazkas</MenuItem>
-                      <MenuItem value="Kazkas">Kazkas</MenuItem>
-                      <MenuItem value="Kazkas">Kazkas</MenuItem>
+                      {countiesWCities.map((item) => (
+                        <MenuItem key={item.id} value={`${item.county}`}>
+                          {item.county}
+                        </MenuItem>
+                      ))}
                     </Field>
                   </Grid>
                   <Grid item xs={12}>
@@ -136,7 +143,17 @@ const EditProfileForm = ({ jwt, profileData }: EditProfileFormProps) => {
                       as={TextField}
                       variant="outlined"
                       label="City name"
-                    ></Field>
+                      select
+                    >
+                      {countiesWCities.map((item) => (
+                        <MenuItem
+                          key={item.id}
+                          value={`${item.cities[0].city}`}
+                        >
+                          {item.cities[0].city}
+                        </MenuItem>
+                      ))}
+                    </Field>
                   </Grid>
                   <Grid item xs={12}>
                     <Field
