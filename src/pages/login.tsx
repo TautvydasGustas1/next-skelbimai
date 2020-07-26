@@ -153,9 +153,10 @@ const login = () => {
                         <div className={classes.OuterSubmitContainer}>
                           <Button
                             disabled={isSubmitting}
-                            color="primary"
-                            variant="outlined"
+                            variant="contained"
                             type="submit"
+                            fullWidth
+                            color="primary"
                           >
                             Login
                           </Button>

@@ -164,8 +164,9 @@ const register = () => {
                         <div className={classes.OuterSubmitContainer}>
                           <Button
                             color="primary"
-                            variant="outlined"
+                            variant="contained"
                             type="submit"
+                            fullWidth
                             disabled={isSubmitting}
                           >
                             Register
