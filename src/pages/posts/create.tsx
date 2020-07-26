@@ -4,11 +4,25 @@ import { Container, Box, Button } from "@material-ui/core";
 import AdCreateForm from "../../components/AdFormCreate/AdCreateForm";
 import StepperComp from "../../components/AdFormCreate/StepperComp";
 import TreeCategorySelect from "../../components/AdFormCreate/TreeCategorySelect";
+import {
+  laptop,
+  personal_computer,
+  tablet,
+  console,
+  headphones,
+  keyboard,
+  loudspeaker,
+  phones,
+  tv,
+  mouse,
+  monitor,
+} from "../../Utils/FormFields";
+import { NextPageContext } from "next";
+import TokenService from "../../Helpers/TokenHelper";
 
-const create = () => {
+const create = ({ jwt }: String) => {
   const handleCategorySelectionConfirm = () => () => {
     if (selectedCategoryState !== "") {
-      console.log(selectedCategoryState);
     }
   };
 
@@ -21,27 +35,29 @@ const create = () => {
   const selectedForm = () => {
     switch (selectedCategoryState) {
       case "nesiojami":
-        return <AdCreateForm />;
+        return <AdCreateForm jwt={jwt} key={1} initialValues={laptop} />;
       case "stacionarus":
-        return <div>Stacionarus</div>;
+        return (
+          <AdCreateForm jwt={jwt} key={2} initialValues={personal_computer} />
+        );
       case "plansetiniai":
-        return <div>Plansetiniai</div>;
+        return <AdCreateForm jwt={jwt} key={3} initialValues={tablet} />;
       case "konsoles":
-        return <div>Konsoles</div>;
+        return <AdCreateForm jwt={jwt} key={4} initialValues={console} />;
       case "ausines":
-        return <div>Konsoles</div>;
+        return <AdCreateForm jwt={jwt} key={5} initialValues={headphones} />;
       case "klaviaturos":
-        return <div>Konsoles</div>;
+        return <AdCreateForm jwt={jwt} key={6} initialValues={keyboard} />;
       case "monitoriai":
-        return <div>Konsoles</div>;
+        return <AdCreateForm jwt={jwt} key={7} initialValues={monitor} />;
       case "peles":
-        return <div>Konsoles</div>;
+        return <AdCreateForm jwt={jwt} key={8} initialValues={mouse} />;
       case "koloneles":
-        return <div>Konsoles</div>;
+        return <AdCreateForm jwt={jwt} key={9} initialValues={loudspeaker} />;
       case "mobilieji":
-        return <div>Konsoles</div>;
+        return <AdCreateForm jwt={jwt} key={10} initialValues={phones} />;
       case "televizoriai":
-        return <div>Konsoles</div>;
+        return <AdCreateForm jwt={jwt} key={11} initialValues={tv} />;
       default:
         return <div></div>;
     }
@@ -65,6 +81,15 @@ const create = () => {
       </Container>
     </Layout>
   );
+};
+
+create.getInitialProps = async (ctx: NextPageContext) => {
+  const tokenService = new TokenService();
+  const token = await tokenService.authenticateTokenSsr(ctx);
+
+  return {
+    jwt: token,
+  };
 };
 
 export default create;

@@ -12,7 +12,7 @@ import AlertComp from "../components/AlertComp";
 import { AlertProvider } from "../context/AlertContext";
 
 axios.defaults.baseURL =
-  "http://totau-rest-api.us-east-1.elasticbeanstalk.com/";
+  "http://totaurestapi-env.eba-dfyvcstc.eu-central-1.elasticbeanstalk.com/";
 
 const fetcher = (url: AxiosRequestConfig) => axios(url).then((r) => r.data);
 
