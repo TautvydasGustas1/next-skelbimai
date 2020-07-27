@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../../components/Layout";
-import { Container, Box, Button } from "@material-ui/core";
+import { Container, Box } from "@material-ui/core";
 import AdCreateForm from "../../components/AdFormCreate/AdCreateForm";
 import StepperComp from "../../components/AdFormCreate/StepperComp";
-import TreeCategorySelect from "../../components/AdFormCreate/TreeCategorySelect";
 import {
   laptop,
   personal_computer,
   tablet,
-  console,
+  consol,
   headphones,
   keyboard,
   loudspeaker,
@@ -19,64 +18,49 @@ import {
 } from "../../Utils/FormFields";
 import { NextPageContext } from "next";
 import TokenService from "../../Helpers/TokenHelper";
+import axios from "axios";
+import { ComputersSchema } from "../../components/AdFormCreate/Validations";
 
-const create = ({ jwt }: String) => {
-  const handleCategorySelectionConfirm = () => () => {
-    if (selectedCategoryState !== "") {
-    }
-  };
+export interface createProps {
+  jwt: string;
+}
 
+const create = ({ jwt }: createProps) => {
   const handleCategorySelection = (category: string) => {
     setSelectedCategoryState(category);
   };
 
   const [selectedCategoryState, setSelectedCategoryState] = useState("");
+  const [citiesState, setCitiesState] = useState();
+  const [advID, setAdvID] = useState("");
 
-  const selectedForm = () => {
-    switch (selectedCategoryState) {
-      case "nesiojami":
-        return <AdCreateForm jwt={jwt} key={1} initialValues={laptop} />;
-      case "stacionarus":
-        return (
-          <AdCreateForm jwt={jwt} key={2} initialValues={personal_computer} />
-        );
-      case "plansetiniai":
-        return <AdCreateForm jwt={jwt} key={3} initialValues={tablet} />;
-      case "konsoles":
-        return <AdCreateForm jwt={jwt} key={4} initialValues={console} />;
-      case "ausines":
-        return <AdCreateForm jwt={jwt} key={5} initialValues={headphones} />;
-      case "klaviaturos":
-        return <AdCreateForm jwt={jwt} key={6} initialValues={keyboard} />;
-      case "monitoriai":
-        return <AdCreateForm jwt={jwt} key={7} initialValues={monitor} />;
-      case "peles":
-        return <AdCreateForm jwt={jwt} key={8} initialValues={mouse} />;
-      case "koloneles":
-        return <AdCreateForm jwt={jwt} key={9} initialValues={loudspeaker} />;
-      case "mobilieji":
-        return <AdCreateForm jwt={jwt} key={10} initialValues={phones} />;
-      case "televizoriai":
-        return <AdCreateForm jwt={jwt} key={11} initialValues={tv} />;
-      default:
-        return <div></div>;
-    }
+  const loadCities = () => {
+    axios
+      .get("/api/cities/v1")
+      .then((res) => {
+        setCitiesState(res.data);
+      })
+      .catch((errors) => {
+        console.log(errors.message);
+      });
   };
+
+  useEffect(() => {
+    loadCities();
+  }, []);
 
   return (
     <Layout>
       <Container>
         <Box mt={3}>
-          <TreeCategorySelect
+          <StepperComp
+            advID={advID}
+            citiesState={citiesState}
+            jwt={jwt}
             setSelectedCategoryState={setSelectedCategoryState}
+            selectedCategoryState={selectedCategoryState}
+            setAdvID={setAdvID}
           />
-          <Button
-            disabled={selectedCategoryState === ""}
-            onClick={handleCategorySelectionConfirm()}
-          >
-            Confirm caregory
-          </Button>
-          {selectedForm()}
         </Box>
       </Container>
     </Layout>

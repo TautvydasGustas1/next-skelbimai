@@ -11,7 +11,6 @@ export const laptop = {
   memory: "",
   motherboard: "",
   sub_category: "Nešiojamieji kompiuteriai",
-  images: "",
 };
 
 export const personal_computer = {
@@ -27,10 +26,9 @@ export const personal_computer = {
   memory: "",
   motherboard: "",
   sub_category: "Stacionarūs kompiuteriai",
-  images: "",
 };
 
-export const console = {
+export const consol = {
   name: "",
   price: 0,
   state: "",
@@ -41,7 +39,6 @@ export const console = {
   color: "",
   memory: "",
   motherboard: "",
-  images: "",
 };
 
 export const tablet = {
@@ -57,7 +54,6 @@ export const tablet = {
   memory: "",
   motherboard: "",
   sub_category: "Planšetiniai kompiuteriai",
-  images: "",
 };
 
 export const headphones = {

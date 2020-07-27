@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import TreeCategorySelect from "./TreeCategorySelect";
+import ImagesDropzone from "../ImagesDropzone";
+import { useAlert } from "../../context/AlertContext";
+import { selectedForm } from "./CategorySelect";
+import { ComputersSchema } from "./Validations";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,30 +27,51 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function getSteps() {
-  return ["Choose a category", "Create an ad", "Create an ad"];
+  return ["Choose a category", "Create an ad", "Upload images"];
 }
 
-function getStepContent(step: number) {
-  switch (step) {
-    case 0:
-      return "Select campaign settings...";
-    case 1:
-      return "What is an ad group anyways?";
-    case 2:
-      return "This is the bit I really care about!";
-    default:
-      return "Unknown step";
-  }
-}
-
-export default function StepperComp() {
+export default function StepperComp({
+  setSelectedCategoryState,
+  jwt,
+  selectedCategoryState,
+  citiesState,
+  advID,
+  setAdvID,
+}: any) {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set<number>());
+  const [activeStep, setActiveStep] = useState(0);
+  const [skipped, setSkipped] = useState(new Set<number>());
   const steps = getSteps();
 
+  function getStepContent(step: number) {
+    switch (step) {
+      case 0:
+        return (
+          <TreeCategorySelect
+            setSelectedCategoryState={setSelectedCategoryState}
+          />
+        );
+      case 1:
+        return selectedForm(
+          handleBack,
+          handleNext,
+          selectedCategoryState,
+          setAdvID,
+          citiesState,
+          jwt,
+          ComputersSchema
+        );
+      case 2:
+        return (
+          <ImagesDropzone handleNext={handleNext} adv_id={advID} jwt={jwt} />
+        );
+      default:
+        return "Unknown step";
+    }
+  }
+
   const isStepOptional = (step: number) => {
-    return step === 4;
+    return step === 2;
   };
 
   const isStepSkipped = (step: number) => {
@@ -113,23 +139,13 @@ export default function StepperComp() {
             <Typography className={classes.instructions}>
               All steps completed - you&apos;re finished
             </Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
-            </Button>
           </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>
+            <div className={classes.instructions}>
               {getStepContent(activeStep)}
-            </Typography>
+            </div>
             <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
-              >
-                Back
-              </Button>
               {isStepOptional(activeStep) && (
                 <Button
                   variant="contained"
@@ -140,14 +156,20 @@ export default function StepperComp() {
                   Skip
                 </Button>
               )}
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
+              {activeStep === 0 && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                  disabled={
+                    (activeStep === 0 && selectedCategoryState === "") ||
+                    !citiesState
+                  }
+                >
+                  {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                </Button>
+              )}
             </div>
           </div>
         )}

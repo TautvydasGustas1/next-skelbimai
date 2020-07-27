@@ -9,11 +9,12 @@ import {
   Typography,
   Button,
   MenuItem,
-  Input,
 } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
-import ImagesDropzone from "../ImagesDropzone";
 import axios from "axios";
+import { useAlert } from "../../context/AlertContext";
+import { ICities } from "../../types/CitiesInterface";
+import { object, string, number } from "yup";
 
 const useStyles = makeStyles((theme) => ({
   Card: {
@@ -26,56 +27,51 @@ const useStyles = makeStyles((theme) => ({
 export interface IAdCreateFormProps {
   initialValues: any;
   jwt: String;
+  handleBack: () => void;
+  handleNext: () => void;
+  citiesState: any;
+  setAdvID: any;
+  ValidationSchema: any;
 }
 
-const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
-  {
-    console.log(initialValues);
-  }
+const AdCreateForm = ({
+  initialValues,
+  jwt,
+  handleBack,
+  handleNext,
+  citiesState,
+  setAdvID,
+  ValidationSchema,
+}: IAdCreateFormProps) => {
+  const [alertState, alertDispatch] = useAlert();
 
-  const handleUploadImages = (values) => {
+  const handleSubmit = async (values: any, resolve: () => void) => {
     const config = {
       headers: { Authorization: `Bearer ${jwt}` },
     };
-
-    console.log(values);
-
-    axios
-      .post("/api/file/v1/upload", values, config)
+    await axios
+      .post("/api/computers/v1", values, config)
       .then((res) => {
-        console.log(res);
+        alertDispatch({
+          type: "showAlert",
+          payload: {
+            message: "Successfully created an ad",
+            severity: "success",
+          },
+        });
+        setAdvID(res.data.id);
+        handleNext();
       })
       .catch((errors) => {
         console.log(errors.message);
+      })
+      .finally(() => {
+        resolve();
       });
   };
 
-  const handleSubmit = async (values: any, resolve: () => void) => {
-    console.log(values);
-    handleUploadImages(values);
-    resolve();
-    // const config = {
-    //   headers: { Authorization: `Bearer ${jwt}` },
-    // };
-    // await axios
-    //   .post("/api/computers/v1", values, config)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((errors) => {
-    //     console.log(errors.message);
-    //   })
-    //   .finally(() => {
-    //     resolve();
-    //   });
-  };
-
-  const handleSubmitImages = (files: any, allFiles: any) => {
-    console.log(files.map((f: any) => f.meta));
-    //allFiles.forEach((f: any) => f.remove());
-  };
-
   const classes = useStyles();
+
   return (
     <Box>
       <Card className={classes.Card}>
@@ -87,13 +83,14 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
           </Box>
           <Formik
             initialValues={initialValues}
+            validationSchema={ValidationSchema}
             onSubmit={(values, formikHelpers) => {
               return new Promise((res) => {
                 handleSubmit(values, res);
               });
             }}
           >
-            {({ values, errors }) => (
+            {({ values, errors, isSubmitting }) => (
               <Form>
                 <Grid spacing={3} container>
                   <Grid
@@ -106,20 +103,22 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                   >
                     <Grid xs={12} item>
                       <Typography align="center" variant="h6">
-                        Mandatory fields
+                        Main information
                       </Typography>
                     </Grid>
                     <Grid xs={12} item>
                       <Field
                         fullWidth
                         name="type"
-                        label="Tipas"
+                        label="Type"
                         as={TextField}
                         variant="outlined"
                         select
+                        error={Boolean(errors.type)}
+                        helperText={errors.type}
                       >
-                        <MenuItem value="Perka">Perka</MenuItem>
-                        <MenuItem value="Parduoda">Parduoda</MenuItem>
+                        <MenuItem value="Perka">Buy</MenuItem>
+                        <MenuItem value="Parduoda">Sell</MenuItem>
                       </Field>
                     </Grid>
                     <Grid xs={12} item>
@@ -130,6 +129,8 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                         label="Name of product"
                         as={TextField}
                         variant="outlined"
+                        error={Boolean(errors.article)}
+                        helperText={errors.article}
                       />
                     </Grid>
                     <Grid xs={12} item>
@@ -140,7 +141,16 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                         label="City"
                         as={TextField}
                         variant="outlined"
-                      />
+                        select
+                        error={Boolean(errors.city)}
+                        helperText={errors.city}
+                      >
+                        {citiesState.map((item: ICities) => (
+                          <MenuItem key={item.id} value={`${item.city}`}>
+                            {item.city}
+                          </MenuItem>
+                        ))}
+                      </Field>
                     </Grid>
                     <Grid xs={12} item>
                       <Field
@@ -150,6 +160,8 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                         as={TextField}
                         type="number"
                         variant="outlined"
+                        error={Boolean(errors.price)}
+                        helperText={errors.price}
                       />
                     </Grid>
                     <Grid xs={12} item>
@@ -159,18 +171,11 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                         label="Description"
                         as={TextField}
                         multiline
-                        rows={3}
+                        rows={5}
                         rowsMax={10}
                         variant="outlined"
-                      />
-                    </Grid>
-                    <Grid xs={12} item>
-                      <Field
-                        name="images"
-                        type="file"
-                        multiple
-                        label="Images"
-                        as={Input}
+                        error={Boolean(errors.description)}
+                        helperText={errors.description}
                       />
                     </Grid>
                   </Grid>
@@ -184,21 +189,9 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                   >
                     <Grid xs={12} item>
                       <Typography align="center" variant="h6">
-                        Optional fields
+                        Information about product
                       </Typography>
                     </Grid>
-                    {initialValues.operating !== undefined && (
-                      <Grid xs={12} item>
-                        <Field
-                          fullWidth
-                          autoComplete="off"
-                          name="operating"
-                          label="Operating System"
-                          as={TextField}
-                          variant="outlined"
-                        />
-                      </Grid>
-                    )}
                     {initialValues.cpu !== undefined && (
                       <Grid xs={12} item>
                         <Field
@@ -208,6 +201,8 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                           label="CPU"
                           as={TextField}
                           variant="outlined"
+                          error={Boolean(errors.cpu)}
+                          helperText={errors.cpu}
                         />
                       </Grid>
                     )}
@@ -220,6 +215,8 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                           label="Video Card"
                           as={TextField}
                           variant="outlined"
+                          error={Boolean(errors.gpu)}
+                          helperText={errors.gpu}
                         />
                       </Grid>
                     )}
@@ -228,10 +225,12 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                         <Field
                           fullWidth
                           autoComplete="off"
-                          name="mothearboard"
+                          name="motherboard"
                           label="Motherboard"
                           as={TextField}
                           variant="outlined"
+                          error={Boolean(errors.motherboard)}
+                          helperText={errors.motherboard}
                         />
                       </Grid>
                     )}
@@ -244,6 +243,8 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                           label="Rams"
                           as={TextField}
                           variant="outlined"
+                          error={Boolean(errors.ram)}
+                          helperText={errors.ram}
                         />
                       </Grid>
                     )}
@@ -256,6 +257,8 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                           label="Memory"
                           as={TextField}
                           variant="outlined"
+                          error={Boolean(errors.memory)}
+                          helperText={errors.memory}
                         />
                       </Grid>
                     )}
@@ -281,19 +284,6 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                           as={TextField}
                           variant="outlined"
                           type="number"
-                        />
-                      </Grid>
-                    )}
-                    {initialValues.motherboard !== undefined && (
-                      <Grid xs={12} item>
-                        <Field
-                          fullWidth
-                          autoComplete="off"
-                          name="motherboard"
-                          label="Motherboard"
-                          as={TextField}
-                          variant="outlined"
-                          type="text"
                         />
                       </Grid>
                     )}
@@ -426,7 +416,24 @@ const AdCreateForm = ({ initialValues, jwt }: IAdCreateFormProps) => {
                   </Grid>
                 </Grid>
                 <Box mt={3} textAlign="center">
-                  <Button type="submit" color="primary" variant="outlined">
+                  <Button
+                    fullWidth
+                    type="submit"
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => handleBack()}
+                  >
+                    Back
+                  </Button>
+                </Box>
+                <Box mt={1} textAlign="center">
+                  <Button
+                    fullWidth
+                    type="submit"
+                    color="primary"
+                    variant="contained"
+                    disabled={isSubmitting}
+                  >
                     Submit
                   </Button>
                 </Box>
