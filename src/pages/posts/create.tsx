@@ -71,6 +71,8 @@ create.getInitialProps = async (ctx: NextPageContext) => {
   const tokenService = new TokenService();
   const token = await tokenService.authenticateTokenSsr(ctx);
 
+  console.log(token);
+
   return {
     jwt: token,
   };

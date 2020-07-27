@@ -1,6 +1,6 @@
 export interface IUserInfo {
   name: string;
-  city: string;
+  city: String;
   county: string;
   number: string;
   email: string;

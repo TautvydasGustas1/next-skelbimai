@@ -90,9 +90,9 @@ const EditProfileForm = ({
   const initialValues: IUserInfo = {
     name: profileData ? profileData.name : "",
     number: profileData ? profileData.number : "",
-    city: profileData ? profileData.city : "",
+    city: profileData ? profileData.city : countiesWCities[0].cities[0].city,
     email: profileData ? profileData.email : "",
-    county: profileData ? profileData.county : "",
+    county: profileData ? profileData.county : countiesWCities[0].county,
     id: profileData && profileData.id,
   };
   const [CountyState, setCountyState] = useState(initialValues.county);

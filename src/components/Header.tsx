@@ -22,6 +22,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { drawerWidth } from "../Utils/GlobalVariales";
 import { useAlert } from "../context/AlertContext";
+import Cookie from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -52,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
       flexShrink: 0,
     },
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
 const authRoutes = (
@@ -71,6 +75,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch({ type: "logout" });
+    Cookie.remove("auth");
     alertDispatch({
       type: "showAlert",
       payload: {
@@ -93,25 +98,52 @@ const Header = () => {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
+        <ListItem component="a" href="/profile" button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Profile"} />
+        </ListItem>
+        <ListItem component="a" href="/profile/edit" button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Edit a profile"} />
+        </ListItem>
+
+        <Divider />
+        <ListItem component="a" href="/" button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Advertisement"} />
+        </ListItem>
+        <List component="div" disablePadding>
+          <ListItem button className={classes.nested}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary="Laptops" />
           </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
+          <ListItem button className={classes.nested}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary="Personal computers" />
           </ListItem>
-        ))}
+          <ListItem button className={classes.nested}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Tablets" />
+          </ListItem>
+        </List>
+        <ListItem component="a" href="/posts/create" button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Create an ad"} />
+        </ListItem>
       </List>
     </div>
   );
