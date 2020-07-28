@@ -37,7 +37,6 @@ export default function Home() {
     axios
       .get(`/api/computers/v1?page=${page}&size=${size}&sort=${order}`)
       .then((res) => {
-        console.log(res);
         setDataState(res.data);
         setLoading(false);
         setLoadingPagination(false);

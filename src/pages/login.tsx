@@ -19,7 +19,6 @@ import Cookie from "js-cookie";
 import Router from "next/router";
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
-import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   Card: {

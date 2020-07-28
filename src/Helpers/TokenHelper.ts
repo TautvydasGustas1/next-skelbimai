@@ -12,6 +12,10 @@ class TokenService {
   }
 
   public async checkAuthToken(token: string | undefined): Promise<Boolean> {
+    if (token === undefined) {
+      return false;
+    }
+
     const config = {
       headers: { Authorization: `Bearer ${token}` },
       validateStatus: () => true,

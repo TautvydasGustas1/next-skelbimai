@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -23,6 +23,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import { drawerWidth } from "../Utils/GlobalVariales";
 import { useAlert } from "../context/AlertContext";
 import Cookie from "js-cookie";
+import { GetServerSideProps } from "next";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -72,6 +73,7 @@ const authRoutes = (
 const Header = () => {
   const [state, dispatch] = useAuth();
   const [alertState, alertDispatch] = useAlert();
+  const [loginState, setLoginState] = useState(false);
 
   const logoutHandler = () => {
     dispatch({ type: "logout" });
@@ -106,13 +108,14 @@ const Header = () => {
             <ListItemText primary={"Profile"} />
           </ListItem>
         </Link>
-        <ListItem component="a" href="/profile/edit" button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Edit a profile"} />
-        </ListItem>
-
+        <Link href="/profile/edit">
+          <ListItem button>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Edit a profile"} />
+          </ListItem>
+        </Link>
         <Divider />
         <Link href="/">
           <ListItem button>
