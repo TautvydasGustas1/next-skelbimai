@@ -98,12 +98,14 @@ const Header = () => {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem component="a" href="/profile" button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Profile"} />
-        </ListItem>
+        <Link href="/profile">
+          <ListItem button>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Profile"} />
+          </ListItem>
+        </Link>
         <ListItem component="a" href="/profile/edit" button>
           <ListItemIcon>
             <InboxIcon />
@@ -112,12 +114,14 @@ const Header = () => {
         </ListItem>
 
         <Divider />
-        <ListItem component="a" href="/" button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Advertisement"} />
-        </ListItem>
+        <Link href="/">
+          <ListItem button>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Advertisement"} />
+          </ListItem>
+        </Link>
         <List component="div" disablePadding>
           <ListItem button className={classes.nested}>
             <ListItemIcon>
@@ -138,12 +142,14 @@ const Header = () => {
             <ListItemText primary="Tablets" />
           </ListItem>
         </List>
-        <ListItem component="a" href="/posts/create" button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Create an ad"} />
-        </ListItem>
+        <Link href="/posts/create">
+          <ListItem button>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Create an ad"} />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
