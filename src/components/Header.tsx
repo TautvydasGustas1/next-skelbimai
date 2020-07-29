@@ -23,7 +23,6 @@ import MailIcon from "@material-ui/icons/Mail";
 import { drawerWidth } from "../Utils/GlobalVariales";
 import { useAlert } from "../context/AlertContext";
 import Cookie from "js-cookie";
-import { GetServerSideProps } from "next";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -43,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginRight: "5%",
+    cursor: "pointer",
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
@@ -74,6 +74,10 @@ const Header = () => {
   const [state, dispatch] = useAuth();
   const [alertState, alertDispatch] = useAlert();
   const [loginState, setLoginState] = useState(false);
+
+  useEffect(() => {
+    setLoginState(true);
+  }, []);
 
   const logoutHandler = () => {
     dispatch({ type: "logout" });
@@ -170,21 +174,24 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            News
-          </Typography>
           <Link href="/">
-            <Button color="inherit">Advertisements</Button>
+            <Typography variant="h6" className={classes.title}>
+              Advertisements
+            </Typography>
           </Link>
           <div className={classes.rightSideContainer}>
-            {!state.isAuthenticated ? (
-              authRoutes
+            {loginState ? (
+              !state.isAuthenticated ? (
+                authRoutes
+              ) : (
+                <div>
+                  <Button onClick={(e) => logoutHandler()} color="inherit">
+                    Logout
+                  </Button>
+                </div>
+              )
             ) : (
-              <div>
-                <Button onClick={(e) => logoutHandler()} color="inherit">
-                  Logout
-                </Button>
-              </div>
+              ""
             )}
           </div>
         </Toolbar>

@@ -1,5 +1,6 @@
 import React, { useReducer, useContext, useEffect } from "react";
 import { IAuth } from "../types/AuthContextInterface";
+import Cookies from "js-cookie";
 
 export const AuthStateContext = React.createContext({});
 
