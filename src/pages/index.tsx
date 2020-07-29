@@ -8,6 +8,7 @@ import axios from "axios";
 import Pagination from "@material-ui/lab/Pagination";
 import { IAd } from "../types/PostsInterface";
 import Skeleton from "@material-ui/lab/Skeleton";
+import AdsControlPanel from "../components/AdsControlPanel";
 
 const size = "20";
 const order = "desc";
@@ -33,6 +34,21 @@ export default function Home() {
   };
 
   const getAds = () => {
+    setLoading(true);
+    axios
+      .get(`/api/computers/v1?page=${page}&size=${size}&sort=${order}`)
+      .then((res) => {
+        setDataState(res.data);
+        setLoading(false);
+        setLoadingPagination(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
+  const getCategories = () => {
     setLoading(true);
     axios
       .get(`/api/computers/v1?page=${page}&size=${size}&sort=${order}`)
@@ -88,14 +104,14 @@ export default function Home() {
         <Container>
           <Grid container spacing={5}>
             <Grid item xs={12}>
-              <Paper className={classes.sideController} variant="outlined" />
+              <AdsControlPanel adsCount={dataState?.page.totalElements} />
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   {loadingPagination ? (
                     <Skeleton variant="rect" width={450} height={40} />
-                  ) : (
+                  ) : dataState ? (
                     <Pagination
                       onChange={(e: object, page: number) =>
                         handlePageChange(e, page)
@@ -103,9 +119,11 @@ export default function Home() {
                       color="primary"
                       count={dataState?.page.totalPages}
                     />
+                  ) : (
+                    ""
                   )}
                 </Grid>
-                {!loading ? renderAds() : renderSkeletonsForAds()}
+                {!loading && dataState ? renderAds() : renderSkeletonsForAds()}
               </Grid>
             </Grid>
           </Grid>
