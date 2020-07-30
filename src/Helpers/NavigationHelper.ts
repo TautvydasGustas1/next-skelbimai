@@ -1,8 +1,11 @@
 import Router from "next/router";
-import { NextPageContext } from "next/types";
+import { NextPageContext, GetServerSidePropsContext } from "next/types";
 
 class NavService {
-  public redirectUser(dest: string, ctx: NextPageContext) {
+  public redirectUser(
+    dest: string,
+    ctx: NextPageContext | GetServerSidePropsContext
+  ) {
     const res = ctx.res;
     if (res) {
       res.writeHead(302, { Location: dest });

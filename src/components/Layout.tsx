@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   content: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       width: `calc(100% - ${240}px)`,
       marginLeft: 240,
     },

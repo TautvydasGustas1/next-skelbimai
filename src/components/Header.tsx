@@ -27,12 +27,12 @@ import Cookie from "js-cookie";
 const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "none",
     },
   },
   appBar: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   drawer: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       width: drawerWidth,
       flexShrink: 0,
     },
@@ -214,7 +214,7 @@ const Header = () => {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden smDown implementation="css">
           <Drawer
             classes={{
               paper: classes.drawerPaper,

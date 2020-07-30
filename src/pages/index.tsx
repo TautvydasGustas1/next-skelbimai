@@ -7,8 +7,11 @@ import Layout from "../components/Layout";
 import axios from "axios";
 import Pagination from "@material-ui/lab/Pagination";
 import { IAd } from "../types/PostsInterface";
+import { ICategories } from "../types/CategoriesInterface";
 import Skeleton from "@material-ui/lab/Skeleton";
 import AdsControlPanel from "../components/AdsControlPanel";
+import { GetServerSideProps } from "next";
+import Link from "next/link";
 
 const size = "20";
 const order = "desc";
@@ -22,12 +25,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home() {
+export default function Home({ queryParams }: any) {
   const classes = useStyles();
   const [dataState, setDataState] = useState<IAd | undefined>();
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingPagination, setLoadingPagination] = useState(true);
+  const [categoriesDataState, setCategoriesDataState] = useState<
+    ICategories[] | undefined
+  >();
 
   const handlePageChange = (e: object, page: number) => {
     setPage(page - 1);
@@ -49,17 +55,13 @@ export default function Home() {
   };
 
   const getCategories = () => {
-    setLoading(true);
     axios
-      .get(`/api/computers/v1?page=${page}&size=${size}&sort=${order}`)
+      .get(`/api/categories/v1`)
       .then((res) => {
-        setDataState(res.data);
-        setLoading(false);
-        setLoadingPagination(false);
+        setCategoriesDataState(res.data);
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
       });
   };
 
@@ -67,24 +69,30 @@ export default function Home() {
     getAds();
   }, [page]);
 
+  useEffect(() => {
+    getCategories();
+  }, []);
+
   function renderAds() {
     return dataState!.content.map((ad) => (
-      <Grid key={ad.id} item xs={12}>
-        <PostCard
-          article={ad.article}
-          city={ad.city}
-          cpu={ad.cpu}
-          gpu={ad.gpu}
-          description={ad.description}
-          images={ad.images}
-          memory={ad.memory}
-          motherboard={ad.motherboard}
-          price={ad.price}
-          ram={ad.ram}
-          sub_category={ad.sub_category}
-          type={ad.type}
-        />
-      </Grid>
+      <Link key={ad.id} href={`/posts/${ad.id}`}>
+        <Grid item xs={12}>
+          <PostCard
+            article={ad.article}
+            city={ad.city}
+            cpu={ad.cpu}
+            gpu={ad.gpu}
+            description={ad.description}
+            images={ad.images}
+            memory={ad.memory}
+            motherboard={ad.motherboard}
+            price={ad.price}
+            ram={ad.ram}
+            sub_category={ad.sub_category}
+            type={ad.type}
+          />
+        </Grid>
+      </Link>
     ));
   }
 
@@ -104,7 +112,11 @@ export default function Home() {
         <Container>
           <Grid container spacing={5}>
             <Grid item xs={12}>
-              <AdsControlPanel adsCount={dataState?.page.totalElements} />
+              <AdsControlPanel
+                queryParams={queryParams}
+                categories={categoriesDataState}
+                adsCount={dataState?.page.totalElements}
+              />
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={3}>
@@ -132,3 +144,11 @@ export default function Home() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return {
+    props: {
+      queryParams: ctx.query,
+    },
+  };
+};
