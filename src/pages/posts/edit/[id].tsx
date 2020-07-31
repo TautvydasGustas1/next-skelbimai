@@ -10,14 +10,15 @@ import { IComputers } from "../../../types/ComputersInterface";
 import { ICities } from "../../../types/CitiesInterface";
 import { ComputersSchema } from "../../../components/AdFormCreate/Validations";
 import { useAlert } from "../../../context/AlertContext";
+import { NextPage } from "next";
 
-export interface AdEdit {
-  jwt: string;
-  post: IComputers;
-  cities: ICities;
+export interface AdEditProps {
+  jwt?: string;
+  post?: IComputers;
+  cities?: ICities;
 }
 
-const AdEdit = ({ jwt, post, cities }: AdEdit) => {
+const AdEdit = ({ jwt, post, cities }: AdEditProps) => {
   const [alertState, alertDispatch] = useAlert();
   const handleEditSubmit = async (values: any, resolve: () => void) => {
     const config = {

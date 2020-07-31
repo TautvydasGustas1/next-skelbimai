@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 export interface IAdCreateFormProps {
   initialValues: any;
-  jwt: String;
+  jwt?: String;
   handleBack?: () => void;
   citiesState: any;
   ValidationSchema: any;
