@@ -11,10 +11,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
-import { useAlert } from "../../context/AlertContext";
 import { ICities } from "../../types/CitiesInterface";
-import { object, string, number } from "yup";
 
 const useStyles = makeStyles((theme) => ({
   Card: {
@@ -27,49 +24,22 @@ const useStyles = makeStyles((theme) => ({
 export interface IAdCreateFormProps {
   initialValues: any;
   jwt: String;
-  handleBack: () => void;
-  handleNext: () => void;
+  handleBack?: () => void;
   citiesState: any;
-  setAdvID: any;
   ValidationSchema: any;
+  handleSubmit: any;
+  title?: string;
 }
 
 const AdCreateForm = ({
   initialValues,
   jwt,
   handleBack,
-  handleNext,
   citiesState,
-  setAdvID,
   ValidationSchema,
+  handleSubmit,
+  title,
 }: IAdCreateFormProps) => {
-  const [alertState, alertDispatch] = useAlert();
-
-  const handleSubmit = async (values: any, resolve: () => void) => {
-    const config = {
-      headers: { Authorization: `Bearer ${jwt}` },
-    };
-    await axios
-      .post("/api/computers/v1", values, config)
-      .then((res) => {
-        alertDispatch({
-          type: "showAlert",
-          payload: {
-            message: "Successfully created an ad",
-            severity: "success",
-          },
-        });
-        setAdvID(res.data.id);
-        handleNext();
-      })
-      .catch((errors) => {
-        console.log(errors.message);
-      })
-      .finally(() => {
-        resolve();
-      });
-  };
-
   const classes = useStyles();
 
   return (
@@ -78,7 +48,7 @@ const AdCreateForm = ({
         <CardContent>
           <Box p={3}>
             <Typography variant="h4" align="center">
-              Create an ad
+              {!title ? "Create an ad" : title}
             </Typography>
           </Box>
           <Formik
@@ -415,17 +385,19 @@ const AdCreateForm = ({
                     )}
                   </Grid>
                 </Grid>
-                <Box mt={3} textAlign="center">
-                  <Button
-                    fullWidth
-                    type="submit"
-                    color="primary"
-                    variant="outlined"
-                    onClick={() => handleBack()}
-                  >
-                    Back
-                  </Button>
-                </Box>
+                {handleBack && (
+                  <Box mt={3} textAlign="center">
+                    <Button
+                      fullWidth
+                      type="submit"
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => handleBack()}
+                    >
+                      Back
+                    </Button>
+                  </Box>
+                )}
                 <Box mt={1} textAlign="center">
                   <Button
                     fullWidth

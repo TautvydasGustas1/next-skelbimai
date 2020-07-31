@@ -1,5 +1,6 @@
 import { ILinks } from "./LinksInterface";
 import { IImages } from "./ImagesInterface";
+import { IUserInfo } from "./UserInfoInterface";
 
 export interface IComputers {
   id: number;
@@ -16,4 +17,5 @@ export interface IComputers {
   images: IImages[];
   sub_category: string;
   links: ILinks[];
+  personal_information: IUserInfo;
 }

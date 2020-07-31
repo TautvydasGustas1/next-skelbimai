@@ -10,6 +10,7 @@ import ImagesDropzone from "../ImagesDropzone";
 import { useAlert } from "../../context/AlertContext";
 import { selectedForm } from "./CategorySelect";
 import { ComputersSchema } from "./Validations";
+import Axios from "axios";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,6 +43,7 @@ export default function StepperComp({
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
   const steps = getSteps();
+  const [alertState, alertDispatch] = useAlert();
 
   function getStepContent(step: number) {
     switch (step) {
@@ -59,7 +61,8 @@ export default function StepperComp({
           setAdvID,
           citiesState,
           jwt,
-          ComputersSchema
+          ComputersSchema,
+          handleSubmit
         );
       case 2:
         return (
@@ -110,6 +113,30 @@ export default function StepperComp({
 
   const handleReset = () => {
     setActiveStep(0);
+  };
+
+  const handleSubmit = async (values: any, resolve: () => void) => {
+    const config = {
+      headers: { Authorization: `Bearer ${jwt}` },
+    };
+    await Axios.post("/api/computers/v1", values, config)
+      .then((res) => {
+        alertDispatch({
+          type: "showAlert",
+          payload: {
+            message: "Successfully created an ad",
+            severity: "success",
+          },
+        });
+        setAdvID(res.data.id);
+        handleNext();
+      })
+      .catch((errors) => {
+        console.log(errors.message);
+      })
+      .finally(() => {
+        resolve();
+      });
   };
 
   return (

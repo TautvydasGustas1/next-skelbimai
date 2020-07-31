@@ -19,25 +19,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const AdminLayout = ({ children }: { children: ReactNode }) => {
   const classes = useStyles();
 
   return (
     <>
-      <Header />
+      <Header is_adminView={true} />
       <div className={classes.content}>
         <main>{children}</main>
       </div>
-      <footer>
-        © {new Date().getFullYear()}
-        {` `}
-      </footer>
     </>
   );
 };
 
-Layout.propTypes = {
+AdminLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default Layout;
+export default AdminLayout;

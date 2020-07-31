@@ -18,7 +18,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import Router from "next/router";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import { drawerWidth } from "../Utils/GlobalVariales";
 import { useAlert } from "../context/AlertContext";
 import Cookie from "js-cookie";
@@ -77,7 +76,11 @@ const authRoutes = (
   </div>
 );
 
-const Header = () => {
+export interface HeaderProps {
+  is_adminView?: Boolean;
+}
+
+const Header = ({ is_adminView }: HeaderProps) => {
   const [state, dispatch] = useAuth();
   const [alertState, alertDispatch] = useAlert();
   const [loginState, setLoginState] = useState(false);
@@ -105,6 +108,22 @@ const Header = () => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const adminRender = (
+    <>
+      <div className={classes.toolbar} />
+      <Divider />
+      <Link href="/admin">
+        <ListItem button>
+          <ListItemIcon>
+            <StoreIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Edit Advertisements"} />
+        </ListItem>
+      </Link>
+      <Divider />
+    </>
+  );
 
   const ProfileRoutes = (
     <>
@@ -196,7 +215,7 @@ const Header = () => {
           </IconButton>
           <Link href="/">
             <Typography variant="h6" className={classes.title}>
-              Advertisements
+              {is_adminView ? "Admin panel" : "Advertisements"}
             </Typography>
           </Link>
           <div className={classes.rightSideContainer}>
@@ -231,7 +250,7 @@ const Header = () => {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            {drawer}
+            {is_adminView ? adminRender : drawer}
           </Drawer>
         </Hidden>
         <Hidden smDown implementation="css">
@@ -242,7 +261,7 @@ const Header = () => {
             variant="permanent"
             open
           >
-            {drawer}
+            {is_adminView ? adminRender : drawer}
           </Drawer>
         </Hidden>
       </nav>

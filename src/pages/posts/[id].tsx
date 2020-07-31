@@ -106,11 +106,66 @@ const Advertisement = ({ post }: AdvertisementProps) => {
     </Grid>
   );
 
+  function renderInfo() {
+    return (
+      <Grid spacing={1} container item xs={12}>
+        <Grid item xs={12}>
+          <Typography variant="caption">
+            <b>Personal information</b>
+          </Typography>
+          <Divider />
+        </Grid>
+        <Grid item xs={6}>
+          <Typography variant="body1">
+            <b>Name</b>
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography variant="body1">
+            {post!.personal_information.name}
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography variant="body1">
+            <b>Email</b>
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography variant="body1">
+            {post!.personal_information.email}
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography variant="body1">
+            <b>Number</b>
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography variant="body1">
+            {post!.personal_information.number}
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography variant="body1">
+            <b>City</b>
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography variant="body1">
+            {post!.personal_information.city}
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  }
+
   const classes = useStyles();
   return (
     <Layout>
       {!post ? (
-        <div>Car not found</div>
+        <Box>
+          <Typography>No ad found</Typography>
+        </Box>
       ) : (
         <Container>
           <ImageModal
@@ -174,6 +229,7 @@ const Advertisement = ({ post }: AdvertisementProps) => {
                           </Typography>
                         </Box>
                       </Grid>
+                      {post.personal_information && renderInfo()}
                     </Grid>
                   </CardContent>
                 </Card>

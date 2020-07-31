@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
   image: {
     maxHeight: "45px",
     minHeight: "45px",
+    maxWidth: "76px",
   },
   paper: {
     display: "flex",

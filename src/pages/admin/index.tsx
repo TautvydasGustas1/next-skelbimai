@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Container from "@material-ui/core/Container";
-import { Grid } from "@material-ui/core";
-import PostCard from "../components/PostCard";
+import { Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Layout from "../components/Layout";
 import axios from "axios";
 import Pagination from "@material-ui/lab/Pagination";
-import { IAd } from "../types/PostsInterface";
-import { ICategories } from "../types/CategoriesInterface";
-import Skeleton from "@material-ui/lab/Skeleton";
-import AdsControlPanel from "../components/AdsControlPanel";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { IAd } from "../../types/PostsInterface";
+import { ICategories } from "../../types/CategoriesInterface";
+import PostCard from "../../components/PostCard";
+import Skeleton from "@material-ui/lab/Skeleton";
+import AdsControlPanel from "../../components/AdsControlPanel";
+import AdminLayout from "../../components/AdminLayout";
 
 const size = "20";
 const order = "desc";
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home({ queryParams }: any) {
+export default function Admin({ queryParams }: any) {
   const classes = useStyles();
   const [dataState, setDataState] = useState<IAd | undefined>();
   const [page, setPage] = useState(0);
@@ -107,7 +107,7 @@ export default function Home({ queryParams }: any) {
   }
 
   return (
-    <Layout>
+    <AdminLayout>
       <div className={classes.outerPostsContainer}>
         <Container>
           <Grid container spacing={5}>
@@ -141,7 +141,7 @@ export default function Home({ queryParams }: any) {
           </Grid>
         </Container>
       </div>
-    </Layout>
+    </AdminLayout>
   );
 }
 
