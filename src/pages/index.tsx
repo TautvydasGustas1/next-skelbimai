@@ -12,6 +12,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import AdsControlPanel from "../components/AdsControlPanel";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const size = "20";
 const order = "desc";
@@ -34,6 +35,8 @@ export default function Home({ queryParams }: any) {
   const [categoriesDataState, setCategoriesDataState] = useState<
     ICategories[] | undefined
   >();
+
+  const router = useRouter();
 
   const handlePageChange = (e: object, page: number) => {
     setPage(page - 1);

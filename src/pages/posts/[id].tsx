@@ -55,6 +55,57 @@ const Advertisement = ({ post }: AdvertisementProps) => {
     e.currentTarget.src = defaultImage;
   };
 
+  const renderComputersInfo = (
+    <Grid spacing={1} container item xs={12}>
+      <Grid item xs={12}>
+        <Typography variant="caption">
+          <b>About</b>
+        </Typography>
+        <Divider />
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">CPU</Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">
+          <b>{post!.cpu}</b>
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">Motherboard</Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">
+          <b>{post!.motherboard}</b>
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">GPU</Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">
+          <b>{post!.gpu}</b>
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">Ram</Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">
+          <b>{post!.ram}</b>
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">Memory</Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="body1">
+          <b>{post!.memory}</b>
+        </Typography>
+      </Grid>
+    </Grid>
+  );
+
   const classes = useStyles();
   return (
     <Layout>
@@ -111,54 +162,7 @@ const Advertisement = ({ post }: AdvertisementProps) => {
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Grid spacing={1} container item xs={12}>
-                        <Grid item xs={12}>
-                          <Typography variant="caption">
-                            <b>About</b>
-                          </Typography>
-                          <Divider />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">CPU</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">
-                            <b>{post.cpu}</b>
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">Motherboard</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">
-                            <b>{post.motherboard}</b>
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">GPU</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">
-                            <b>{post.gpu}</b>
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">Ram</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">
-                            <b>{post.ram}</b>
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">Memory</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body1">
-                            <b>{post.memory}</b>
-                          </Typography>
-                        </Grid>
-                      </Grid>
+                      {renderComputersInfo}
                       <Grid item xs={12}>
                         <Typography variant="caption">
                           <b>Description</b>
