@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
 import { NextPageContext } from "next";
 import {
@@ -10,18 +10,30 @@ import {
   Grid,
   Button,
   CircularProgress,
+  Tabs,
+  Paper,
+  Tab,
 } from "@material-ui/core";
 import Layout from "../components/Layout";
 import Alert from "@material-ui/lab/Alert";
 import { IUserInfo } from "../types/UserInfoInterface";
 import Link from "next/link";
 import TokenService from "../Helpers/TokenHelper";
+import { makeStyles } from "@material-ui/core/styles";
+import UsersAds from "../components/UsersAds";
 
 export interface IProfileProps {
   jwt: string;
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+}));
+
 const Profile = ({ jwt }: IProfileProps) => {
+  const classes = useStyles();
   const [userInfoState, setUserInfoState] = useState<IUserInfo>({
     name: "",
     city: "",
@@ -29,6 +41,11 @@ const Profile = ({ jwt }: IProfileProps) => {
     email: "",
     number: "",
   });
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
 
   const [profileUpdated, setProfileUpdated] = useState(false);
   const [profileEmpty, setProfileEmpty] = useState(true);
@@ -59,6 +76,7 @@ const Profile = ({ jwt }: IProfileProps) => {
     axios
       .get("/api/users/information/v1", config)
       .then((res) => {
+        console.log(res);
         if (res.status === 200) {
           const obj: IUserInfo = {
             name: res.data.name,
@@ -82,7 +100,6 @@ const Profile = ({ jwt }: IProfileProps) => {
       <CircularProgress />
     </Box>
   );
-
   const profileContent = (
     <>
       {profileEmpty && alert}
@@ -125,23 +142,47 @@ const Profile = ({ jwt }: IProfileProps) => {
     </>
   );
 
+  function renderInfo() {
+    switch (value) {
+      case 0:
+        return profileContent;
+        break;
+      case 1:
+        return <UsersAds />;
+        break;
+      default:
+        return <div></div>;
+        break;
+    }
+  }
+
+  function renderTitle() {
+    return (
+      <Typography variant="h4" align="center">
+        {value === 0 ? "Personal information" : "User created ads"}
+      </Typography>
+    );
+  }
+
   return (
     <Layout>
       <Container>
         <Box mt={3}>
           <Card>
             <CardContent>
-              <Typography variant="h3" align="center">
-                Profile
-              </Typography>
-
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                indicatorColor="primary"
+                textColor="primary"
+                centered
+              >
+                <Tab label="User information" />
+                <Tab label="Users ads" />
+              </Tabs>
               <Box mt={3}>
-                <Box mb={1}>
-                  <Typography variant="h4" align="center">
-                    Personal Information
-                  </Typography>
-                </Box>
-                {!profileUpdated ? loadingIndicator : profileContent}
+                <Box mb={1}>{renderTitle()}</Box>
+                {!profileUpdated ? loadingIndicator : renderInfo()}
               </Box>
             </CardContent>
           </Card>

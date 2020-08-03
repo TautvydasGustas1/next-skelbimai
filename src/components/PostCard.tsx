@@ -5,11 +5,10 @@ import {
   CardMedia,
   CardContent,
   Typography,
-  CardActions,
-  Button,
-  Paper,
   Box,
   Grid,
+  Button,
+  Link,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { IImages } from "../types/ImagesInterface";
@@ -44,6 +43,9 @@ const useStyles = makeStyles({
       fontSize: "0.9rem",
     },
   },
+  deleteButton: {
+    color: "red",
+  },
 });
 
 export interface IPostCardPorps {
@@ -59,6 +61,8 @@ export interface IPostCardPorps {
   sub_category: string;
   type: string;
   ram: string;
+  edit?: Boolean;
+  id: number;
 }
 
 const maxDescriptionLenght = 150;
@@ -76,57 +80,57 @@ const PostCard = ({
   ram,
   sub_category,
   type,
+  edit,
+  id,
 }: IPostCardPorps) => {
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
-        <Grid container>
-          <Grid item xs={4} lg={2}>
-            <Box
-              className={classes.CardMediaContainer}
-              justifyContent="center"
-              textAlign="center"
-            >
-              <CardMedia
-                className={classes.media}
-                image={images[0] ? images[0].url : "/photos/noImage.png"}
-                title="Image name"
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={8} lg={10}>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Typography className={classes.title} variant="h6">
-                    {article}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography className={classes.text} variant="body1">
-                    {type}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    className={`${classes.descriptionContainer} ${classes.text}`}
-                    variant="body1"
-                  >
-                    {description}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography className={classes.text} variant="body1">
-                    <b>{city}</b> | <b> {price === 0 ? "Free" : `${price}€`}</b>
-                  </Typography>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Grid>
+      <Grid container>
+        <Grid item xs={4} lg={2}>
+          <Box
+            className={classes.CardMediaContainer}
+            justifyContent="center"
+            textAlign="center"
+          >
+            <CardMedia
+              className={classes.media}
+              image={images[0] ? images[0].url : "/photos/noImage.png"}
+              title="Image name"
+            />
+          </Box>
         </Grid>
-      </CardActionArea>
+        <Grid item xs={8} lg={10}>
+          <CardContent>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography className={classes.title} variant="h6">
+                  {article}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography className={classes.text} variant="body1">
+                  {type}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  className={`${classes.descriptionContainer} ${classes.text}`}
+                  variant="body1"
+                >
+                  {description}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Typography className={classes.text} variant="body1">
+                  <b>{city}</b> | <b> {price === 0 ? "Free" : `${price}€`}</b>
+                </Typography>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Grid>
+      </Grid>
     </Card>
   );
 };

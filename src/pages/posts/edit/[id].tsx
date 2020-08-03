@@ -10,7 +10,6 @@ import { IComputers } from "../../../types/ComputersInterface";
 import { ICities } from "../../../types/CitiesInterface";
 import { ComputersSchema } from "../../../components/AdFormCreate/Validations";
 import { useAlert } from "../../../context/AlertContext";
-import { NextPage } from "next";
 
 export interface AdEditProps {
   jwt?: string;
