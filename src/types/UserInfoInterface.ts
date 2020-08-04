@@ -4,5 +4,5 @@ export interface IUserInfo {
   county: string;
   number: string;
   email: string;
-  id?: number;
+  id: number;
 }

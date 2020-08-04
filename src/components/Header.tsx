@@ -118,7 +118,7 @@ const Header = ({ is_adminView }: HeaderProps) => {
           <ListItemIcon>
             <StoreIcon />
           </ListItemIcon>
-          <ListItemText primary={"Edit Advertisements"} />
+          <ListItemText primary={"Delete Advertisements"} />
         </ListItem>
       </Link>
       <Divider />

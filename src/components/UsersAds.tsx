@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import PostCard from "./PostCard";
-import { Grid, Link, Typography, Button, Paper } from "@material-ui/core";
+import { Grid, Link, Typography, Button, Paper, Box } from "@material-ui/core";
 import { IAd } from "../types/PostsInterface";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useRouter } from "next/router";
+import { useAlert } from "../context/AlertContext";
 
-const UsersAds = () => {
+const UsersAds = ({ jwt }: any) => {
   const Router = useRouter();
   const [dataState, setDataState] = useState<IAd | undefined>();
+  const [alertState, alertDispatch] = useAlert();
 
   useEffect(() => {
+    let didCancel = false;
     Axios.get("/api/computers/v1/user/tst")
       .then((res) => {
-        setDataState(res.data);
+        if (!didCancel) setDataState(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+    return () => {
+      didCancel = true;
+    };
+  }, [removeAd]);
 
   function renderSkeletonsForAds() {
     const n: number = 5; // number of ad Skeletons
@@ -30,11 +36,34 @@ const UsersAds = () => {
     ));
   }
 
+  function removeAd(id: any) {
+    if (confirm("Are you sure?")) {
+      const config = {
+        headers: { Authorization: `Bearer ${jwt}` },
+      };
+      Axios.delete(`/api/computers/v1/${id}`, config)
+        .then((res) => {
+          alertDispatch({
+            type: "showAlert",
+            payload: {
+              message: "Successfully removed an ad!",
+              severity: "success",
+            },
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
   function renderAds() {
     if (dataState!.content.length === 0) {
       return (
         <Grid item xs={12}>
-          <Typography>No ads created!</Typography>
+          <Box m={2}>
+            <Typography align="center">No ads created!</Typography>
+          </Box>
         </Grid>
       );
     } else {
@@ -69,13 +98,7 @@ const UsersAds = () => {
               >
                 EDIT
               </Button>
-              <Button
-                onClick={() =>
-                  Router.push("/posts/edit/[id]", `/posts/edit/${ad.id}`)
-                }
-              >
-                DELETE
-              </Button>
+              <Button onClick={() => removeAd(ad.id)}>DELETE</Button>
             </Paper>
           </Grid>
         </Grid>
