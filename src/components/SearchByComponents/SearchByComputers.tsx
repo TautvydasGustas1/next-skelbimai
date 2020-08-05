@@ -4,22 +4,32 @@ import { Formik, Field, Form } from "formik";
 import Axios from "axios";
 import { string, object } from "yup";
 
-const initialValues = {
-  cpu: "",
-  gpu: "",
-  memory: "",
-  motherboard: "",
-  ram: "",
-};
-const SearchByComputers = ({ setDataState }: any) => {
+const size = 20;
+
+const SearchByComputers = ({
+  setDataState,
+  setLoading,
+  setLoadingPagination,
+  subCategory,
+}: any) => {
+  const initialValues = {
+    cpu: "",
+    gpu: "",
+    memory: "",
+    motherboard: "",
+    ram: "",
+    city: "",
+    sub_category: subCategory,
+  };
+
   const handleSubmit = async (values: any) => {
-    console.log(values);
-    await Axios.get("/api/computers/v1/search", {
-      params: values,
-    })
+    setLoading(true);
+    await Axios.post(`/api/computers/v1/search?size=${size}`, values)
       .then((res) => {
         console.log(res.data);
         setDataState(res.data);
+        setLoading(false);
+        setLoadingPagination(false);
       })
       .catch((error) => {
         console.log(error);
@@ -34,6 +44,7 @@ const SearchByComputers = ({ setDataState }: any) => {
         memory: string().required(),
         motherboard: string().required(),
         ram: string().required(),
+        city: string().required(),
       })}
       initialValues={initialValues}
       onSubmit={(values) => handleSubmit(values)}
@@ -99,6 +110,18 @@ const SearchByComputers = ({ setDataState }: any) => {
                 name="ram"
                 error={Boolean(errors.ram)}
                 helperText={errors.ram}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Field
+                as={TextField}
+                fullWidth
+                id="city"
+                label="City"
+                variant="outlined"
+                name="city"
+                error={Boolean(errors.city)}
+                helperText={errors.city}
               />
             </Grid>
             <Grid item xs={12}>

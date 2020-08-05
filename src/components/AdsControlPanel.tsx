@@ -28,6 +28,8 @@ export interface AdsControlPanelProps {
   queryParams: any;
   setDataState: any;
   dataState: any;
+  setLoading: any;
+  setLoadingPagination: any;
 }
 
 const AdsControlPanel = ({
@@ -36,6 +38,8 @@ const AdsControlPanel = ({
   queryParams,
   setDataState,
   dataState,
+  setLoading,
+  setLoadingPagination,
 }: AdsControlPanelProps) => {
   const subCategory = queryParams.sub_category
     ? queryParams.sub_category
@@ -45,28 +49,26 @@ const AdsControlPanel = ({
 
   const [currentCategory, setCurrentCategory] = useState("Kompiuteriai");
   const [typeState, setTypeState] = useState("any");
-  const [subCategoriesState, setSubCategoriesState] = useState<
-    ICategories | undefined
-  >();
+  const [subCategoriesState, setSubCategoriesState] = useState();
   const [currentSubCategory, setCurrentSubCategory] = useState(subCategory);
 
   const getSubCategorieByName = () => {
     axios
       .get(`/api/categories/v1/category?category=${currentCategory}`)
       .then((res) => {
-        console.log(res);
-        setSubCategoriesState(res.data);
+        setSubCategoriesState(res.data.sub_categories);
+        setCurrentSubCategory(res.data.sub_categories[0].sub_category);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  // useEffect(() => {
-  //   if (currentCategory !== "all") {
-  //     getSubCategorieByName();
-  //   }
-  // }, [currentCategory]);
+  useEffect(() => {
+    if (currentCategory !== "all") {
+      getSubCategorieByName();
+    }
+  }, [currentCategory]);
 
   const skeletonPanelParams = (
     <>
@@ -83,30 +85,61 @@ const AdsControlPanel = ({
   );
 
   function renderCategoryFields() {
-    return <SearchByComputers setDataState={setDataState} />;
+    return (
+      <SearchByComputers
+        setLoadingPagination={setLoadingPagination}
+        setLoading={setLoading}
+        setDataState={setDataState}
+        subCategory={currentSubCategory}
+      />
+    );
   }
 
   const renderPanelData = (
     <>
       <Box mb={3} width={"100%"}>
-        {categories && (
-          <TextField
-            fullWidth
-            id="category-id"
-            label="Category"
-            variant="outlined"
-            name="category"
-            select
-            onChange={(e) => setCurrentCategory(e.target.value)}
-            value={currentCategory}
-          >
-            {categories.map((cat) => (
-              <MenuItem key={cat.id} value={cat.category}>
-                {cat.category}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            {categories && (
+              <TextField
+                fullWidth
+                id="category-id"
+                label="Category"
+                variant="outlined"
+                name="category"
+                select
+                onChange={(e) => setCurrentCategory(e.target.value)}
+                value={currentCategory}
+              >
+                {categories.map((cat) => (
+                  <MenuItem key={cat.id} value={cat.category}>
+                    {cat.category}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            {subCategoriesState && (
+              <TextField
+                fullWidth
+                id="subCategory-id"
+                label="Sub Category"
+                variant="outlined"
+                name="subCategory"
+                select
+                onChange={(e) => setCurrentSubCategory(e.target.value)}
+                value={currentSubCategory}
+              >
+                {subCategoriesState!.map((cat) => (
+                  <MenuItem key={cat.id} value={cat.sub_category}>
+                    {cat.sub_category}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          </Grid>
+        </Grid>
       </Box>
       {renderCategoryFields()}
     </>

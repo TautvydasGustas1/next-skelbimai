@@ -121,6 +121,8 @@ export default function Home({ queryParams }: any) {
                 queryParams={queryParams}
                 categories={categoriesDataState}
                 adsCount={dataState?.page.totalElements}
+                setLoading={setLoading}
+                setLoadingPagination={setLoadingPagination}
               />
             </Grid>
             <Grid container spacing={2} item xs={12}>
