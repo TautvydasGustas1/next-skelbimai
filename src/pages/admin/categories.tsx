@@ -35,6 +35,9 @@ const categories = ({ jwt }: any) => {
   const [editCategory, setEditCategory] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+  const [currentSubCategory, setCurrentSubCategory] = useState("");
+  const [addSubCategory, setAddSubCategory] = useState(false);
+  const [newSubCategory, setNewSubCategory] = useState("");
 
   useEffect(() => {
     getCategories();
@@ -46,6 +49,7 @@ const categories = ({ jwt }: any) => {
         console.log(res.data);
         setCurrentCategory(res.data[0].id);
         setCategoriesData(res.data);
+        setCurrentSubCategory(res.data[0].sub_categories[0].sub_category);
         setSubCategories(res.data[0].sub_categories);
       })
       .catch((err) => {
@@ -148,6 +152,92 @@ const categories = ({ jwt }: any) => {
     }
   }
 
+  function handleCategoryChange(value: any) {
+    setCurrentCategory(value);
+    const obj = categoriesData?.find((el) => el.id === value);
+    console.log(obj);
+    setSubCategories(obj?.sub_categories);
+    if (obj!.sub_categories.length > 0) {
+      setCurrentSubCategory(obj!.sub_categories[0].sub_category);
+    } else {
+      setCurrentSubCategory("");
+    }
+  }
+
+  function handleAddSubCategory() {
+    const category = categoriesData?.find(
+      (el: any) => el.id === currentCategory
+    );
+
+    if (newSubCategory !== "") {
+      const config = {
+        headers: { Authorization: `Bearer ${jwt}` },
+      };
+
+      const values = {
+        category: category?.category,
+        sub_category: newSubCategory,
+      };
+
+      Axios.post(`/api/sub-categories/v1`, values, config)
+        .then((res) => {
+          console.log(res.data);
+          setAddSubCategory(false);
+          setNewSubCategory("");
+          getCategories();
+          alertDispatch({
+            type: "showAlert",
+            payload: {
+              message: "Successfully Added New Sub Category!",
+              severity: "success",
+            },
+          });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          alertDispatch({
+            type: "showAlert",
+            payload: {
+              message: "Failed To Add New Sub Category!",
+              severity: "error",
+            },
+          });
+        });
+    }
+  }
+
+  function handleDeleteSubCategory() {
+    // console.log(currentSubCategory);
+    // const category = categoriesData?.find(
+    //   (el: any) => el.sub === currentSubCategory
+    // );
+    // const config = {
+    //   headers: { Authorization: `Bearer ${jwt}` },
+    // };
+    // const values = { category: currentCategory };
+    // Axios.delete(`/api/categories/v1/${currentCategory}`, config)
+    //   .then((res) => {
+    //     getCategories();
+    //     alertDispatch({
+    //       type: "showAlert",
+    //       payload: {
+    //         message: "Successfully Deleted Category!",
+    //         severity: "success",
+    //       },
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     alertDispatch({
+    //       type: "showAlert",
+    //       payload: {
+    //         message: "Failed To Delete Category!",
+    //         severity: "danger",
+    //       },
+    //     });
+    //     console.log(err);
+    //   });
+  }
+
   return (
     <AdminLayout>
       <Container>
@@ -169,7 +259,7 @@ const categories = ({ jwt }: any) => {
                           name="categorySelect"
                           label="Choose a category"
                           value={currentCategory}
-                          onChange={(e) => setCurrentCategory(e.target.value)}
+                          onChange={(e) => handleCategoryChange(e.target.value)}
                         >
                           {categoriesData.map((cat) => (
                             <MenuItem key={cat.id} value={cat.id}>
@@ -198,6 +288,7 @@ const categories = ({ jwt }: any) => {
                           onClick={() => {
                             setEditCategory(!editCategory);
                           }}
+                          disabled
                         >
                           Edit
                         </Button>
@@ -266,29 +357,90 @@ const categories = ({ jwt }: any) => {
                       </Collapse>
                     </Box>
                   </Box>
-                  <Box mt={3}>
-                    <Typography variant="h4" align="center">
-                      Update Sub Categories
-                    </Typography>
-                    <Box mt={2}>
-                      <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            name="subCategory"
-                            select
-                          >
-                            {subCategories.map((item: any) => (
-                              <MenuItem value={item.sub_category}>
-                                {item.sub_category}
-                              </MenuItem>
-                            ))}
-                          </TextField>
+                  {subCategories && (
+                    <Box mt={3}>
+                      <Typography variant="h4" align="center">
+                        Update Sub Categories
+                      </Typography>
+                      <Box mt={2}>
+                        <Grid container spacing={2}>
+                          <Grid item xs={8}>
+                            <TextField
+                              variant="outlined"
+                              fullWidth
+                              name="subCategory"
+                              select
+                              value={currentSubCategory}
+                              onChange={(e) =>
+                                setCurrentSubCategory(e.target.value)
+                              }
+                            >
+                              {subCategories.map((item: any) => (
+                                <MenuItem
+                                  key={item.id}
+                                  value={item.sub_category}
+                                >
+                                  {item.sub_category}
+                                </MenuItem>
+                              ))}
+                            </TextField>
+                          </Grid>
+                          <Grid item xs={2}>
+                            <Button
+                              className={classes.buttons}
+                              fullWidth
+                              variant="outlined"
+                              onClick={(e) =>
+                                setAddSubCategory(!addSubCategory)
+                              }
+                            >
+                              Add
+                            </Button>
+                          </Grid>
+                          <Grid item xs={2}>
+                            <Button
+                              className={classes.buttons}
+                              fullWidth
+                              variant="outlined"
+                              onClick={() => handleDeleteSubCategory()}
+                            >
+                              Delete
+                            </Button>
+                          </Grid>
                         </Grid>
-                      </Grid>
+                      </Box>
+                      <Box mt={2}>
+                        <Collapse in={addSubCategory}>
+                          <Grid container spacing={2}>
+                            <Grid item xs={7} md={10}>
+                              <TextField
+                                variant="outlined"
+                                fullWidth
+                                name="addCategory"
+                                label="New sub category name"
+                                value={newSubCategory}
+                                onChange={(e) =>
+                                  setNewSubCategory(e.target.value)
+                                }
+                              />
+                            </Grid>
+                            <Grid xs={5} item md={2}>
+                              <Button
+                                className={classes.buttons}
+                                fullWidth
+                                variant="outlined"
+                                onClick={() => {
+                                  handleAddSubCategory();
+                                }}
+                              >
+                                Submit
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Collapse>
+                      </Box>
                     </Box>
-                  </Box>
+                  )}
                 </Box>
               )}
             </CardContent>
