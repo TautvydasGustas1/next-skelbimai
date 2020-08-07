@@ -49,8 +49,9 @@ const AdsControlPanel = ({
 
   const [currentCategory, setCurrentCategory] = useState("Kompiuteriai");
   const [typeState, setTypeState] = useState("any");
-  const [subCategoriesState, setSubCategoriesState] = useState();
+  const [subCategoriesState, setSubCategoriesState] = useState([]);
   const [currentSubCategory, setCurrentSubCategory] = useState(subCategory);
+  const [citiesState, setCitiesState] = useState([]);
 
   const getSubCategorieByName = () => {
     axios
@@ -63,6 +64,21 @@ const AdsControlPanel = ({
         console.log(err);
       });
   };
+
+  function getCities() {
+    axios
+      .get("/api/cities/v1")
+      .then((res) => {
+        setCitiesState(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    getCities();
+  }, []);
 
   useEffect(() => {
     if (currentCategory !== "all") {
@@ -91,6 +107,7 @@ const AdsControlPanel = ({
         setLoading={setLoading}
         setDataState={setDataState}
         subCategory={currentSubCategory}
+        citiesState={citiesState}
       />
     );
   }
@@ -98,7 +115,7 @@ const AdsControlPanel = ({
   const renderPanelData = (
     <>
       <Box mb={3} width={"100%"}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item xs={12}>
             {categories && (
               <TextField
@@ -131,7 +148,7 @@ const AdsControlPanel = ({
                 onChange={(e) => setCurrentSubCategory(e.target.value)}
                 value={currentSubCategory}
               >
-                {subCategoriesState!.map((cat) => (
+                {subCategoriesState!.map((cat: any) => (
                   <MenuItem key={cat.id} value={cat.sub_category}>
                     {cat.sub_category}
                   </MenuItem>
@@ -153,11 +170,9 @@ const AdsControlPanel = ({
             {categories ? renderPanelData : skeletonPanelParams}
           </Grid>
           <Grid item xs={12}>
-            {adsCount && (
-              <Typography className={classes.caption} variant="caption">
-                Number of ads {adsCount}
-              </Typography>
-            )}
+            <Typography className={classes.caption} variant="caption">
+              Number of ads {adsCount}
+            </Typography>
           </Grid>
         </Grid>
       </Box>

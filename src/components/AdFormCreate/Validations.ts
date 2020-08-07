@@ -12,3 +12,18 @@ export const ComputersSchema = object({
   ram: string().required(),
   memory: string().required(),
 });
+
+export const PhoneSchema = object({
+  article: string().required(),
+  camera: string().required(),
+  city: string().required(),
+  description: string().required(),
+  manufacturer: string().required(),
+  memory: string().required(),
+  model: string().required(),
+  os: string().required(),
+  price: number().required(),
+  ram: string().required(),
+  sub_category: string().required(),
+  type: string().required(),
+});

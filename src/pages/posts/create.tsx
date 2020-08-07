@@ -3,19 +3,6 @@ import Layout from "../../components/Layout";
 import { Container, Box } from "@material-ui/core";
 import AdCreateForm from "../../components/AdFormCreate/AdCreateForm";
 import StepperComp from "../../components/AdFormCreate/StepperComp";
-import {
-  laptop,
-  personal_computer,
-  tablet,
-  consol,
-  headphones,
-  keyboard,
-  loudspeaker,
-  phones,
-  tv,
-  mouse,
-  monitor,
-} from "../../Utils/FormFields";
 import { NextPageContext } from "next";
 import TokenService from "../../Helpers/TokenHelper";
 import axios from "axios";

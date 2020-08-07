@@ -1,24 +1,34 @@
 import React from "react";
-import { TextField, Grid, Button } from "@material-ui/core";
+import { TextField, Grid, Button, MenuItem } from "@material-ui/core";
 import { Formik, Field, Form } from "formik";
 import Axios from "axios";
 import { string, object } from "yup";
+import { ICities } from "../../types/CitiesInterface";
 
 const size = 20;
+
+interface SearchByComputersProps {
+  setDataState: any;
+  setLoading: any;
+  setLoadingPagination: any;
+  subCategory: any;
+  citiesState: ICities[];
+}
 
 const SearchByComputers = ({
   setDataState,
   setLoading,
   setLoadingPagination,
   subCategory,
-}: any) => {
+  citiesState,
+}: SearchByComputersProps) => {
   const initialValues = {
     cpu: "",
     gpu: "",
     memory: "",
     motherboard: "",
     ram: "",
-    city: "",
+    city: "Any",
     sub_category: subCategory,
   };
 
@@ -122,7 +132,15 @@ const SearchByComputers = ({
                 name="city"
                 error={Boolean(errors.city)}
                 helperText={errors.city}
-              />
+                select
+              >
+                <MenuItem value="Any">Any</MenuItem>
+                {citiesState.map((city) => (
+                  <MenuItem key={city.id} value={city.city}>
+                    {city.city}
+                  </MenuItem>
+                ))}
+              </Field>
             </Grid>
             <Grid item xs={12}>
               <Button

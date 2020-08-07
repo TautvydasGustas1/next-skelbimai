@@ -3,7 +3,6 @@ import AdCreateForm from "./AdCreateForm";
 import {
   personal_computer,
   tablet,
-  consol,
   headphones,
   keyboard,
   monitor,
@@ -13,15 +12,13 @@ import {
   tv,
   laptop,
 } from "../../Utils/FormFields";
+import { PhoneSchema, ComputersSchema } from "./Validations";
 
 export const selectedForm = (
   handleBack: () => void,
-  handleNext: () => void,
   selectedCategoryState: any,
-  setAdvID: any,
   citiesState: any,
   jwt: any,
-  ComputersSchema: any,
   handleSubmit: any
 ) => {
   switch (selectedCategoryState) {
@@ -35,6 +32,7 @@ export const selectedForm = (
           initialValues={laptop}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     case "stacionarus":
@@ -47,6 +45,7 @@ export const selectedForm = (
           initialValues={personal_computer}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     case "plansetiniai":
@@ -59,18 +58,7 @@ export const selectedForm = (
           initialValues={tablet}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
-        />
-      );
-    case "konsoles":
-      return (
-        <AdCreateForm
-          handleBack={handleBack}
-          citiesState={citiesState}
-          jwt={jwt}
-          key={4}
-          initialValues={consol}
-          ValidationSchema={ComputersSchema}
-          handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     case "ausines":
@@ -83,6 +71,7 @@ export const selectedForm = (
           initialValues={headphones}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     case "klaviaturos":
@@ -95,6 +84,7 @@ export const selectedForm = (
           initialValues={keyboard}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     case "monitoriai":
@@ -107,6 +97,7 @@ export const selectedForm = (
           initialValues={monitor}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     case "peles":
@@ -119,6 +110,7 @@ export const selectedForm = (
           initialValues={mouse}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     case "koloneles":
@@ -131,6 +123,7 @@ export const selectedForm = (
           initialValues={loudspeaker}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     case "mobilieji":
@@ -141,8 +134,9 @@ export const selectedForm = (
           jwt={jwt}
           key={10}
           initialValues={phones}
-          ValidationSchema={ComputersSchema}
+          ValidationSchema={PhoneSchema}
           handleSubmit={handleSubmit}
+          url={"/api/phones/v1"}
         />
       );
     case "televizoriai":
@@ -155,6 +149,7 @@ export const selectedForm = (
           initialValues={tv}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
+          url={"/api/computers/v1"}
         />
       );
     default:

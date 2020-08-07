@@ -40,7 +40,7 @@ const Profile = ({ jwt }: IProfileProps) => {
     county: "",
     email: "",
     number: "",
-    id: 0,
+    id: -1,
   });
   const [value, setValue] = useState(0);
 
@@ -151,7 +151,7 @@ const Profile = ({ jwt }: IProfileProps) => {
         return profileContent;
         break;
       case 1:
-        return <UsersAds jwt={jwt} />;
+        return <UsersAds jwt={jwt} userID={userInfoState.id} />;
         break;
       default:
         return <div></div>;

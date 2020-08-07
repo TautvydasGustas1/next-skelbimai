@@ -19,12 +19,16 @@ export interface AdEditProps {
 
 const AdEdit = ({ jwt, post, cities }: AdEditProps) => {
   const [alertState, alertDispatch] = useAlert();
-  const handleEditSubmit = async (values: any, resolve: () => void) => {
+  const handleEditSubmit = async (
+    values: any,
+    resolve: () => void,
+    url: string
+  ) => {
     const config = {
       headers: { Authorization: `Bearer ${jwt}` },
     };
 
-    await Axios.put("/api/computers/v1", values, config)
+    await Axios.put(url, values, config)
       .then((res) => {
         alertDispatch({
           type: "showAlert",
@@ -58,6 +62,7 @@ const AdEdit = ({ jwt, post, cities }: AdEditProps) => {
                 ValidationSchema={ComputersSchema}
                 title={"Edit an ad"}
                 handleSubmit={handleEditSubmit}
+                url={"/api/computers/v1"}
               />
             </CardContent>
           </Card>
@@ -73,7 +78,6 @@ AdEdit.getInitialProps = async (ctx: NextPageContext) => {
 
   const id = await ctx.query.id;
   const nav = new NavService();
-  console.log(id);
   let post = "";
   let cities = "";
 

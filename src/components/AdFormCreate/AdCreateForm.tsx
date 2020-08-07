@@ -29,6 +29,7 @@ export interface IAdCreateFormProps {
   ValidationSchema: any;
   handleSubmit: any;
   title?: string;
+  url: string;
 }
 
 const AdCreateForm = ({
@@ -39,6 +40,7 @@ const AdCreateForm = ({
   ValidationSchema,
   handleSubmit,
   title,
+  url,
 }: IAdCreateFormProps) => {
   const classes = useStyles();
 
@@ -56,7 +58,7 @@ const AdCreateForm = ({
             validationSchema={ValidationSchema}
             onSubmit={(values, formikHelpers) => {
               return new Promise((res) => {
-                handleSubmit(values, res);
+                handleSubmit(values, res, url);
               });
             }}
           >
@@ -77,6 +79,7 @@ const AdCreateForm = ({
                       </Typography>
                     </Grid>
                     <Grid xs={12} item>
+                      {console.log(citiesState)}
                       <Field
                         fullWidth
                         name="type"
@@ -254,6 +257,8 @@ const AdCreateForm = ({
                           as={TextField}
                           variant="outlined"
                           type="number"
+                          error={Boolean(errors.screen_size)}
+                          helperText={errors.screen_size}
                         />
                       </Grid>
                     )}
@@ -280,6 +285,36 @@ const AdCreateForm = ({
                           as={TextField}
                           variant="outlined"
                           type="text"
+                        />
+                      </Grid>
+                    )}
+                    {initialValues.manufacturer !== undefined && (
+                      <Grid xs={12} item>
+                        <Field
+                          fullWidth
+                          autoComplete="off"
+                          name="manufacturer"
+                          label="Manufacturer"
+                          as={TextField}
+                          variant="outlined"
+                          type="text"
+                          error={Boolean(errors.manufacturer)}
+                          helperText={errors.manufacturer}
+                        />
+                      </Grid>
+                    )}
+                    {initialValues.os !== undefined && (
+                      <Grid xs={12} item>
+                        <Field
+                          fullWidth
+                          autoComplete="off"
+                          name="os"
+                          label="Operating system"
+                          as={TextField}
+                          variant="outlined"
+                          type="text"
+                          error={Boolean(errors.os)}
+                          helperText={errors.os}
                         />
                       </Grid>
                     )}
@@ -322,6 +357,8 @@ const AdCreateForm = ({
                           as={TextField}
                           variant="outlined"
                           type="text"
+                          error={Boolean(errors.model)}
+                          helperText={errors.model}
                         />
                       </Grid>
                     )}
@@ -335,6 +372,8 @@ const AdCreateForm = ({
                           as={TextField}
                           variant="outlined"
                           type="text"
+                          error={Boolean(errors.camera)}
+                          helperText={errors.camera}
                         />
                       </Grid>
                     )}

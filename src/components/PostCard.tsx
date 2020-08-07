@@ -1,14 +1,11 @@
 import React from "react";
 import {
   Card,
-  CardActionArea,
   CardMedia,
   CardContent,
   Typography,
   Box,
   Grid,
-  Button,
-  Link,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { IImages } from "../types/ImagesInterface";

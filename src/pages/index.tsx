@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Container from "@material-ui/core/Container";
-import { Grid, Box } from "@material-ui/core";
+import { Grid, Box, Typography, Paper } from "@material-ui/core";
 import PostCard from "../components/PostCard";
 import { makeStyles } from "@material-ui/core/styles";
 import Layout from "../components/Layout";
@@ -74,29 +74,39 @@ export default function Home({ queryParams }: any) {
   }, []);
 
   function renderAds() {
-    return dataState!.content.map((ad) => (
-      <Link key={ad.id} as={`/posts/${ad.id}`} href={`/posts/[id]`}>
-        <Grid item xs={12}>
-          <Box style={{ cursor: "pointer" }}>
-            <PostCard
-              article={ad.article}
-              city={ad.city}
-              cpu={ad.cpu}
-              gpu={ad.gpu}
-              description={ad.description}
-              images={ad.images}
-              memory={ad.memory}
-              motherboard={ad.motherboard}
-              price={ad.price}
-              ram={ad.ram}
-              sub_category={ad.sub_category}
-              type={ad.type}
-              id={ad.id}
-            />
-          </Box>
-        </Grid>
-      </Link>
-    ));
+    //Render not found ads
+    if (dataState?.content.length === 0) {
+      return (
+        <Box textAlign="center" width="100%">
+          <Typography variant="h6">Sorry no ads found :/</Typography>
+        </Box>
+      );
+    } else {
+      //Render Ads
+      return dataState!.content.map((ad) => (
+        <Link key={ad.id} as={`/posts/${ad.id}`} href={`/posts/[id]`}>
+          <Grid item xs={12}>
+            <Box style={{ cursor: "pointer" }}>
+              <PostCard
+                article={ad.article}
+                city={ad.city}
+                cpu={ad.cpu}
+                gpu={ad.gpu}
+                description={ad.description}
+                images={ad.images}
+                memory={ad.memory}
+                motherboard={ad.motherboard}
+                price={ad.price}
+                ram={ad.ram}
+                sub_category={ad.sub_category}
+                type={ad.type}
+                id={ad.id}
+              />
+            </Box>
+          </Grid>
+        </Link>
+      ));
+    }
   }
 
   function renderSkeletonsForAds() {
@@ -129,7 +139,7 @@ export default function Home({ queryParams }: any) {
               <Grid item xs={12}>
                 {loadingPagination ? (
                   <Skeleton variant="rect" width={450} height={40} />
-                ) : dataState ? (
+                ) : dataState && dataState.page.totalPages > 0 ? (
                   <Pagination
                     onChange={(e: object, page: number) =>
                       handlePageChange(e, page)

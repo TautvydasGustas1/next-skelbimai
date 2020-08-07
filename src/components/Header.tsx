@@ -26,6 +26,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ComputerIcon from "@material-ui/icons/Computer";
 import StoreIcon from "@material-ui/icons/Store";
 import AddIcon from "@material-ui/icons/Add";
+import CategoryIcon from "@material-ui/icons/Category";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -119,6 +120,14 @@ const Header = ({ is_adminView }: HeaderProps) => {
             <StoreIcon />
           </ListItemIcon>
           <ListItemText primary={"Delete Advertisements"} />
+        </ListItem>
+      </Link>
+      <Link href="/admin/categories">
+        <ListItem button>
+          <ListItemIcon>
+            <CategoryIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Categories"} />
         </ListItem>
       </Link>
       <Divider />

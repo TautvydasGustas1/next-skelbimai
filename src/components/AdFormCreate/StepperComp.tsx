@@ -56,12 +56,9 @@ export default function StepperComp({
       case 1:
         return selectedForm(
           handleBack,
-          handleNext,
           selectedCategoryState,
-          setAdvID,
           citiesState,
           jwt,
-          ComputersSchema,
           handleSubmit
         );
       case 2:
@@ -115,11 +112,15 @@ export default function StepperComp({
     setActiveStep(0);
   };
 
-  const handleSubmit = async (values: any, resolve: () => void) => {
+  const handleSubmit = async (
+    values: any,
+    resolve: () => void,
+    url: string
+  ) => {
     const config = {
       headers: { Authorization: `Bearer ${jwt}` },
     };
-    await Axios.post("/api/computers/v1", values, config)
+    await Axios.post(url, values, config)
       .then((res) => {
         alertDispatch({
           type: "showAlert",

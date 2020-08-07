@@ -173,12 +173,6 @@ export default function TreeCategorySelect({ setSelectedCategoryState }: any) {
             labelIcon={LocalOfferIcon}
             onClick={() => setSelectedCategoryState("plansetiniai")}
           />
-          <StyledTreeItem
-            labelIcon={LocalOfferIcon}
-            nodeId="6"
-            labelText="Zaidimu konsoles"
-            onClick={() => setSelectedCategoryState("konsoles")}
-          />
         </StyledTreeItem>
         <StyledTreeItem
           nodeId="7"

@@ -108,17 +108,19 @@ export const loudspeaker = {
 };
 
 export const phones = {
-  name: "",
-  price: 0,
-  state: "",
-  manufacturer: "",
-  type: "",
-
-  screen_size: "",
-  model: "",
+  article: "",
   camera: "",
-  operating_system: "",
+  city: "",
+  description: "",
+  manufacturer: "",
+
   memory: "",
+  model: "",
+  os: "",
+  price: 0,
+  ram: "",
+  sub_category: "Telefonai",
+  type: "",
 };
 
 export const tv = {

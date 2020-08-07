@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import PostCard from "./PostCard";
-import { Grid, Link, Typography, Button, Paper, Box } from "@material-ui/core";
+import { Grid, Typography, Button, Paper, Box } from "@material-ui/core";
 import { IAd } from "../types/PostsInterface";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useRouter } from "next/router";
 import { useAlert } from "../context/AlertContext";
+import Link from "next/link";
 
-const UsersAds = ({ jwt }: any) => {
+const UsersAds = ({ jwt, userID }: any) => {
   const Router = useRouter();
   const [dataState, setDataState] = useState<IAd | undefined>();
   const [alertState, alertDispatch] = useAlert();
 
   useEffect(() => {
     let didCancel = false;
-    Axios.get("/api/computers/v1/user/tst")
-      .then((res) => {
-        if (!didCancel) setDataState(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (userID !== -1) {
+      Axios.get(`/api/computers/v1/user/${userID}`)
+        .then((res) => {
+          if (!didCancel) setDataState(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     return () => {
       didCancel = true;
     };
-  }, [removeAd]);
+  }, []);
 
   function renderSkeletonsForAds() {
     const n: number = 5; // number of ad Skeletons
@@ -43,6 +46,14 @@ const UsersAds = ({ jwt }: any) => {
       };
       Axios.delete(`/api/computers/v1/${id}`, config)
         .then((res) => {
+          //Remove from array
+          let data: any = dataState;
+          const content = dataState?.content.filter((item) => {
+            return id !== item.id;
+          });
+
+          data.content = content;
+          //setDataState(data);
           alertDispatch({
             type: "showAlert",
             payload: {
@@ -57,20 +68,24 @@ const UsersAds = ({ jwt }: any) => {
     }
   }
 
+  function renderNoAds() {
+    return (
+      <Grid item xs={12}>
+        <Box m={2}>
+          <Typography align="center">No ads created!</Typography>
+        </Box>
+      </Grid>
+    );
+  }
+
   function renderAds() {
     if (dataState!.content.length === 0) {
-      return (
-        <Grid item xs={12}>
-          <Box m={2}>
-            <Typography align="center">No ads created!</Typography>
-          </Box>
-        </Grid>
-      );
+      return renderNoAds();
     } else {
       return dataState!.content.map((ad) => (
         <Grid key={ad.id} item container>
-          <Grid item xs={10}>
-            <Link style={{ textDecoration: "none" }} href={`/posts/${ad.id}`}>
+          <Link as={`/posts/${ad.id}`} href={`/posts/[id]`}>
+            <Grid style={{ cursor: "pointer" }} item xs={9}>
               <PostCard
                 article={ad.article}
                 city={ad.city}
@@ -87,18 +102,36 @@ const UsersAds = ({ jwt }: any) => {
                 edit={true}
                 id={ad.id}
               />
-            </Link>
-          </Grid>
-          <Grid item xs={2}>
+            </Grid>
+          </Link>
+          <Grid item xs={3}>
             <Paper style={{ height: "100%" }}>
               <Button
+                fullWidth
+                size="small"
+                variant="outlined"
                 onClick={() =>
                   Router.push("/posts/edit/[id]", `/posts/edit/${ad.id}`)
                 }
               >
                 EDIT
               </Button>
-              <Button onClick={() => removeAd(ad.id)}>DELETE</Button>
+              <Button
+                fullWidth
+                size="small"
+                variant="outlined"
+                onClick={() => {}}
+              >
+                Edit pictures
+              </Button>
+              <Button
+                fullWidth
+                size="small"
+                variant="outlined"
+                onClick={() => removeAd(ad.id)}
+              >
+                DELETE
+              </Button>
             </Paper>
           </Grid>
         </Grid>
@@ -108,7 +141,11 @@ const UsersAds = ({ jwt }: any) => {
 
   return (
     <Grid container item spacing={1}>
-      {dataState ? renderAds() : renderSkeletonsForAds()}
+      {dataState
+        ? renderAds()
+        : userID === -1
+        ? renderNoAds()
+        : renderSkeletonsForAds()}
     </Grid>
   );
 };
