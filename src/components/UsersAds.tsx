@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import PostCard from "./PostCard";
 import { Grid, Typography, Button, Paper, Box } from "@material-ui/core";
-import { IAd } from "../types/PostsInterface";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useRouter } from "next/router";
 import { useAlert } from "../context/AlertContext";
@@ -11,9 +10,11 @@ import {
   computersURL,
   phonesURL,
   functionAddSlugsToObjects,
+  consolURL,
+  externalURL,
 } from "../Utils/GlobalVariales";
 
-const categories = [computersURL, phonesURL];
+const categories = [computersURL, phonesURL, externalURL, consolURL];
 
 const UsersAds = ({ jwt, userID }: any) => {
   const Router = useRouter();
@@ -118,7 +119,7 @@ const UsersAds = ({ jwt, userID }: any) => {
         console.log(dataState);
       }
       return dataState!.map((ad: any) => (
-        <Grid key={ad.id} item container>
+        <Grid key={`${ad.categorySlug}-${ad.id}`} item container>
           {console.log(dataState)}
           <Link
             as={`/posts/${ad.categorySlug}/${ad.id}`}

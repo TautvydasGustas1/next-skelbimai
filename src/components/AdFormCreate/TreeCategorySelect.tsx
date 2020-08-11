@@ -17,6 +17,8 @@ import {
   computersURL,
   externalURL,
   phonesURL,
+  monitorsURL,
+  consolURL,
 } from "../../Utils/GlobalVariales";
 
 declare module "csstype" {
@@ -188,6 +190,25 @@ export default function TreeCategorySelect({
           />
         </StyledTreeItem>
         <StyledTreeItem
+          nodeId="17"
+          labelText="Konsoles"
+          labelIcon={Label}
+          onClick={() => HandleChange("", "")}
+        >
+          <StyledTreeItem
+            nodeId="18"
+            labelText="Xbox"
+            labelIcon={Label}
+            onClick={() => HandleChange("xbox", consolURL)}
+          />
+          <StyledTreeItem
+            nodeId="19"
+            labelText="PlayStation"
+            labelIcon={Label}
+            onClick={() => HandleChange("playstation", consolURL)}
+          />
+        </StyledTreeItem>
+        <StyledTreeItem
           nodeId="7"
           labelText="Isoriniai irenginiai"
           labelIcon={Label}
@@ -221,9 +242,22 @@ export default function TreeCategorySelect({
         <StyledTreeItem
           nodeId="14"
           labelText="Monitoriai"
-          labelIcon={LocalOfferIcon}
-          onClick={() => setSelectedCategoryState("televizoriai")}
-        />
+          labelIcon={Label}
+          onClick={() => HandleChange("", "")}
+        >
+          <StyledTreeItem
+            nodeId="15"
+            labelText="Monitoriai"
+            labelIcon={LocalOfferIcon}
+            onClick={() => HandleChange("monitoriai", monitorsURL)}
+          />
+          <StyledTreeItem
+            nodeId="16"
+            labelText="Televizoriai"
+            labelIcon={LocalOfferIcon}
+            onClick={() => HandleChange("televizoriai", monitorsURL)}
+          />
+        </StyledTreeItem>
       </StyledTreeItem>
     </TreeView>
   );

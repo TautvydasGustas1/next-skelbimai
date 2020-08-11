@@ -4,24 +4,18 @@ import { Formik, Field, Form } from "formik";
 import { string, object } from "yup";
 import { SearchBy } from "../../types/SearchByInterfaceProps";
 
-const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
+const SearchByExternal = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   const initialValues = {
-    cpu: "",
-    gpu: "",
-    memory: "",
-    motherboard: "",
-    ram: "",
+    brand: "",
     city: "Any",
+    wireless: "",
   };
 
   return (
     <Formik
       validationSchema={object({
-        cpu: string().required(),
-        gpu: string().required(),
-        memory: string().required(),
-        motherboard: string().required(),
-        ram: string().required(),
+        brand: string().required(),
+        wireless: string().required(),
         city: string().required(),
       })}
       initialValues={initialValues}
@@ -34,60 +28,24 @@ const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
               <Field
                 as={TextField}
                 fullWidth
-                id="cpu"
-                label="CPU"
+                id="brand"
+                label="Brand"
                 variant="outlined"
-                name="cpu"
-                error={Boolean(errors.cpu)}
-                helperText={errors.cpu}
+                name="brand"
+                error={Boolean(errors.brand)}
+                helperText={errors.brand}
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <Field
                 as={TextField}
                 fullWidth
-                id="gpu"
-                label="GPU"
+                id="wireless"
+                label="Wireless"
                 variant="outlined"
-                name="gpu"
-                error={Boolean(errors.gpu)}
-                helperText={errors.gpu}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                as={TextField}
-                fullWidth
-                id="memory"
-                label="Memory"
-                variant="outlined"
-                name="memory"
-                error={Boolean(errors.memory)}
-                helperText={errors.memory}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                as={TextField}
-                fullWidth
-                id="motherboard"
-                label="Motherboard"
-                variant="outlined"
-                name="motherboard"
-                error={Boolean(errors.motherboard)}
-                helperText={errors.motherboard}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                as={TextField}
-                fullWidth
-                id="ram"
-                label="Ram"
-                variant="outlined"
-                name="ram"
-                error={Boolean(errors.ram)}
-                helperText={errors.ram}
+                name="wireless"
+                error={Boolean(errors.wireless)}
+                helperText={errors.wireless}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -127,4 +85,4 @@ const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   );
 };
 
-export default SearchByComputers;
+export default SearchByExternal;

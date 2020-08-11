@@ -28,17 +28,28 @@ export const personal_computer = {
   sub_category: "Stacionarūs kompiuteriai",
 };
 
-export const consol = {
-  name: "",
-  price: 0,
-  state: "",
-  manufacturer: "",
-  type: "",
-
-  gpu: "",
+export const xbox = {
+  article: "",
+  city: "",
   color: "",
+  description: "",
+  price: 0,
   memory: "",
-  motherboard: "",
+  model: "",
+  type: "",
+  sub_category: "Xbox",
+};
+
+export const playstation = {
+  article: "",
+  city: "",
+  color: "",
+  description: "",
+  price: 0,
+  memory: "",
+  model: "",
+  type: "",
+  sub_category: "PlayStation",
 };
 
 export const tablet = {
@@ -62,7 +73,7 @@ export const headphones = {
   price: 0,
   type: "",
   city: "",
-  wireless: "no",
+  wireless: "false",
   sub_category: "Ausinės",
 };
 
@@ -72,19 +83,8 @@ export const keyboard = {
   price: 0,
   type: "",
   city: "",
-  wireless: "no",
+  wireless: "false",
   sub_category: "Klaviatūros",
-};
-
-export const monitor = {
-  name: "",
-  price: 0,
-  state: "",
-  manufacturer: "",
-  type: "",
-
-  screen_size: "",
-  screen_rezoliution: "",
 };
 
 export const mouse = {
@@ -93,7 +93,7 @@ export const mouse = {
   price: 0,
   type: "",
   city: "",
-  wireless: "no",
+  wireless: "false",
   sub_category: "Pelės",
 };
 
@@ -114,14 +114,29 @@ export const phones = {
 };
 
 export const tv = {
-  name: "",
+  article: "",
   price: 0,
-  state: "",
-  manufacturer: "",
+  brand: "",
+  city: "",
+  description: "",
+  model: "",
+  refresh_rate: "",
+  resolution: "",
+  response_time: "",
+  type: "",
+  sub_category: "Televizoriai",
+};
 
-  screen_type: "",
-  screen_size: "",
-  screen_rezoliution: "",
-  smart_tv: false,
-  threeD: false,
+export const monitor = {
+  article: "",
+  price: 0,
+  brand: "",
+  city: "",
+  description: "",
+  model: "",
+  refresh_rate: "",
+  resolution: "",
+  response_time: "",
+  type: "",
+  sub_category: "Monitoriai",
 };

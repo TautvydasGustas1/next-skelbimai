@@ -4,27 +4,21 @@ import { Formik, Field, Form } from "formik";
 import { string, object } from "yup";
 import { SearchBy } from "../../types/SearchByInterfaceProps";
 
-const SearchByPhones = ({ citiesState, handleSearchSubmit }: SearchBy) => {
+const SearchByMonitors = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   const initialValues = {
-    camera: "",
-    manufacturer: "",
+    city: "Any",
+    color: "",
     memory: "",
     model: "",
-    os: "",
-    ram: "",
-    city: "Any",
   };
 
   return (
     <Formik
       validationSchema={object({
-        camera: string().required(),
-        manufacturer: string().required(),
+        city: string().required(),
+        color: string().required(),
         memory: string().required(),
         model: string().required(),
-        os: string().required(),
-        ram: string().required(),
-        city: string().required(),
       })}
       initialValues={initialValues}
       onSubmit={(values) => handleSearchSubmit(values)}
@@ -36,24 +30,12 @@ const SearchByPhones = ({ citiesState, handleSearchSubmit }: SearchBy) => {
               <Field
                 as={TextField}
                 fullWidth
-                id="camera"
-                label="Camera"
+                id="color"
+                label="Color"
                 variant="outlined"
-                name="camera"
-                error={Boolean(errors.camera)}
-                helperText={errors.camera}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                as={TextField}
-                fullWidth
-                id="manufacturer"
-                label="Manufacturer"
-                variant="outlined"
-                name="manufacturer"
-                error={Boolean(errors.manufacturer)}
-                helperText={errors.manufacturer}
+                name="color"
+                error={Boolean(errors.color)}
+                helperText={errors.color}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -78,30 +60,6 @@ const SearchByPhones = ({ citiesState, handleSearchSubmit }: SearchBy) => {
                 name="model"
                 error={Boolean(errors.model)}
                 helperText={errors.model}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                as={TextField}
-                fullWidth
-                id="os"
-                label="Os"
-                variant="outlined"
-                name="os"
-                error={Boolean(errors.os)}
-                helperText={errors.os}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                as={TextField}
-                fullWidth
-                id="ram"
-                label="Ram"
-                variant="outlined"
-                name="ram"
-                error={Boolean(errors.ram)}
-                helperText={errors.ram}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -141,4 +99,4 @@ const SearchByPhones = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   );
 };
 
-export default SearchByPhones;
+export default SearchByMonitors;

@@ -8,16 +8,30 @@ import Axios from "axios";
 import NavService from "../../../../Helpers/NavigationHelper";
 import { IComputers } from "../../../../types/ComputersInterface";
 import { ICities } from "../../../../types/CitiesInterface";
-import { ComputersSchema } from "../../../../components/AdFormCreate/Validations";
+import {
+  ComputersSchema,
+  ExternalSchema,
+  PhoneSchema,
+  ConsolSchema,
+  MonitorSchema,
+} from "../../../../components/AdFormCreate/Validations";
 import { useAlert } from "../../../../context/AlertContext";
+import {
+  computersURL,
+  phonesURL,
+  externalURL,
+  consolURL,
+  monitorsURL,
+} from "../../../../Utils/GlobalVariales";
 
 export interface AdEditProps {
   jwt?: string;
   post?: IComputers;
   cities?: ICities;
+  category?: string;
 }
 
-const AdEdit = ({ jwt, post, cities }: AdEditProps) => {
+const AdEdit = ({ jwt, post, cities, category }: AdEditProps) => {
   const [alertState, alertDispatch] = useAlert();
   const handleEditSubmit = async (
     values: any,
@@ -48,23 +62,83 @@ const AdEdit = ({ jwt, post, cities }: AdEditProps) => {
       });
   };
 
+  function renderEditForm() {
+    switch (category) {
+      case computersURL: {
+        return (
+          <AdCreateForm
+            jwt={jwt}
+            citiesState={cities}
+            initialValues={post}
+            ValidationSchema={ComputersSchema}
+            title={"Edit an ad"}
+            handleSubmit={handleEditSubmit}
+            url={`/api/${computersURL}/v1`}
+          />
+        );
+      }
+      case phonesURL: {
+        return (
+          <AdCreateForm
+            jwt={jwt}
+            citiesState={cities}
+            initialValues={post}
+            ValidationSchema={PhoneSchema}
+            title={"Edit an ad"}
+            handleSubmit={handleEditSubmit}
+            url={`/api/${phonesURL}/v1`}
+          />
+        );
+      }
+      case externalURL: {
+        return (
+          <AdCreateForm
+            jwt={jwt}
+            citiesState={cities}
+            initialValues={post}
+            ValidationSchema={ExternalSchema}
+            title={"Edit an ad"}
+            handleSubmit={handleEditSubmit}
+            url={`/api/${externalURL}/v1`}
+          />
+        );
+      }
+      case consolURL: {
+        return (
+          <AdCreateForm
+            jwt={jwt}
+            citiesState={cities}
+            initialValues={post}
+            ValidationSchema={ConsolSchema}
+            title={"Edit an ad"}
+            handleSubmit={handleEditSubmit}
+            url={`/api/${consolURL}/v1`}
+          />
+        );
+      }
+      case monitorsURL: {
+        return (
+          <AdCreateForm
+            jwt={jwt}
+            citiesState={cities}
+            initialValues={post}
+            ValidationSchema={MonitorSchema}
+            title={"Edit an ad"}
+            handleSubmit={handleEditSubmit}
+            url={`/api/${monitorsURL}/v1`}
+          />
+        );
+      }
+    }
+  }
+
   return (
     <Layout>
       <Container>
         {console.log(post)}
         <Box mt={3}>
           <Card>
-            <CardContent>
-              <AdCreateForm
-                jwt={jwt}
-                citiesState={cities}
-                initialValues={post}
-                ValidationSchema={ComputersSchema}
-                title={"Edit an ad"}
-                handleSubmit={handleEditSubmit}
-                url={"/api/computers/v1"}
-              />
-            </CardContent>
+            <CardContent>{renderEditForm()}</CardContent>
           </Card>
         </Box>
       </Container>
@@ -95,6 +169,7 @@ AdEdit.getInitialProps = async (ctx: NextPageContext) => {
     jwt: token,
     post: post,
     cities: cities,
+    category,
   };
 };
 

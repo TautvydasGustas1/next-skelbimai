@@ -7,13 +7,26 @@ import {
   keyboard,
   monitor,
   mouse,
-  loudspeaker,
   phones,
   tv,
   laptop,
+  xbox,
+  playstation,
 } from "../../Utils/FormFields";
-import { PhoneSchema, ComputersSchema, ExternalSchema } from "./Validations";
-import { externalURL, computersURL } from "../../Utils/GlobalVariales";
+import {
+  PhoneSchema,
+  ComputersSchema,
+  ExternalSchema,
+  MonitorSchema,
+  ConsolSchema,
+} from "./Validations";
+import {
+  externalURL,
+  computersURL,
+  phonesURL,
+  monitorsURL,
+  consolURL,
+} from "../../Utils/GlobalVariales";
 
 export const selectedForm = (
   handleBack: () => void,
@@ -98,7 +111,7 @@ export const selectedForm = (
           initialValues={mouse}
           ValidationSchema={ExternalSchema}
           handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
+          url={`/api/${externalURL}/v1`}
         />
       );
     case "mobilieji":
@@ -111,7 +124,7 @@ export const selectedForm = (
           initialValues={phones}
           ValidationSchema={PhoneSchema}
           handleSubmit={handleSubmit}
-          url={"/api/phones/v1"}
+          url={`/api/${phonesURL}/v1`}
         />
       );
     case "televizoriai":
@@ -122,9 +135,48 @@ export const selectedForm = (
           jwt={jwt}
           key={11}
           initialValues={tv}
-          ValidationSchema={ComputersSchema}
+          ValidationSchema={MonitorSchema}
           handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
+          url={`/api/${monitorsURL}/v1`}
+        />
+      );
+    case "monitoriai":
+      return (
+        <AdCreateForm
+          handleBack={handleBack}
+          citiesState={citiesState}
+          jwt={jwt}
+          key={11}
+          initialValues={monitor}
+          ValidationSchema={MonitorSchema}
+          handleSubmit={handleSubmit}
+          url={`/api/${monitorsURL}/v1`}
+        />
+      );
+    case "xbox":
+      return (
+        <AdCreateForm
+          handleBack={handleBack}
+          citiesState={citiesState}
+          jwt={jwt}
+          key={11}
+          initialValues={xbox}
+          ValidationSchema={ConsolSchema}
+          handleSubmit={handleSubmit}
+          url={`/api/${consolURL}/v1`}
+        />
+      );
+    case "playstation":
+      return (
+        <AdCreateForm
+          handleBack={handleBack}
+          citiesState={citiesState}
+          jwt={jwt}
+          key={11}
+          initialValues={playstation}
+          ValidationSchema={ConsolSchema}
+          handleSubmit={handleSubmit}
+          url={`/api/${consolURL}/v1`}
         />
       );
     default:

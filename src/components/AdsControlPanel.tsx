@@ -17,9 +17,15 @@ import {
   computersURL,
   functionAddSlugsToObjects,
   phonesURL,
+  consolURL,
+  externalURL,
+  monitorsURL,
 } from "../Utils/GlobalVariales";
 import Axios from "axios";
 import SearchByPhones from "./SearchByComponents/SearchByPhones";
+import SearchByConsol from "./SearchByComponents/SearchByConsol";
+import SearchByExternal from "./SearchByComponents/SearchByExternal";
+import SearchByMonitors from "./SearchByComponents/SearchByMonitors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -147,6 +153,30 @@ const AdsControlPanel = ({
           />
         );
       }
+      case consolURL: {
+        return (
+          <SearchByConsol
+            handleSearchSubmit={handleSearchSubmit}
+            citiesState={citiesState}
+          />
+        );
+      }
+      case externalURL: {
+        return (
+          <SearchByExternal
+            handleSearchSubmit={handleSearchSubmit}
+            citiesState={citiesState}
+          />
+        );
+      }
+      case monitorsURL: {
+        return (
+          <SearchByMonitors
+            handleSearchSubmit={handleSearchSubmit}
+            citiesState={citiesState}
+          />
+        );
+      }
     }
   }
 
@@ -197,7 +227,7 @@ const AdsControlPanel = ({
           </Grid>
         </Grid>
       </Box>
-      {renderCategoryFields(currentURL)}
+      <Box width="100%">{renderCategoryFields(currentURL)}</Box>
     </>
   );
 

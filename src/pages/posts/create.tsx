@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/Layout";
 import { Container, Box } from "@material-ui/core";
-import AdCreateForm from "../../components/AdFormCreate/AdCreateForm";
 import StepperComp from "../../components/AdFormCreate/StepperComp";
 import { NextPageContext } from "next";
 import TokenService from "../../Helpers/TokenHelper";
 import axios from "axios";
-import { ComputersSchema } from "../../components/AdFormCreate/Validations";
 
 export interface createProps {
   jwt: string;

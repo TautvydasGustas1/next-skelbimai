@@ -38,3 +38,29 @@ export const ExternalSchema = object({
   sub_category: string().required(),
   type: string().required(),
 });
+
+export const MonitorSchema = object({
+  article: string().required(),
+  brand: string().required(),
+  city: string().required(),
+  description: string().required(),
+  price: number().required(),
+  model: string().required(),
+  refresh_rate: string().required(),
+  resolution: string().required(),
+  response_time: string().required(),
+  sub_category: string().required(),
+  type: string().required(),
+});
+
+export const ConsolSchema = object({
+  article: string().required(),
+  city: string().required(),
+  color: string().required(),
+  description: string().required(),
+  price: number().required(),
+  model: string().required(),
+  memory: string().required(),
+  sub_category: string().required(),
+  type: string().required(),
+});

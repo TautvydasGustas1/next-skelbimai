@@ -18,8 +18,15 @@ import ImageProduct from "../../../components/ImageProduct";
 import NavService from "../../../Helpers/NavigationHelper";
 import { IComputers } from "../../../types/ComputersInterface";
 import RenderComputerInfo from "../../../components/ADRenderFields/RenderComputerInfo";
-import { computersURL, phonesURL } from "../../../Utils/GlobalVariales";
+import RenderConsolInfo from "../../../components/ADRenderFields/RenderConsolInfo";
+import {
+  computersURL,
+  phonesURL,
+  externalURL,
+  consolURL,
+} from "../../../Utils/GlobalVariales";
 import RenderPhoneInfo from "../../../components/ADRenderFields/RenderPhonesInfo";
+import RenderExternalInfo from "../../../components/ADRenderFields/RenderExternalnfo";
 
 const useStyles = makeStyles((theme) => ({
   outerPostsContainer: {
@@ -120,8 +127,14 @@ const Advertisement = ({ post, categoryURL }: AdvertisementProps) => {
       case computersURL: {
         return <RenderComputerInfo post={post} />;
       }
+      case externalURL: {
+        return <RenderExternalInfo post={post} />;
+      }
+      case consolURL: {
+        return <RenderConsolInfo post={post} />;
+      }
       default: {
-        return <div>Empty</div>;
+        return <Box p={1}>Empty</Box>;
       }
     }
   }

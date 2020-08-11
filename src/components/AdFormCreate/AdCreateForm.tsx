@@ -286,6 +286,8 @@ const AdCreateForm = ({
                           as={TextField}
                           variant="outlined"
                           type="text"
+                          error={Boolean(errors.color)}
+                          helperText={errors.color}
                         />
                       </Grid>
                     )}
@@ -332,8 +334,8 @@ const AdCreateForm = ({
                           error={Boolean(errors.wireless)}
                           helperText={errors.wireless}
                         >
-                          <MenuItem value="yes">Yes</MenuItem>
-                          <MenuItem value="no">No</MenuItem>
+                          <MenuItem value="true">Yes</MenuItem>
+                          <MenuItem value="false">No</MenuItem>
                         </Field>
                       </Grid>
                     )}
@@ -380,49 +382,47 @@ const AdCreateForm = ({
                         />
                       </Grid>
                     )}
-                    {initialValues.screen_type !== undefined && (
+                    {initialValues.refresh_rate !== undefined && (
                       <Grid xs={12} item>
                         <Field
                           fullWidth
                           autoComplete="off"
-                          name="screen_type"
-                          label="Screen type"
+                          name="refresh_rate"
+                          label="Refresh rate"
                           as={TextField}
                           variant="outlined"
                           type="text"
+                          error={Boolean(errors.refresh_rate)}
+                          helperText={errors.refresh_rate}
                         />
                       </Grid>
                     )}
-                    {initialValues.smart_tv !== undefined && (
+                    {initialValues.resolution !== undefined && (
                       <Grid xs={12} item>
                         <Field
                           fullWidth
                           autoComplete="off"
-                          name="smart_tv"
-                          label="SmartTV"
+                          name="resolution"
+                          label="Resolution"
                           as={TextField}
                           variant="outlined"
-                          select
-                        >
-                          <MenuItem value="true">Yes</MenuItem>
-                          <MenuItem value="false">No</MenuItem>
-                        </Field>
+                          error={Boolean(errors.resolution)}
+                          helperText={errors.resolution}
+                        />
                       </Grid>
                     )}
-                    {initialValues.threeD !== undefined && (
+                    {initialValues.response_time !== undefined && (
                       <Grid xs={12} item>
                         <Field
                           fullWidth
                           autoComplete="off"
-                          name="threeD"
-                          label="3D"
+                          name="response_time"
+                          label="Response Time"
                           as={TextField}
                           variant="outlined"
-                          select
-                        >
-                          <MenuItem value="true">Yes</MenuItem>
-                          <MenuItem value="false">No</MenuItem>
-                        </Field>
+                          error={Boolean(errors.response_time)}
+                          helperText={errors.response_time}
+                        />
                       </Grid>
                     )}
                   </Grid>
