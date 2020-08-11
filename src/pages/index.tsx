@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Container from "@material-ui/core/Container";
 import { Grid, Box, Typography, Paper } from "@material-ui/core";
 import PostCard from "../components/PostCard";
@@ -12,6 +12,12 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import AdsControlPanel from "../components/AdsControlPanel";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import {
+  computersURL,
+  phonesURL,
+  handleChangeURL,
+  functionAddSlugsToObjects,
+} from "../Utils/GlobalVariales";
 
 const size = "20";
 const order = "desc";
@@ -34,16 +40,36 @@ export default function Home({ queryParams }: any) {
   const [categoriesDataState, setCategoriesDataState] = useState<
     ICategories[] | undefined
   >();
+  const [currentCategory, setCurrentCategory] = useState("Kompiuteriai");
+  const [currentSubCategory, setCurrentSubCategory] = useState("all");
+  const [currentURL, setCurrentURL] = useState(computersURL);
+  const didMountPage = useRef(false);
+  const didMountSub = useRef(false);
 
   const handlePageChange = (e: object, page: number) => {
     setPage(page - 1);
   };
 
-  const getAds = () => {
+  const getAds = (
+    url: string,
+    sub_category: string | undefined = undefined
+  ) => {
     setLoading(true);
+    setLoadingPagination(true);
+
+    //Get by category URI
+    let uri = `/api/${url}/v1/?page=${page}&size=${size}&sort=${order}`;
+    if (sub_category) {
+      //Get by sub category URI
+      uri = `/api/${url}/v1/all/${sub_category}/?page=${page}&size=${size}&sort=${order}`;
+    }
     axios
-      .get(`/api/computers/v1?page=${page}&size=${size}&sort=${order}`)
+      .get(uri)
       .then((res) => {
+        res.data.content = functionAddSlugsToObjects(
+          res.data.content,
+          currentURL
+        );
         setDataState(res.data);
         setLoading(false);
         setLoadingPagination(false);
@@ -66,41 +92,61 @@ export default function Home({ queryParams }: any) {
   };
 
   useEffect(() => {
-    getAds();
+    if (didMountSub.current) {
+      if (currentSubCategory !== "all") {
+        getAds(currentURL, currentSubCategory);
+      } else {
+        getAds(currentURL);
+      }
+      setPage(0);
+    } else didMountSub.current = true;
+  }, [currentSubCategory]);
+
+  useEffect(() => {
+    if (didMountPage.current) {
+      getAds(currentURL);
+    } else didMountPage.current = true;
   }, [page]);
+
+  useEffect(() => {
+    setCurrentSubCategory("all");
+    setPage(0);
+    setCurrentURL(handleChangeURL(currentCategory));
+  }, [currentCategory]);
 
   useEffect(() => {
     getCategories();
   }, []);
+
+  useEffect(() => {
+    getAds(currentURL);
+  }, [currentURL]);
 
   function renderAds() {
     //Render not found ads
     if (dataState?.content.length === 0) {
       return (
         <Box textAlign="center" width="100%">
-          <Typography variant="h6">Sorry no ads found :/</Typography>
+          <Typography variant="h6">Sorry, no ads found :/</Typography>
         </Box>
       );
     } else {
       //Render Ads
       return dataState!.content.map((ad) => (
-        <Link key={ad.id} as={`/posts/${ad.id}`} href={`/posts/[id]`}>
+        <Link
+          key={ad.id}
+          as={`/posts/${ad.categorySlug}/${ad.id}`}
+          href={`/posts/[categories]/[id]`}
+        >
           <Grid item xs={12}>
             <Box style={{ cursor: "pointer" }}>
               <PostCard
                 article={ad.article}
                 city={ad.city}
-                cpu={ad.cpu}
-                gpu={ad.gpu}
                 description={ad.description}
                 images={ad.images}
-                memory={ad.memory}
-                motherboard={ad.motherboard}
                 price={ad.price}
-                ram={ad.ram}
-                sub_category={ad.sub_category}
                 type={ad.type}
-                id={ad.id}
               />
             </Box>
           </Grid>
@@ -126,13 +172,17 @@ export default function Home({ queryParams }: any) {
           <Grid container spacing={5}>
             <Grid item xs={12}>
               <AdsControlPanel
-                dataState={dataState}
+                setCurrentSubCategory={setCurrentSubCategory}
+                currentSubCategory={currentSubCategory}
                 setDataState={setDataState}
                 queryParams={queryParams}
                 categories={categoriesDataState}
                 adsCount={dataState?.page.totalElements}
                 setLoading={setLoading}
                 setLoadingPagination={setLoadingPagination}
+                currentCategory={currentCategory}
+                setCurrentCategory={setCurrentCategory}
+                currentURL={currentURL}
               />
             </Grid>
             <Grid container spacing={2} item xs={12}>
@@ -146,12 +196,12 @@ export default function Home({ queryParams }: any) {
                     }
                     color="primary"
                     count={dataState?.page.totalPages}
+                    page={page + 1}
                   />
                 ) : (
                   ""
                 )}
               </Grid>
-              {console.log(dataState)}
               <Grid container item xs={12} spacing={3}>
                 {!loading && dataState ? renderAds() : renderSkeletonsForAds()}
               </Grid>

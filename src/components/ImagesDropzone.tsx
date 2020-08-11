@@ -2,15 +2,23 @@ import React, { useState } from "react";
 import Dropzone from "react-dropzone-uploader";
 import Axios from "axios";
 import { CircularProgress, Box } from "@material-ui/core";
+import { useAlert } from "../context/AlertContext";
 
 export interface ImagesDropzoneProps {
   jwt: String;
   adv_id: string;
   handleNext: () => void;
+  url: string;
 }
 
-const ImagesDropzone = ({ jwt, adv_id, handleNext }: ImagesDropzoneProps) => {
+const ImagesDropzone = ({
+  jwt,
+  adv_id,
+  handleNext,
+  url,
+}: ImagesDropzoneProps) => {
   const [loading, setLoading] = useState(false);
+  const [alertState, alertDispatch] = useAlert();
 
   const getUploadParams = ({ meta }: any) => {
     const url = "https://httpbin.org/post";
@@ -32,7 +40,7 @@ const ImagesDropzone = ({ jwt, adv_id, handleNext }: ImagesDropzoneProps) => {
       formData.append("images", item.file);
     });
 
-    Axios.post("/api/computers/v1/upload", formData, {
+    Axios.post(`/api/${url}/v1/images/upload`, formData, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -43,6 +51,13 @@ const ImagesDropzone = ({ jwt, adv_id, handleNext }: ImagesDropzoneProps) => {
       })
       .catch((errors) => {
         setLoading(false);
+        alertDispatch({
+          type: "showAlert",
+          payload: {
+            message: "Failed To Upload images",
+            severity: "error",
+          },
+        });
         console.log(errors.message);
       });
   };

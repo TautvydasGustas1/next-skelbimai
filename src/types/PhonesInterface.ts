@@ -2,21 +2,21 @@ import { ILinks } from "./LinksInterface";
 import { IImages } from "./ImagesInterface";
 import { IUserInfo } from "./UserInfoInterface";
 
-export interface IComputers {
+export interface IPhones {
   id: number;
   article: string;
   description: string;
   type: string;
   city: string;
   price: number;
-  cpu: string;
-  motherboard: string;
-  gpu: string;
+  os: string;
+  model: string;
   ram: string;
+  manufacturer: string;
   memory: string;
+  camera: string;
   images: IImages[];
   sub_category: string;
   links: ILinks[];
   personal_information: IUserInfo;
-  categorySlug?: string;
 }

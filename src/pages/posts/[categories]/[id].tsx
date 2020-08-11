@@ -1,6 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import { GetServerSideProps } from "next";
-import Layout from "../../components/Layout";
+import Layout from "../../../components/Layout";
 import axios from "axios";
 import {
   Container,
@@ -12,11 +12,14 @@ import {
   Box,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ImageModal from "../../components/ImageModal";
-import ImageCarousel from "../../components/ImageCarousel";
-import ImageProduct from "../../components/ImageProduct";
-import NavService from "../../Helpers/NavigationHelper";
-import { IComputers } from "../../types/ComputersInterface";
+import ImageModal from "../../../components/ImageModal";
+import ImageCarousel from "../../../components/ImageCarousel";
+import ImageProduct from "../../../components/ImageProduct";
+import NavService from "../../../Helpers/NavigationHelper";
+import { IComputers } from "../../../types/ComputersInterface";
+import RenderComputerInfo from "../../../components/ADRenderFields/RenderComputerInfo";
+import { computersURL, phonesURL } from "../../../Utils/GlobalVariales";
+import RenderPhoneInfo from "../../../components/ADRenderFields/RenderPhonesInfo";
 
 const useStyles = makeStyles((theme) => ({
   outerPostsContainer: {
@@ -37,9 +40,10 @@ const defaultImage = "/photos/noImage.png";
 
 export interface AdvertisementProps {
   post?: IComputers;
+  categoryURL?: string;
 }
 
-const Advertisement = ({ post }: AdvertisementProps) => {
+const Advertisement = ({ post, categoryURL }: AdvertisementProps) => {
   const [imageModalState, setImageModalState] = useState(false);
   const [mainImageIndex, setMainImage] = useState(0);
 
@@ -54,57 +58,6 @@ const Advertisement = ({ post }: AdvertisementProps) => {
   const handleFallbackImage = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = defaultImage;
   };
-
-  const renderComputersInfo = (
-    <Grid spacing={1} container item xs={12}>
-      <Grid item xs={12}>
-        <Typography variant="caption">
-          <b>About</b>
-        </Typography>
-        <Divider />
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">CPU</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">
-          <b>{post!.cpu}</b>
-        </Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">Motherboard</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">
-          <b>{post!.motherboard}</b>
-        </Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">GPU</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">
-          <b>{post!.gpu}</b>
-        </Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">Ram</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">
-          <b>{post!.ram}</b>
-        </Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">Memory</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="body1">
-          <b>{post!.memory}</b>
-        </Typography>
-      </Grid>
-    </Grid>
-  );
 
   function renderInfo() {
     return (
@@ -157,6 +110,20 @@ const Advertisement = ({ post }: AdvertisementProps) => {
         </Grid>
       </Grid>
     );
+  }
+
+  function renderProdutInfo(post: any) {
+    switch (categoryURL) {
+      case phonesURL: {
+        return <RenderPhoneInfo post={post} />;
+      }
+      case computersURL: {
+        return <RenderComputerInfo post={post} />;
+      }
+      default: {
+        return <div>Empty</div>;
+      }
+    }
   }
 
   const classes = useStyles();
@@ -217,7 +184,13 @@ const Advertisement = ({ post }: AdvertisementProps) => {
                           </Typography>
                         </Grid>
                       </Grid>
-                      {renderComputersInfo}
+                      <Box width="100%">
+                        <Typography variant="caption">
+                          <b>About</b>
+                        </Typography>
+                        <Divider />
+                      </Box>
+                      {renderProdutInfo(post)}
                       <Grid item xs={12}>
                         <Typography variant="caption">
                           <b>Description</b>
@@ -245,15 +218,16 @@ const Advertisement = ({ post }: AdvertisementProps) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const id = await ctx.params?.id;
   const nav = new NavService();
-  console.log(id);
-  let post = "";
+  let post = [];
+  const categoryURL = ctx.params?.categories;
 
-  const res = await axios.get(`/api/computers/v1/${id}`);
-  if (res.status !== 200) {
+  try {
+    const res = await axios.get(`/api/${ctx.query.categories}/v1/${id}`);
+    post = await res.data;
+  } catch (err) {
     nav.redirectUser("/404", ctx);
   }
-  post = await res.data;
-  return { props: { post } };
+  return { props: { post, categoryURL } };
 };
 
 export default Advertisement;

@@ -132,8 +132,16 @@ const useStyles = makeStyles(
   })
 );
 
-export default function TreeCategorySelect({ setSelectedCategoryState }: any) {
+export default function TreeCategorySelect({
+  setSelectedCategoryState,
+  setCategory,
+}: any) {
   const classes = useStyles();
+
+  function HandleChange(str: string, category: string) {
+    setSelectedCategoryState(str);
+    setCategory(category);
+  }
 
   return (
     <TreeView
@@ -147,10 +155,10 @@ export default function TreeCategorySelect({ setSelectedCategoryState }: any) {
         nodeId="1"
         labelText="Elektronika"
         labelIcon={Label}
-        onClick={() => setSelectedCategoryState("")}
+        onClick={() => HandleChange("", "")}
       >
         <StyledTreeItem
-          onClick={() => setSelectedCategoryState("")}
+          onClick={() => HandleChange("", "")}
           nodeId="2"
           labelText="Kompiuteriai"
           labelIcon={Label}
@@ -159,19 +167,19 @@ export default function TreeCategorySelect({ setSelectedCategoryState }: any) {
             nodeId="3"
             labelText="Nesiojami kompiuteriai"
             labelIcon={LocalOfferIcon}
-            onClick={() => setSelectedCategoryState("nesiojami")}
+            onClick={() => HandleChange("nesiojami", "Kompiuteriai")}
           />
           <StyledTreeItem
             nodeId="4"
             labelText="Stacionarus kompiuteriai"
             labelIcon={LocalOfferIcon}
-            onClick={() => setSelectedCategoryState("stacionarus")}
+            onClick={() => HandleChange("stacionarus", "Kompiuteriai")}
           />
           <StyledTreeItem
             nodeId="5"
             labelText="Plansetiniai kompiuteriai"
             labelIcon={LocalOfferIcon}
-            onClick={() => setSelectedCategoryState("plansetiniai")}
+            onClick={() => HandleChange("plansetiniai", "Kompiuteriai")}
           />
         </StyledTreeItem>
         <StyledTreeItem
@@ -215,7 +223,7 @@ export default function TreeCategorySelect({ setSelectedCategoryState }: any) {
           nodeId="13"
           labelText="Mobilieji telefonai"
           labelIcon={LocalOfferIcon}
-          onClick={() => setSelectedCategoryState("mobilieji")}
+          onClick={() => HandleChange("mobilieji", "Telefonai")}
         />
         <StyledTreeItem
           nodeId="14"

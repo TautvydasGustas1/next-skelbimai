@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../../components/Layout";
+import Layout from "../../../../components/Layout";
 import { Card, CardContent, Container, Box } from "@material-ui/core";
-import AdCreateForm from "../../../components/AdFormCreate/AdCreateForm";
-import TokenService from "../../../Helpers/TokenHelper";
+import AdCreateForm from "../../../../components/AdFormCreate/AdCreateForm";
+import TokenService from "../../../../Helpers/TokenHelper";
 import { NextPageContext } from "next";
 import Axios from "axios";
-import NavService from "../../../Helpers/NavigationHelper";
-import { IComputers } from "../../../types/ComputersInterface";
-import { ICities } from "../../../types/CitiesInterface";
-import { ComputersSchema } from "../../../components/AdFormCreate/Validations";
-import { useAlert } from "../../../context/AlertContext";
+import NavService from "../../../../Helpers/NavigationHelper";
+import { IComputers } from "../../../../types/ComputersInterface";
+import { ICities } from "../../../../types/CitiesInterface";
+import { ComputersSchema } from "../../../../components/AdFormCreate/Validations";
+import { useAlert } from "../../../../context/AlertContext";
 
 export interface AdEditProps {
   jwt?: string;
@@ -77,19 +77,20 @@ AdEdit.getInitialProps = async (ctx: NextPageContext) => {
   const token = await tokenService.authenticateTokenSsr(ctx);
 
   const id = await ctx.query.id;
+  const category = ctx.query.categories;
   const nav = new NavService();
   let post = "";
   let cities = "";
 
-  const res = await Axios.get(`/api/computers/v1/${id}`);
-  if (res.status !== 200) {
+  try {
+    const res = await Axios.get(`/api/${category}/v1/${id}`);
+
+    const citiesRes = await Axios.get("/api/cities/v1/");
+    cities = await citiesRes.data;
+    post = await res.data;
+  } catch (err) {
     nav.redirectUser("/404", ctx);
   }
-
-  const citiesRes = await Axios.get("/api/cities/v1/");
-  cities = await citiesRes.data;
-  post = await res.data;
-
   return {
     jwt: token,
     post: post,

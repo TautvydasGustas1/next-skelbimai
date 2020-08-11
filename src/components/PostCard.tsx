@@ -48,18 +48,10 @@ const useStyles = makeStyles({
 export interface IPostCardPorps {
   article: string;
   city: string;
-  cpu: string;
-  gpu: string;
   description: string;
   images: IImages[];
-  memory: string;
-  motherboard: string;
   price: number;
-  sub_category: string;
   type: string;
-  ram: string;
-  edit?: Boolean;
-  id: number;
 }
 
 const maxDescriptionLenght = 150;
@@ -67,18 +59,10 @@ const maxDescriptionLenght = 150;
 const PostCard = ({
   article,
   city,
-  cpu,
-  gpu,
   description,
   images,
-  memory,
-  motherboard,
   price,
-  ram,
-  sub_category,
   type,
-  edit,
-  id,
 }: IPostCardPorps) => {
   const classes = useStyles();
 

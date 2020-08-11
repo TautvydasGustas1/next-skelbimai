@@ -12,6 +12,14 @@ import { ICategories } from "../types/CategoriesInterface";
 import axios from "axios";
 import Skeleton from "@material-ui/lab/Skeleton";
 import SearchByComputers from "./SearchByComponents/SearchByComputers";
+import { AnyRecord } from "dns";
+import {
+  computersURL,
+  functionAddSlugsToObjects,
+  phonesURL,
+} from "../Utils/GlobalVariales";
+import Axios from "axios";
+import SearchByPhones from "./SearchByComponents/SearchByPhones";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,14 +30,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const size = 20;
+
 export interface AdsControlPanelProps {
   adsCount?: number;
   categories?: ICategories[];
   queryParams: any;
   setDataState: any;
-  dataState: any;
   setLoading: any;
   setLoadingPagination: any;
+  currentCategory: any;
+  setCurrentCategory: any;
+  currentSubCategory: any;
+  setCurrentSubCategory: any;
+  currentURL: string;
 }
 
 const AdsControlPanel = ({
@@ -37,20 +51,19 @@ const AdsControlPanel = ({
   categories,
   queryParams,
   setDataState,
-  dataState,
   setLoading,
   setLoadingPagination,
+  currentCategory,
+  setCurrentCategory,
+  currentSubCategory,
+  setCurrentSubCategory,
+  currentURL,
 }: AdsControlPanelProps) => {
-  const subCategory = queryParams.sub_category
-    ? queryParams.sub_category
-    : "all";
-
   const classes = useStyles();
 
-  const [currentCategory, setCurrentCategory] = useState("Kompiuteriai");
   const [typeState, setTypeState] = useState("any");
   const [subCategoriesState, setSubCategoriesState] = useState([]);
-  const [currentSubCategory, setCurrentSubCategory] = useState(subCategory);
+
   const [citiesState, setCitiesState] = useState([]);
 
   const getSubCategorieByName = () => {
@@ -58,7 +71,6 @@ const AdsControlPanel = ({
       .get(`/api/categories/v1/category?category=${currentCategory}`)
       .then((res) => {
         setSubCategoriesState(res.data.sub_categories);
-        setCurrentSubCategory(res.data.sub_categories[0].sub_category);
       })
       .catch((err) => {
         console.log(err);
@@ -81,9 +93,7 @@ const AdsControlPanel = ({
   }, []);
 
   useEffect(() => {
-    if (currentCategory !== "all") {
-      getSubCategorieByName();
-    }
+    getSubCategorieByName();
   }, [currentCategory]);
 
   const skeletonPanelParams = (
@@ -100,16 +110,44 @@ const AdsControlPanel = ({
     </>
   );
 
-  function renderCategoryFields() {
-    return (
-      <SearchByComputers
-        setLoadingPagination={setLoadingPagination}
-        setLoading={setLoading}
-        setDataState={setDataState}
-        subCategory={currentSubCategory}
-        citiesState={citiesState}
-      />
-    );
+  const handleSearchSubmit = async (values: any) => {
+    setLoading(true);
+    setLoadingPagination(true);
+    values.sub_category = currentSubCategory;
+    await Axios.post(`/api/${currentURL}/v1/search?size=${size}`, values)
+      .then((res) => {
+        res.data.content = functionAddSlugsToObjects(
+          res.data.content,
+          currentURL
+        );
+        setDataState(res.data);
+        setLoading(false);
+        setLoadingPagination(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  function renderCategoryFields(slug: string) {
+    switch (slug) {
+      case computersURL: {
+        return (
+          <SearchByComputers
+            handleSearchSubmit={handleSearchSubmit}
+            citiesState={citiesState}
+          />
+        );
+      }
+      case phonesURL: {
+        return (
+          <SearchByPhones
+            handleSearchSubmit={handleSearchSubmit}
+            citiesState={citiesState}
+          />
+        );
+      }
+    }
   }
 
   const renderPanelData = (
@@ -148,6 +186,7 @@ const AdsControlPanel = ({
                 onChange={(e) => setCurrentSubCategory(e.target.value)}
                 value={currentSubCategory}
               >
+                <MenuItem value="all">All</MenuItem>
                 {subCategoriesState!.map((cat: any) => (
                   <MenuItem key={cat.id} value={cat.sub_category}>
                     {cat.sub_category}
@@ -158,7 +197,7 @@ const AdsControlPanel = ({
           </Grid>
         </Grid>
       </Box>
-      {renderCategoryFields()}
+      {renderCategoryFields(currentURL)}
     </>
   );
 

@@ -7,27 +7,53 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { useRouter } from "next/router";
 import { useAlert } from "../context/AlertContext";
 import Link from "next/link";
+import {
+  computersURL,
+  phonesURL,
+  functionAddSlugsToObjects,
+} from "../Utils/GlobalVariales";
+
+const categories = [
+  { url: computersURL, categoryURL: computersURL },
+  { url: phonesURL, categoryURL: phonesURL },
+];
 
 const UsersAds = ({ jwt, userID }: any) => {
   const Router = useRouter();
-  const [dataState, setDataState] = useState<IAd | undefined>();
+  const [dataState, setDataState] = useState<any>();
   const [alertState, alertDispatch] = useAlert();
 
   useEffect(() => {
-    let didCancel = false;
     if (userID !== -1) {
-      Axios.get(`/api/computers/v1/user/${userID}`)
-        .then((res) => {
-          if (!didCancel) setDataState(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      categories.map((item) => {
+        getAds(item.url, item.categoryURL);
+      });
     }
-    return () => {
-      didCancel = true;
-    };
   }, []);
+
+  function getAds(url: string, categoryURL: string) {
+    Axios.get(`/api/${url}/v1/user/${userID}`)
+      .then((res) => {
+        //Add category
+        res.data.content = functionAddSlugsToObjects(
+          res.data.content,
+          categoryURL
+        );
+
+        console.log(dataState);
+
+        if (dataState) {
+          const concatted = dataState.concat(res.data.content);
+          console.log("concated ");
+          setDataState(concatted);
+        } else {
+          setDataState(res.data.content);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   function renderSkeletonsForAds() {
     const n: number = 5; // number of ad Skeletons
@@ -39,21 +65,21 @@ const UsersAds = ({ jwt, userID }: any) => {
     ));
   }
 
-  function removeAd(id: any) {
+  function removeAd(id: any, categoryURL: string) {
     if (confirm("Are you sure?")) {
       const config = {
         headers: { Authorization: `Bearer ${jwt}` },
       };
-      Axios.delete(`/api/computers/v1/${id}`, config)
+      Axios.delete(`/api/${categoryURL}/v1/${id}`, config)
         .then((res) => {
           //Remove from array
           let data: any = dataState;
-          const content = dataState?.content.filter((item) => {
+          const content = dataState?.filter((item: any) => {
             return id !== item.id;
           });
 
-          data.content = content;
-          //setDataState(data);
+          data = content;
+          setDataState(data);
           alertDispatch({
             type: "showAlert",
             payload: {
@@ -79,28 +105,23 @@ const UsersAds = ({ jwt, userID }: any) => {
   }
 
   function renderAds() {
-    if (dataState!.content.length === 0) {
+    if (dataState!.length === 0) {
       return renderNoAds();
     } else {
-      return dataState!.content.map((ad) => (
+      return dataState!.map((ad: any) => (
         <Grid key={ad.id} item container>
-          <Link as={`/posts/${ad.id}`} href={`/posts/[id]`}>
+          <Link
+            as={`/posts/${ad.categorySlug}/${ad.id}`}
+            href={`/posts/[categories]/[id]`}
+          >
             <Grid style={{ cursor: "pointer" }} item xs={9}>
               <PostCard
                 article={ad.article}
                 city={ad.city}
-                cpu={ad.cpu}
-                gpu={ad.gpu}
                 description={ad.description}
                 images={ad.images}
-                memory={ad.memory}
-                motherboard={ad.motherboard}
                 price={ad.price}
-                ram={ad.ram}
-                sub_category={ad.sub_category}
                 type={ad.type}
-                edit={true}
-                id={ad.id}
               />
             </Grid>
           </Link>
@@ -111,7 +132,10 @@ const UsersAds = ({ jwt, userID }: any) => {
                 size="small"
                 variant="outlined"
                 onClick={() =>
-                  Router.push("/posts/edit/[id]", `/posts/edit/${ad.id}`)
+                  Router.push(
+                    "/posts/edit/[categories]/[id]",
+                    `/posts/edit/${ad.categorySlug}/${ad.id}`
+                  )
                 }
               >
                 EDIT
@@ -120,7 +144,12 @@ const UsersAds = ({ jwt, userID }: any) => {
                 fullWidth
                 size="small"
                 variant="outlined"
-                onClick={() => {}}
+                onClick={() => {
+                  Router.push(
+                    "/posts/edit/[categories]/pictures/[id]",
+                    `/posts/edit/${ad.categorySlug}/pictures/${ad.id}`
+                  );
+                }}
               >
                 Edit pictures
               </Button>
@@ -128,7 +157,7 @@ const UsersAds = ({ jwt, userID }: any) => {
                 fullWidth
                 size="small"
                 variant="outlined"
-                onClick={() => removeAd(ad.id)}
+                onClick={() => removeAd(ad.id, ad.categorySlug)}
               >
                 DELETE
               </Button>

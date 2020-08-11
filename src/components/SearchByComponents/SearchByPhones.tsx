@@ -4,12 +4,13 @@ import { Formik, Field, Form } from "formik";
 import { string, object } from "yup";
 import { SearchBy } from "../../types/SearchByInterfaceProps";
 
-const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
+const SearchByPhones = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   const initialValues = {
-    cpu: "",
-    gpu: "",
+    camera: "",
+    manufacturer: "",
     memory: "",
-    motherboard: "",
+    model: "",
+    os: "",
     ram: "",
     city: "Any",
   };
@@ -17,10 +18,11 @@ const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   return (
     <Formik
       validationSchema={object({
-        cpu: string().required(),
-        gpu: string().required(),
+        camera: string().required(),
+        manufacturer: string().required(),
         memory: string().required(),
-        motherboard: string().required(),
+        model: string().required(),
+        os: string().required(),
         ram: string().required(),
         city: string().required(),
       })}
@@ -34,24 +36,24 @@ const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
               <Field
                 as={TextField}
                 fullWidth
-                id="cpu"
-                label="CPU"
+                id="camera"
+                label="Camera"
                 variant="outlined"
-                name="cpu"
-                error={Boolean(errors.cpu)}
-                helperText={errors.cpu}
+                name="camera"
+                error={Boolean(errors.camera)}
+                helperText={errors.camera}
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <Field
                 as={TextField}
                 fullWidth
-                id="gpu"
-                label="GPU"
+                id="manufacturer"
+                label="Manufacturer"
                 variant="outlined"
-                name="gpu"
-                error={Boolean(errors.gpu)}
-                helperText={errors.gpu}
+                name="manufacturer"
+                error={Boolean(errors.manufacturer)}
+                helperText={errors.manufacturer}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -70,12 +72,24 @@ const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
               <Field
                 as={TextField}
                 fullWidth
-                id="motherboard"
-                label="Motherboard"
+                id="model"
+                label="Model"
                 variant="outlined"
-                name="motherboard"
-                error={Boolean(errors.motherboard)}
-                helperText={errors.motherboard}
+                name="model"
+                error={Boolean(errors.model)}
+                helperText={errors.model}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Field
+                as={TextField}
+                fullWidth
+                id="os"
+                label="Os"
+                variant="outlined"
+                name="os"
+                error={Boolean(errors.os)}
+                helperText={errors.os}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -127,4 +141,4 @@ const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   );
 };
 
-export default SearchByComputers;
+export default SearchByPhones;

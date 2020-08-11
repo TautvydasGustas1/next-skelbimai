@@ -9,8 +9,8 @@ import TreeCategorySelect from "./TreeCategorySelect";
 import ImagesDropzone from "../ImagesDropzone";
 import { useAlert } from "../../context/AlertContext";
 import { selectedForm } from "./CategorySelect";
-import { ComputersSchema } from "./Validations";
 import Axios from "axios";
+import { handleChangeURL } from "../../Utils/GlobalVariales";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,6 +44,9 @@ export default function StepperComp({
   const [skipped, setSkipped] = useState(new Set<number>());
   const steps = getSteps();
   const [alertState, alertDispatch] = useAlert();
+  const [category, setCategory] = useState("");
+
+  let url = "";
 
   function getStepContent(step: number) {
     switch (step) {
@@ -51,6 +54,7 @@ export default function StepperComp({
         return (
           <TreeCategorySelect
             setSelectedCategoryState={setSelectedCategoryState}
+            setCategory={setCategory}
           />
         );
       case 1:
@@ -62,8 +66,14 @@ export default function StepperComp({
           handleSubmit
         );
       case 2:
+        url = handleChangeURL(category);
         return (
-          <ImagesDropzone handleNext={handleNext} adv_id={advID} jwt={jwt} />
+          <ImagesDropzone
+            url={url}
+            handleNext={handleNext}
+            adv_id={advID}
+            jwt={jwt}
+          />
         );
       default:
         return "Unknown step";
@@ -139,6 +149,16 @@ export default function StepperComp({
         resolve();
       });
   };
+
+  function handleFinish() {
+    alertDispatch({
+      type: "showAlert",
+      payload: {
+        message: "All steps are finished!",
+        severity: "success",
+      },
+    });
+  }
 
   return (
     <div className={classes.root}>

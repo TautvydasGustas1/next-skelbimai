@@ -79,7 +79,6 @@ const AdCreateForm = ({
                       </Typography>
                     </Grid>
                     <Grid xs={12} item>
-                      {console.log(citiesState)}
                       <Field
                         fullWidth
                         name="type"
