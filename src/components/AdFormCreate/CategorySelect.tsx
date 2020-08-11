@@ -12,7 +12,8 @@ import {
   tv,
   laptop,
 } from "../../Utils/FormFields";
-import { PhoneSchema, ComputersSchema } from "./Validations";
+import { PhoneSchema, ComputersSchema, ExternalSchema } from "./Validations";
+import { externalURL, computersURL } from "../../Utils/GlobalVariales";
 
 export const selectedForm = (
   handleBack: () => void,
@@ -32,7 +33,7 @@ export const selectedForm = (
           initialValues={laptop}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
+          url={`/api/${computersURL}/v1`}
         />
       );
     case "stacionarus":
@@ -45,7 +46,7 @@ export const selectedForm = (
           initialValues={personal_computer}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
+          url={`/api/${computersURL}/v1`}
         />
       );
     case "plansetiniai":
@@ -58,7 +59,7 @@ export const selectedForm = (
           initialValues={tablet}
           ValidationSchema={ComputersSchema}
           handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
+          url={`/api/${computersURL}/v1`}
         />
       );
     case "ausines":
@@ -69,9 +70,9 @@ export const selectedForm = (
           jwt={jwt}
           key={5}
           initialValues={headphones}
-          ValidationSchema={ComputersSchema}
+          ValidationSchema={ExternalSchema}
           handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
+          url={`/api/${externalURL}/v1`}
         />
       );
     case "klaviaturos":
@@ -82,22 +83,9 @@ export const selectedForm = (
           jwt={jwt}
           key={6}
           initialValues={keyboard}
-          ValidationSchema={ComputersSchema}
+          ValidationSchema={ExternalSchema}
           handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
-        />
-      );
-    case "monitoriai":
-      return (
-        <AdCreateForm
-          handleBack={handleBack}
-          citiesState={citiesState}
-          jwt={jwt}
-          key={7}
-          initialValues={monitor}
-          ValidationSchema={ComputersSchema}
-          handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
+          url={`/api/${externalURL}/v1`}
         />
       );
     case "peles":
@@ -108,20 +96,7 @@ export const selectedForm = (
           jwt={jwt}
           key={8}
           initialValues={mouse}
-          ValidationSchema={ComputersSchema}
-          handleSubmit={handleSubmit}
-          url={"/api/computers/v1"}
-        />
-      );
-    case "koloneles":
-      return (
-        <AdCreateForm
-          handleBack={handleBack}
-          citiesState={citiesState}
-          jwt={jwt}
-          key={9}
-          initialValues={loudspeaker}
-          ValidationSchema={ComputersSchema}
+          ValidationSchema={ExternalSchema}
           handleSubmit={handleSubmit}
           url={"/api/computers/v1"}
         />

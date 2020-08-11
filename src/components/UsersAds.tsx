@@ -13,10 +13,7 @@ import {
   functionAddSlugsToObjects,
 } from "../Utils/GlobalVariales";
 
-const categories = [
-  { url: computersURL, categoryURL: computersURL },
-  { url: phonesURL, categoryURL: phonesURL },
-];
+const categories = [computersURL, phonesURL];
 
 const UsersAds = ({ jwt, userID }: any) => {
   const Router = useRouter();
@@ -25,14 +22,30 @@ const UsersAds = ({ jwt, userID }: any) => {
 
   useEffect(() => {
     if (userID !== -1) {
-      categories.map((item) => {
-        getAds(item.url, item.categoryURL);
-      });
+      console.log(getAllAds());
     }
   }, []);
 
-  function getAds(url: string, categoryURL: string) {
-    Axios.get(`/api/${url}/v1/user/${userID}`)
+  const getAllAds = () => {
+    const promises: Promise<any>[] = [];
+    categories.map((item) => {
+      promises.push(getAds(item));
+    });
+
+    Promise.all(promises)
+      .then((results) => {
+        const fullData = results.reduce((arr, row) => {
+          return arr.concat(row);
+        }, []);
+        setDataState(fullData);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const getAds = async (categoryURL: string) => {
+    return await Axios.get(`/api/${categoryURL}/v1/user/${userID}`)
       .then((res) => {
         //Add category
         res.data.content = functionAddSlugsToObjects(
@@ -40,20 +53,13 @@ const UsersAds = ({ jwt, userID }: any) => {
           categoryURL
         );
 
-        console.log(dataState);
-
-        if (dataState) {
-          const concatted = dataState.concat(res.data.content);
-          console.log("concated ");
-          setDataState(concatted);
-        } else {
-          setDataState(res.data.content);
-        }
+        return res.data.content;
       })
       .catch((error) => {
         console.log(error);
+        return [];
       });
-  }
+  };
 
   function renderSkeletonsForAds() {
     const n: number = 5; // number of ad Skeletons
@@ -108,8 +114,12 @@ const UsersAds = ({ jwt, userID }: any) => {
     if (dataState!.length === 0) {
       return renderNoAds();
     } else {
+      {
+        console.log(dataState);
+      }
       return dataState!.map((ad: any) => (
         <Grid key={ad.id} item container>
+          {console.log(dataState)}
           <Link
             as={`/posts/${ad.categorySlug}/${ad.id}`}
             href={`/posts/[categories]/[id]`}

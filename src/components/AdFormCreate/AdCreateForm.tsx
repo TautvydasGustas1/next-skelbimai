@@ -261,16 +261,18 @@ const AdCreateForm = ({
                         />
                       </Grid>
                     )}
-                    {initialValues.power_supply !== undefined && (
+                    {initialValues.brand !== undefined && (
                       <Grid xs={12} item>
                         <Field
                           fullWidth
                           autoComplete="off"
-                          name="power_supply"
-                          label="Power supply"
+                          name="brand"
+                          label="Brand"
                           as={TextField}
                           variant="outlined"
                           type="text"
+                          error={Boolean(errors.brand)}
+                          helperText={errors.brand}
                         />
                       </Grid>
                     )}
@@ -317,19 +319,21 @@ const AdCreateForm = ({
                         />
                       </Grid>
                     )}
-                    {initialValues.wirelless !== undefined && (
+                    {initialValues.wireless !== undefined && (
                       <Grid xs={12} item>
                         <Field
                           fullWidth
                           autoComplete="off"
-                          name="wirelless"
-                          label="Wirelless"
+                          name="wireless"
+                          label="Wireless"
                           as={TextField}
                           variant="outlined"
                           select
+                          error={Boolean(errors.wireless)}
+                          helperText={errors.wireless}
                         >
-                          <MenuItem value="taip">Yes</MenuItem>
-                          <MenuItem value="ne">No</MenuItem>
+                          <MenuItem value="yes">Yes</MenuItem>
+                          <MenuItem value="no">No</MenuItem>
                         </Field>
                       </Grid>
                     )}

@@ -57,23 +57,23 @@ export const tablet = {
 };
 
 export const headphones = {
-  name: "",
+  article: "",
+  brand: "",
   price: 0,
-  state: "",
-  manufacturer: "",
   type: "",
-
-  wirelless: "",
+  city: "",
+  wireless: "no",
+  sub_category: "Ausinės",
 };
 
 export const keyboard = {
-  name: "",
+  article: "",
+  brand: "",
   price: 0,
-  state: "",
-  manufacturer: "",
   type: "",
-
-  wirelless: "",
+  city: "",
+  wireless: "no",
+  sub_category: "Klaviatūros",
 };
 
 export const monitor = {
@@ -88,23 +88,13 @@ export const monitor = {
 };
 
 export const mouse = {
-  name: "",
+  article: "",
+  brand: "",
   price: 0,
-  state: "",
-  manufacturer: "",
   type: "",
-
-  wirelless: "",
-};
-
-export const loudspeaker = {
-  name: "",
-  price: 0,
-  state: "",
-  manufacturer: "",
-  type: "",
-
-  wirelless: "",
+  city: "",
+  wireless: "no",
+  sub_category: "Pelės",
 };
 
 export const phones = {

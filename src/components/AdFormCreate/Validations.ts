@@ -27,3 +27,14 @@ export const PhoneSchema = object({
   sub_category: string().required(),
   type: string().required(),
 });
+
+export const ExternalSchema = object({
+  article: string().required(),
+  brand: string().required(),
+  city: string().required(),
+  description: string().required(),
+  price: number().required(),
+  wireless: string().required(),
+  sub_category: string().required(),
+  type: string().required(),
+});

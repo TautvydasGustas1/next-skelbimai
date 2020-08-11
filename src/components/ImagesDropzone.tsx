@@ -7,7 +7,7 @@ import { useAlert } from "../context/AlertContext";
 export interface ImagesDropzoneProps {
   jwt: String;
   adv_id: string;
-  handleNext: () => void;
+  handleNext: (images: any) => void;
   url: string;
 }
 
@@ -47,7 +47,15 @@ const ImagesDropzone = ({
     })
       .then((res) => {
         setLoading(false);
-        handleNext();
+        handleNext(res.data.images);
+        alertDispatch({
+          type: "showAlert",
+          payload: {
+            message: "Successfully uploaded images",
+            severity: "success",
+          },
+        });
+        allFiles.forEach((f: any) => f.remove());
       })
       .catch((errors) => {
         setLoading(false);

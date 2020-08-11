@@ -13,6 +13,11 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import { SvgIconProps } from "@material-ui/core/SvgIcon";
+import {
+  computersURL,
+  externalURL,
+  phonesURL,
+} from "../../Utils/GlobalVariales";
 
 declare module "csstype" {
   interface Properties {
@@ -167,19 +172,19 @@ export default function TreeCategorySelect({
             nodeId="3"
             labelText="Nesiojami kompiuteriai"
             labelIcon={LocalOfferIcon}
-            onClick={() => HandleChange("nesiojami", "Kompiuteriai")}
+            onClick={() => HandleChange("nesiojami", computersURL)}
           />
           <StyledTreeItem
             nodeId="4"
             labelText="Stacionarus kompiuteriai"
             labelIcon={LocalOfferIcon}
-            onClick={() => HandleChange("stacionarus", "Kompiuteriai")}
+            onClick={() => HandleChange("stacionarus", computersURL)}
           />
           <StyledTreeItem
             nodeId="5"
             labelText="Plansetiniai kompiuteriai"
             labelIcon={LocalOfferIcon}
-            onClick={() => HandleChange("plansetiniai", "Kompiuteriai")}
+            onClick={() => HandleChange("plansetiniai", computersURL)}
           />
         </StyledTreeItem>
         <StyledTreeItem
@@ -192,42 +197,30 @@ export default function TreeCategorySelect({
             nodeId="8"
             labelText="Ausines"
             labelIcon={LocalOfferIcon}
-            onClick={() => setSelectedCategoryState("ausines")}
+            onClick={() => HandleChange("ausines", externalURL)}
           />
           <StyledTreeItem
             nodeId="9"
             labelText="Klaviaturos"
             labelIcon={LocalOfferIcon}
-            onClick={() => setSelectedCategoryState("klaviaturos")}
-          />
-          <StyledTreeItem
-            nodeId="10"
-            labelText="Monitoriai"
-            labelIcon={LocalOfferIcon}
-            onClick={() => setSelectedCategoryState("monitoriai")}
+            onClick={() => HandleChange("klaviaturos", externalURL)}
           />
           <StyledTreeItem
             labelIcon={LocalOfferIcon}
             nodeId="11"
             labelText="Peles"
-            onClick={() => setSelectedCategoryState("peles")}
-          />
-          <StyledTreeItem
-            labelIcon={LocalOfferIcon}
-            nodeId="12"
-            labelText="Garso koloneles"
-            onClick={() => setSelectedCategoryState("koloneles")}
+            onClick={() => HandleChange("peles", externalURL)}
           />
         </StyledTreeItem>
         <StyledTreeItem
           nodeId="13"
           labelText="Mobilieji telefonai"
           labelIcon={LocalOfferIcon}
-          onClick={() => HandleChange("mobilieji", "Telefonai")}
+          onClick={() => HandleChange("mobilieji", phonesURL)}
         />
         <StyledTreeItem
           nodeId="14"
-          labelText="Televizoriai"
+          labelText="Monitoriai"
           labelIcon={LocalOfferIcon}
           onClick={() => setSelectedCategoryState("televizoriai")}
         />

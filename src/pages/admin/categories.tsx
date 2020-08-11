@@ -207,21 +207,20 @@ const categories = ({ jwt }: any) => {
   }
 
   function handleDeleteSubCategory() {
-    // console.log(currentSubCategory);
-    // const category = categoriesData?.find(
-    //   (el: any) => el.sub === currentSubCategory
-    // );
+    console.log(currentSubCategory);
+    // const category = categoriesData?.find((el: any) => console.log(el.sub));
+
+    // console.log(category);
     // const config = {
     //   headers: { Authorization: `Bearer ${jwt}` },
     // };
-    // const values = { category: currentCategory };
-    // Axios.delete(`/api/categories/v1/${currentCategory}`, config)
+    // Axios.delete(`/api/sub-categories/v1/${id}`, config)
     //   .then((res) => {
     //     getCategories();
     //     alertDispatch({
     //       type: "showAlert",
     //       payload: {
-    //         message: "Successfully Deleted Category!",
+    //         message: "Successfully Deleted Sub Category!",
     //         severity: "success",
     //       },
     //     });
@@ -230,7 +229,7 @@ const categories = ({ jwt }: any) => {
     //     alertDispatch({
     //       type: "showAlert",
     //       payload: {
-    //         message: "Failed To Delete Category!",
+    //         message: "Failed To Delete Sub Category!",
     //         severity: "danger",
     //       },
     //     });

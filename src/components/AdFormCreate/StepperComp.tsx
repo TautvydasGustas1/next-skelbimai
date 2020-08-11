@@ -66,7 +66,7 @@ export default function StepperComp({
           handleSubmit
         );
       case 2:
-        url = handleChangeURL(category);
+        url = category;
         return (
           <ImagesDropzone
             url={url}
@@ -144,6 +144,13 @@ export default function StepperComp({
       })
       .catch((errors) => {
         console.log(errors.message);
+        alertDispatch({
+          type: "showAlert",
+          payload: {
+            message: "Oops, something broke, try again later :/",
+            severity: "error",
+          },
+        });
       })
       .finally(() => {
         resolve();

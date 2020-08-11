@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditPictures = ({ jwt, serverImages, category }: any) => {
+const EditPictures = ({ jwt, serverImages, category, adv_id }: any) => {
   const classes = useStyles();
   const [images, setImages] = useState(serverImages);
   const [alertState, alertDispatch] = useAlert();
@@ -71,6 +71,10 @@ const EditPictures = ({ jwt, serverImages, category }: any) => {
           });
         });
     }
+  }
+
+  function handleRefreshImages(newImages: any) {
+    setImages(newImages);
   }
 
   return (
@@ -123,7 +127,12 @@ const EditPictures = ({ jwt, serverImages, category }: any) => {
               Add new images
             </Typography>
           </Box>
-          <ImagesDropzone jwt={jwt} />
+          <ImagesDropzone
+            handleNext={handleRefreshImages}
+            url={category}
+            adv_id={adv_id}
+            jwt={jwt}
+          />
         </Box>
       </Container>
     </Layout>
@@ -150,6 +159,7 @@ EditPictures.getInitialProps = async (ctx: NextPageContext) => {
     jwt: token,
     serverImages: images,
     category,
+    adv_id: id,
   };
 };
 

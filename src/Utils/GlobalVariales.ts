@@ -1,6 +1,7 @@
 export const drawerWidth: number = 240;
 export const computersURL: string = "computers";
 export const phonesURL: string = "phones";
+export const externalURL: string = "external_devices";
 
 export function handleChangeURL(currentCategory: string) {
   let url = "";
