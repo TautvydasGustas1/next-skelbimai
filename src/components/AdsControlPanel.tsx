@@ -119,14 +119,25 @@ const AdsControlPanel = ({
   const handleSearchSubmit = async (values: any) => {
     setLoading(true);
     setLoadingPagination(true);
-    values.sub_category = currentSubCategory;
+    //Weird fix but ok ;/
+    if (currentSubCategory === "all") {
+      values.sub_category = "";
+    } else {
+      values.sub_category = currentSubCategory;
+    }
+    if (values.city === "any") {
+      values.city = "";
+    }
     await Axios.post(`/api/${currentURL}/v1/search?size=${size}`, values)
       .then((res) => {
         res.data.content = functionAddSlugsToObjects(
           res.data.content,
           currentURL
         );
-        setDataState(res.data);
+        //Check if empty
+        if (!res.data.empty) {
+          setDataState(res.data);
+        }
         setLoading(false);
         setLoadingPagination(false);
       })

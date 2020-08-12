@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Layout from "../../../../components/Layout";
 import { Card, CardContent, Container, Box } from "@material-ui/core";
 import AdCreateForm from "../../../../components/AdFormCreate/AdCreateForm";
@@ -23,6 +23,7 @@ import {
   consolURL,
   monitorsURL,
 } from "../../../../Utils/GlobalVariales";
+import { useRouter } from "next/router";
 
 export interface AdEditProps {
   jwt?: string;
@@ -32,6 +33,7 @@ export interface AdEditProps {
 }
 
 const AdEdit = ({ jwt, post, cities, category }: AdEditProps) => {
+  const router = useRouter();
   const [alertState, alertDispatch] = useAlert();
   const handleEditSubmit = async (
     values: any,
@@ -52,7 +54,7 @@ const AdEdit = ({ jwt, post, cities, category }: AdEditProps) => {
           },
         });
         // Redirect to an ad
-        //Router.push("/profile");
+        router.push(`/posts/${category}/${post!.id}`);
       })
       .catch((errors) => {
         console.log(errors.message);
@@ -135,7 +137,6 @@ const AdEdit = ({ jwt, post, cities, category }: AdEditProps) => {
   return (
     <Layout>
       <Container>
-        {console.log(post)}
         <Box mt={3}>
           <Card>
             <CardContent>{renderEditForm()}</CardContent>

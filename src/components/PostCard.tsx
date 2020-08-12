@@ -69,7 +69,7 @@ const PostCard = ({
   return (
     <Card className={classes.root}>
       <Grid container>
-        <Grid item xs={4} lg={2}>
+        <Grid item xs={6} md={4} lg={2}>
           <Box
             className={classes.CardMediaContainer}
             justifyContent="center"
@@ -82,7 +82,7 @@ const PostCard = ({
             />
           </Box>
         </Grid>
-        <Grid item xs={8} lg={10}>
+        <Grid item xs={6} md={8} lg={10}>
           <CardContent>
             <Grid container>
               <Grid item xs={12}>

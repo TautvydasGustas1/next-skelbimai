@@ -10,7 +10,8 @@ import ImagesDropzone from "../ImagesDropzone";
 import { useAlert } from "../../context/AlertContext";
 import { selectedForm } from "./CategorySelect";
 import Axios from "axios";
-import { handleChangeURL } from "../../Utils/GlobalVariales";
+import { useRouter } from "next/router";
+import { Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,6 +46,7 @@ export default function StepperComp({
   const steps = getSteps();
   const [alertState, alertDispatch] = useAlert();
   const [category, setCategory] = useState("");
+  const router = useRouter();
 
   let url = "";
 
@@ -122,6 +124,12 @@ export default function StepperComp({
     setActiveStep(0);
   };
 
+  function handleFinish() {
+    setTimeout(() => {
+      router.push(`/posts/[categories]/[id]`, `/posts/${category}/${advID}`);
+    }, 2000);
+  }
+
   const handleSubmit = async (
     values: any,
     resolve: () => void,
@@ -157,16 +165,6 @@ export default function StepperComp({
       });
   };
 
-  function handleFinish() {
-    alertDispatch({
-      type: "showAlert",
-      payload: {
-        message: "All steps are finished!",
-        severity: "success",
-      },
-    });
-  }
-
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep}>
@@ -191,9 +189,16 @@ export default function StepperComp({
       <div>
         {activeStep === steps.length ? (
           <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
+            <Box>
+              <Typography
+                align="center"
+                variant="h6"
+                className={classes.instructions}
+              >
+                All steps completed - you&apos;re finished
+              </Typography>
+            </Box>
+            {handleFinish()}
           </div>
         ) : (
           <div>

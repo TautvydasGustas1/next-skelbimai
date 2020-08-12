@@ -12,20 +12,11 @@ const SearchByPhones = ({ citiesState, handleSearchSubmit }: SearchBy) => {
     model: "",
     os: "",
     ram: "",
-    city: "Any",
+    city: "any",
   };
 
   return (
     <Formik
-      validationSchema={object({
-        camera: string().required(),
-        manufacturer: string().required(),
-        memory: string().required(),
-        model: string().required(),
-        os: string().required(),
-        ram: string().required(),
-        city: string().required(),
-      })}
       initialValues={initialValues}
       onSubmit={(values) => handleSearchSubmit(values)}
     >
@@ -116,7 +107,7 @@ const SearchByPhones = ({ citiesState, handleSearchSubmit }: SearchBy) => {
                 helperText={errors.city}
                 select
               >
-                <MenuItem value="Any">Any</MenuItem>
+                <MenuItem value="any">Any</MenuItem>
                 {citiesState.map((city) => (
                   <MenuItem key={city.id} value={city.city}>
                     {city.city}

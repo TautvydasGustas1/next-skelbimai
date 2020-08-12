@@ -11,10 +11,6 @@ export interface createProps {
 }
 
 const create = ({ jwt }: createProps) => {
-  const handleCategorySelection = (category: string) => {
-    setSelectedCategoryState(category);
-  };
-
   const [selectedCategoryState, setSelectedCategoryState] = useState("");
   const [citiesState, setCitiesState] = useState();
   const [advID, setAdvID] = useState("");

@@ -41,6 +41,9 @@ class TokenService {
     const response = await this.checkAuthToken(token);
     if (!response) {
       const navService = new NavService();
+      //Change state or remove the cookie
+      Cookies.remove("auth");
+      //redirect
       navService.redirectUser("/login", ctx);
     }
     return token;

@@ -12,6 +12,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Box,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -27,6 +28,10 @@ import ComputerIcon from "@material-ui/icons/Computer";
 import StoreIcon from "@material-ui/icons/Store";
 import AddIcon from "@material-ui/icons/Add";
 import CategoryIcon from "@material-ui/icons/Category";
+import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
+import DevicesOtherIcon from "@material-ui/icons/DevicesOther";
+import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
+import TvIcon from "@material-ui/icons/Tv";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -167,6 +172,9 @@ const Header = ({ is_adminView }: HeaderProps) => {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
+      <Box textAlign="center">
+        <img alt="logo" src={"/photos/Logo.png"} width="120px" />
+      </Box>
       <Divider />
       <List>
         {loginState && state.isAuthenticated && ProfileRoutes}
@@ -187,23 +195,38 @@ const Header = ({ is_adminView }: HeaderProps) => {
               <ListItemText primary="Kompiuteriai" />
             </ListItem>
           </Link>
-          <List component="div" disablePadding>
-            <Link href="/?category=Kompiuteriai&sub_category=Nešiojamieji kompiuteriai">
-              <ListItem button className={classes.doubleNested}>
-                <ListItemText primary="Laptops" />
-              </ListItem>
-            </Link>
-            <Link href="/?category=Kompiuteriai&sub_category=Stacionarūs kompiuteriai">
-              <ListItem button className={classes.doubleNested}>
-                <ListItemText primary="Personal computers" />
-              </ListItem>
-            </Link>
-            <Link href="/?category=Kompiuteriai&sub_category=Planšetiniai kompiuteriai">
-              <ListItem button className={classes.doubleNested}>
-                <ListItemText primary="Tablets" />
-              </ListItem>
-            </Link>
-          </List>
+          <Link href="/?category=Telefonai">
+            <ListItem button className={classes.nested}>
+              <ListItemIcon>
+                <PhoneAndroidIcon />
+              </ListItemIcon>
+              <ListItemText primary="Telefonai" />
+            </ListItem>
+          </Link>
+          <Link href="/?category=Monitoriai">
+            <ListItem button className={classes.nested}>
+              <ListItemIcon>
+                <TvIcon />
+              </ListItemIcon>
+              <ListItemText primary="Monitoriai" />
+            </ListItem>
+          </Link>
+          <Link href="/?category=Išoriniai įrenginiai">
+            <ListItem button className={classes.nested}>
+              <ListItemIcon>
+                <DevicesOtherIcon />
+              </ListItemIcon>
+              <ListItemText primary="Išoriniai įrenginiai" />
+            </ListItem>
+          </Link>
+          <Link href="/?category=Konsolės">
+            <ListItem button className={classes.nested}>
+              <ListItemIcon>
+                <SportsEsportsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Konsolės" />
+            </ListItem>
+          </Link>
         </List>
       </List>
     </div>
@@ -224,7 +247,7 @@ const Header = ({ is_adminView }: HeaderProps) => {
           </IconButton>
           <Link href="/">
             <Typography variant="h6" className={classes.title}>
-              {is_adminView ? "Admin panel" : "Advertisements"}
+              {is_adminView ? "Admin panel" : "Best ads"}
             </Typography>
           </Link>
           <div className={classes.rightSideContainer}>

@@ -24,9 +24,11 @@ import {
   phonesURL,
   externalURL,
   consolURL,
+  monitorsURL,
 } from "../../../Utils/GlobalVariales";
 import RenderPhoneInfo from "../../../components/ADRenderFields/RenderPhonesInfo";
 import RenderExternalInfo from "../../../components/ADRenderFields/RenderExternalnfo";
+import RenderMonitorsInfo from "../../../components/ADRenderFields/RenderMonitorInfo";
 
 const useStyles = makeStyles((theme) => ({
   outerPostsContainer: {
@@ -132,6 +134,9 @@ const Advertisement = ({ post, categoryURL }: AdvertisementProps) => {
       }
       case consolURL: {
         return <RenderConsolInfo post={post} />;
+      }
+      case monitorsURL: {
+        return <RenderMonitorsInfo post={post} />;
       }
       default: {
         return <Box p={1}>Empty</Box>;

@@ -12,9 +12,16 @@ import {
   functionAddSlugsToObjects,
   consolURL,
   externalURL,
+  monitorsURL,
 } from "../Utils/GlobalVariales";
 
-const categories = [computersURL, phonesURL, externalURL, consolURL];
+const categories = [
+  computersURL,
+  phonesURL,
+  externalURL,
+  consolURL,
+  monitorsURL,
+];
 
 const UsersAds = ({ jwt, userID }: any) => {
   const Router = useRouter();
@@ -23,7 +30,7 @@ const UsersAds = ({ jwt, userID }: any) => {
 
   useEffect(() => {
     if (userID !== -1) {
-      console.log(getAllAds());
+      getAllAds();
     }
   }, []);
 

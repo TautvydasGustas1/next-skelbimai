@@ -6,20 +6,16 @@ import { SearchBy } from "../../types/SearchByInterfaceProps";
 
 const SearchByMonitors = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   const initialValues = {
-    city: "Any",
-    color: "",
-    memory: "",
+    city: "any",
+    brand: "",
     model: "",
+    refresh_rate: "",
+    resolution: "",
+    response_time: "",
   };
 
   return (
     <Formik
-      validationSchema={object({
-        city: string().required(),
-        color: string().required(),
-        memory: string().required(),
-        model: string().required(),
-      })}
       initialValues={initialValues}
       onSubmit={(values) => handleSearchSubmit(values)}
     >
@@ -30,24 +26,12 @@ const SearchByMonitors = ({ citiesState, handleSearchSubmit }: SearchBy) => {
               <Field
                 as={TextField}
                 fullWidth
-                id="color"
-                label="Color"
+                id="brand"
+                label="Brand"
                 variant="outlined"
-                name="color"
-                error={Boolean(errors.color)}
-                helperText={errors.color}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                as={TextField}
-                fullWidth
-                id="memory"
-                label="Memory"
-                variant="outlined"
-                name="memory"
-                error={Boolean(errors.memory)}
-                helperText={errors.memory}
+                name="brand"
+                error={Boolean(errors.brand)}
+                helperText={errors.brand}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -66,6 +50,42 @@ const SearchByMonitors = ({ citiesState, handleSearchSubmit }: SearchBy) => {
               <Field
                 as={TextField}
                 fullWidth
+                id="refresh_rate"
+                label="Refresh rate"
+                variant="outlined"
+                name="refresh_rate"
+                error={Boolean(errors.refresh_rate)}
+                helperText={errors.refresh_rate}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Field
+                as={TextField}
+                fullWidth
+                id="resolution"
+                label="Resolution"
+                variant="outlined"
+                name="resolution"
+                error={Boolean(errors.resolution)}
+                helperText={errors.resolution}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Field
+                as={TextField}
+                fullWidth
+                id="response_time"
+                label="Response time"
+                variant="outlined"
+                name="response_time"
+                error={Boolean(errors.response_time)}
+                helperText={errors.response_time}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Field
+                as={TextField}
+                fullWidth
                 id="city"
                 label="City"
                 variant="outlined"
@@ -74,7 +94,7 @@ const SearchByMonitors = ({ citiesState, handleSearchSubmit }: SearchBy) => {
                 helperText={errors.city}
                 select
               >
-                <MenuItem value="Any">Any</MenuItem>
+                <MenuItem value="any">Any</MenuItem>
                 {citiesState.map((city) => (
                   <MenuItem key={city.id} value={city.city}>
                     {city.city}

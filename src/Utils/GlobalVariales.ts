@@ -15,7 +15,7 @@ export function handleChangeURL(currentCategory: string) {
     url = externalURL;
   } else if (currentCategory === "Konsolės") {
     url = consolURL;
-  } else if (currentCategory === "Monitors") {
+  } else if (currentCategory === "Monitoriai") {
     url = monitorsURL;
   }
   return url;

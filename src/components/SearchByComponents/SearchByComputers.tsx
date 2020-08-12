@@ -11,19 +11,11 @@ const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
     memory: "",
     motherboard: "",
     ram: "",
-    city: "Any",
+    city: "any",
   };
 
   return (
     <Formik
-      validationSchema={object({
-        cpu: string().required(),
-        gpu: string().required(),
-        memory: string().required(),
-        motherboard: string().required(),
-        ram: string().required(),
-        city: string().required(),
-      })}
       initialValues={initialValues}
       onSubmit={(values) => handleSearchSubmit(values)}
     >
@@ -102,7 +94,7 @@ const SearchByComputers = ({ citiesState, handleSearchSubmit }: SearchBy) => {
                 helperText={errors.city}
                 select
               >
-                <MenuItem value="Any">Any</MenuItem>
+                <MenuItem value="any">Any</MenuItem>
                 {citiesState.map((city) => (
                   <MenuItem key={city.id} value={city.city}>
                     {city.city}

@@ -9,17 +9,11 @@ const SearchByConsol = ({ citiesState, handleSearchSubmit }: SearchBy) => {
     color: "",
     memory: "",
     model: "",
-    city: "Any",
+    city: "",
   };
 
   return (
     <Formik
-      validationSchema={object({
-        color: string().required(),
-        memory: string().required(),
-        model: string().required(),
-        city: string().required(),
-      })}
       initialValues={initialValues}
       onSubmit={(values) => handleSearchSubmit(values)}
     >
@@ -74,7 +68,7 @@ const SearchByConsol = ({ citiesState, handleSearchSubmit }: SearchBy) => {
                 helperText={errors.city}
                 select
               >
-                <MenuItem value="Any">Any</MenuItem>
+                <MenuItem value="">Any</MenuItem>
                 {citiesState.map((city) => (
                   <MenuItem key={city.id} value={city.city}>
                     {city.city}

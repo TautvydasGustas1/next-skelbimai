@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Container from "@material-ui/core/Container";
-import { Grid, Box, Typography, Paper } from "@material-ui/core";
+import { Grid, Box, Typography } from "@material-ui/core";
 import PostCard from "../components/PostCard";
 import { makeStyles } from "@material-ui/core/styles";
 import Layout from "../components/Layout";
@@ -14,7 +14,6 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import {
   computersURL,
-  phonesURL,
   handleChangeURL,
   functionAddSlugsToObjects,
 } from "../Utils/GlobalVariales";
@@ -55,7 +54,6 @@ export default function Home({ queryParams }: any) {
     sub_category: string | undefined = undefined
   ) => {
     setLoading(true);
-    setLoadingPagination(true);
 
     //Get by category URI
     let uri = `/api/${url}/v1/?page=${page}&size=${size}&sort=${order}`;
@@ -79,6 +77,14 @@ export default function Home({ queryParams }: any) {
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    categoriesDataState?.map((el) => {
+      if (el.category === queryParams.category) {
+        setCurrentCategory(queryParams.category);
+      }
+    });
+  }, [queryParams]);
 
   const getCategories = () => {
     axios
@@ -119,6 +125,7 @@ export default function Home({ queryParams }: any) {
   }, []);
 
   useEffect(() => {
+    setLoadingPagination(true);
     getAds(currentURL);
   }, [currentURL]);
 

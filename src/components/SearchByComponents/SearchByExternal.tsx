@@ -7,17 +7,12 @@ import { SearchBy } from "../../types/SearchByInterfaceProps";
 const SearchByExternal = ({ citiesState, handleSearchSubmit }: SearchBy) => {
   const initialValues = {
     brand: "",
-    city: "Any",
+    city: "any",
     wireless: "",
   };
 
   return (
     <Formik
-      validationSchema={object({
-        brand: string().required(),
-        wireless: string().required(),
-        city: string().required(),
-      })}
       initialValues={initialValues}
       onSubmit={(values) => handleSearchSubmit(values)}
     >
@@ -60,7 +55,7 @@ const SearchByExternal = ({ citiesState, handleSearchSubmit }: SearchBy) => {
                 helperText={errors.city}
                 select
               >
-                <MenuItem value="Any">Any</MenuItem>
+                <MenuItem value="any">Any</MenuItem>
                 {citiesState.map((city) => (
                   <MenuItem key={city.id} value={city.city}>
                     {city.city}
