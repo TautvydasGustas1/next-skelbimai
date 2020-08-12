@@ -7,12 +7,13 @@ import {
   Box,
   Typography,
   MenuItem,
+  Collapse,
+  Button,
 } from "@material-ui/core";
 import { ICategories } from "../types/CategoriesInterface";
 import axios from "axios";
 import Skeleton from "@material-ui/lab/Skeleton";
 import SearchByComputers from "./SearchByComponents/SearchByComputers";
-import { AnyRecord } from "dns";
 import {
   computersURL,
   functionAddSlugsToObjects,
@@ -26,10 +27,11 @@ import SearchByPhones from "./SearchByComponents/SearchByPhones";
 import SearchByConsol from "./SearchByComponents/SearchByConsol";
 import SearchByExternal from "./SearchByComponents/SearchByExternal";
 import SearchByMonitors from "./SearchByComponents/SearchByMonitors";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: "300px",
+    minHeight: "260px",
   },
   caption: {
     color: "grey",
@@ -69,6 +71,7 @@ const AdsControlPanel = ({
 
   const [typeState, setTypeState] = useState("any");
   const [subCategoriesState, setSubCategoriesState] = useState([]);
+  const [showSearch, setShowSearch] = useState(false);
 
   const [citiesState, setCitiesState] = useState([]);
 
@@ -238,7 +241,20 @@ const AdsControlPanel = ({
           </Grid>
         </Grid>
       </Box>
-      <Box width="100%">{renderCategoryFields(currentURL)}</Box>
+      <Box mb={1} width="100%" textAlign="center">
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setShowSearch(!showSearch);
+          }}
+          startIcon={<SearchIcon />}
+        >
+          Extended search
+        </Button>
+      </Box>
+      <Collapse style={{ width: "100%" }} in={showSearch}>
+        <Box width="100%">{renderCategoryFields(currentURL)}</Box>
+      </Collapse>
     </>
   );
 
