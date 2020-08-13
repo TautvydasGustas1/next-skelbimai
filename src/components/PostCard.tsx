@@ -12,7 +12,11 @@ import { IImages } from "../types/ImagesInterface";
 import theme from "./theme";
 
 const useStyles = makeStyles({
-  root: {},
+  root: {
+    "&:hover, &:active": {
+      transform: "scale(0.99)",
+    },
+  },
   media: {
     maxWidth: "100%",
     width: "100%",

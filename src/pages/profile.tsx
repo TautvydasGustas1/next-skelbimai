@@ -162,7 +162,7 @@ const Profile = ({ jwt }: IProfileProps) => {
   function renderTitle() {
     return (
       <Typography variant="h4" align="center">
-        {value === 0 ? "Personal information" : "User created ads"}
+        {value === 0 ? "Personal information" : "Your created ads"}
       </Typography>
     );
   }
@@ -181,7 +181,7 @@ const Profile = ({ jwt }: IProfileProps) => {
                 centered
               >
                 <Tab label="User information" />
-                <Tab label="Users ads" />
+                <Tab label="Your ads" />
               </Tabs>
               <Box mt={3}>
                 <Box mb={1}>{renderTitle()}</Box>
