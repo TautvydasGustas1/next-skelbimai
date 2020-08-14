@@ -29,129 +29,129 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Admin({ queryParams, jwt }: any) {
-  const classes = useStyles();
-  const [dataState, setDataState] = useState<IAd | undefined>();
-  const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [loadingPagination, setLoadingPagination] = useState(true);
-  const [categoriesDataState, setCategoriesDataState] = useState<
-    ICategories[] | undefined
-  >();
-  const [alertState, alertDispatch] = useAlert();
+  // const classes = useStyles();
+  // const [dataState, setDataState] = useState<IAd | undefined>();
+  // const [page, setPage] = useState(0);
+  // const [loading, setLoading] = useState(true);
+  // const [loadingPagination, setLoadingPagination] = useState(true);
+  // const [categoriesDataState, setCategoriesDataState] = useState<
+  //   ICategories[] | undefined
+  // >();
+  // const [alertState, alertDispatch] = useAlert();
 
-  const handlePageChange = (e: object, page: number) => {
-    setPage(page - 1);
-  };
+  // const handlePageChange = (e: object, page: number) => {
+  //   setPage(page - 1);
+  // };
 
-  const getAds = () => {
-    setLoading(true);
-    axios
-      .get(`/api/computers/v1?page=${page}&size=${size}&sort=${order}`)
-      .then((res) => {
-        setDataState(res.data);
-        setLoading(false);
-        setLoadingPagination(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  };
+  // const getAds = () => {
+  //   setLoading(true);
+  //   axios
+  //     .get(`/api/computers/v1?page=${page}&size=${size}&sort=${order}`)
+  //     .then((res) => {
+  //       setDataState(res.data);
+  //       setLoading(false);
+  //       setLoadingPagination(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setLoading(false);
+  //     });
+  // };
 
-  const getCategories = () => {
-    axios
-      .get(`/api/categories/v1`)
-      .then((res) => {
-        setCategoriesDataState(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getCategories = () => {
+  //   axios
+  //     .get(`/api/categories/v1`)
+  //     .then((res) => {
+  //       setCategoriesDataState(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-  useEffect(() => {
-    getAds();
-  }, [page]);
+  // useEffect(() => {
+  //   getAds();
+  // }, [page]);
 
-  useEffect(() => {
-    getCategories();
-  }, []);
+  // useEffect(() => {
+  //   getCategories();
+  // }, []);
 
-  function removeAd(id: any) {
-    if (confirm("Are you sure?")) {
-      const config = {
-        headers: { Authorization: `Bearer ${jwt}` },
-      };
-      Axios.delete(`/api/computers/v1/${id}`, config)
-        .then((res) => {
-          alertDispatch({
-            type: "showAlert",
-            payload: {
-              message: "Successfully removed an ad!",
-              severity: "success",
-            },
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }
+  // function removeAd(id: any) {
+  //   if (confirm("Are you sure?")) {
+  //     const config = {
+  //       headers: { Authorization: `Bearer ${jwt}` },
+  //     };
+  //     Axios.delete(`/api/computers/v1/${id}`, config)
+  //       .then((res) => {
+  //         alertDispatch({
+  //           type: "showAlert",
+  //           payload: {
+  //             message: "Successfully removed an ad!",
+  //             severity: "success",
+  //           },
+  //         });
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // }
 
-  function renderAds() {
-    return dataState!.content.map((ad) => (
-      <Grid item key={ad.id} container spacing={1}>
-        <Link key={ad.id} as={`/posts/${ad.id}`} href={`/posts/[id]`}>
-          <Grid item xs={10}>
-            <Box style={{ cursor: "pointer" }}>
-              <PostCard
-                article={ad.article}
-                city={ad.city}
-                cpu={ad.cpu}
-                gpu={ad.gpu}
-                description={ad.description}
-                images={ad.images}
-                memory={ad.memory}
-                motherboard={ad.motherboard}
-                price={ad.price}
-                ram={ad.ram}
-                sub_category={ad.sub_category}
-                type={ad.type}
-                id={ad.id}
-              />
-            </Box>
-          </Grid>
-        </Link>
-        <Grid item xs={2}>
-          <Box>
-            <Button
-              style={{ color: "red" }}
-              variant="outlined"
-              onClick={() => {
-                removeAd(ad.id);
-              }}
-            >
-              Delete
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    ));
-  }
+  // function renderAds() {
+  //   return dataState!.content.map((ad) => (
+  //     <Grid item key={ad.id} container spacing={1}>
+  //       <Link key={ad.id} as={`/posts/${ad.id}`} href={`/posts/[id]`}>
+  //         <Grid item xs={10}>
+  //           <Box style={{ cursor: "pointer" }}>
+  //             <PostCard
+  //               article={ad.article}
+  //               city={ad.city}
+  //               cpu={ad.cpu}
+  //               gpu={ad.gpu}
+  //               description={ad.description}
+  //               images={ad.images}
+  //               memory={ad.memory}
+  //               motherboard={ad.motherboard}
+  //               price={ad.price}
+  //               ram={ad.ram}
+  //               sub_category={ad.sub_category}
+  //               type={ad.type}
+  //               id={ad.id}
+  //             />
+  //           </Box>
+  //         </Grid>
+  //       </Link>
+  //       <Grid item xs={2}>
+  //         <Box>
+  //           <Button
+  //             style={{ color: "red" }}
+  //             variant="outlined"
+  //             onClick={() => {
+  //               removeAd(ad.id);
+  //             }}
+  //           >
+  //             Delete
+  //           </Button>
+  //         </Box>
+  //       </Grid>
+  //     </Grid>
+  //   ));
+  // }
 
-  function renderSkeletonsForAds() {
-    const n: number = 5; // number of ad Skeletons
+  // function renderSkeletonsForAds() {
+  //   const n: number = 5; // number of ad Skeletons
 
-    return [...Array(n)].map((e, i) => (
-      <Grid key={i} item xs={12}>
-        <Skeleton variant="rect" width={"100%"} height={200} />
-      </Grid>
-    ));
-  }
+  //   return [...Array(n)].map((e, i) => (
+  //     <Grid key={i} item xs={12}>
+  //       <Skeleton variant="rect" width={"100%"} height={200} />
+  //     </Grid>
+  //   ));
+  // }
 
   return (
     <AdminLayout>
-      <div className={classes.outerPostsContainer}>
+      {/* <div className={classes.outerPostsContainer}>
         <Container>
           <Grid container spacing={5}>
             <Grid item xs={12}>
@@ -185,7 +185,7 @@ export default function Admin({ queryParams, jwt }: any) {
             </Grid>
           </Grid>
         </Container>
-      </div>
+      </div> */}
     </AdminLayout>
   );
 }
