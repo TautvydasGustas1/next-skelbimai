@@ -143,6 +143,7 @@ const categories = ({ jwt }: any) => {
 categories.getInitialProps = async (ctx: NextPageContext) => {
   const tokenService = new TokenService();
   const token = await tokenService.authenticateTokenSsr(ctx);
+  await tokenService.authenticateAdmin(ctx, token);
 
   return {
     jwt: token,

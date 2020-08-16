@@ -49,6 +49,24 @@ class TokenService {
     return token;
   }
 
+  public async authenticateAdmin(ctx: NextPageContext, token?: string) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    try {
+      const res = await axios.get("/api/users/v1/admin", config);
+      const navService = new NavService();
+
+      if (!res.data.is_admin) {
+        navService.redirectUser("/404", ctx);
+      }
+    } catch (error) {
+      const navService = new NavService();
+      navService.redirectUser("/404", ctx);
+    }
+  }
+
   public parseCookies(req: IncomingMessage | undefined) {
     return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
   }

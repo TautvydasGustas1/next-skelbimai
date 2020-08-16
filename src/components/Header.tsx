@@ -171,7 +171,6 @@ const Header = ({ is_adminView }: HeaderProps) => {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
       <Box textAlign="center">
         <img alt="logo" src={"/photos/Logo.png"} width="120px" />
       </Box>
