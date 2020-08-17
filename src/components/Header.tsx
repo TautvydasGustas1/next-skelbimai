@@ -32,6 +32,7 @@ import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
 import DevicesOtherIcon from "@material-ui/icons/DevicesOther";
 import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
 import TvIcon from "@material-ui/icons/Tv";
+import LocationCityIcon from "@material-ui/icons/LocationCity";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -133,6 +134,14 @@ const Header = ({ is_adminView }: HeaderProps) => {
             <CategoryIcon />
           </ListItemIcon>
           <ListItemText primary={"Categories"} />
+        </ListItem>
+      </Link>
+      <Link href="/admin/locations">
+        <ListItem button>
+          <ListItemIcon>
+            <LocationCityIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Locations"} />
         </ListItem>
       </Link>
       <Divider />

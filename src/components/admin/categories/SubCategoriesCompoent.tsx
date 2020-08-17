@@ -80,34 +80,38 @@ const SubCategoriesCompoent = ({
   }
 
   function handleDeleteSubCategory() {
-    console.log(currentSubCategory);
-    // const category = categoriesData?.find((el: any) => console.log(el.sub));
+    if (confirm("Are you sure?")) {
+      const category = subCategories?.find(
+        (el: any) => el.sub_category === currentSubCategory
+      );
 
-    // console.log(category);
-    // const config = {
-    //   headers: { Authorization: `Bearer ${jwt}` },
-    // };
-    // Axios.delete(`/api/sub-categories/v1/${id}`, config)
-    //   .then((res) => {
-    //     getCategories();
-    //     alertDispatch({
-    //       type: "showAlert",
-    //       payload: {
-    //         message: "Successfully Deleted Sub Category!",
-    //         severity: "success",
-    //       },
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     alertDispatch({
-    //       type: "showAlert",
-    //       payload: {
-    //         message: "Failed To Delete Sub Category!",
-    //         severity: "danger",
-    //       },
-    //     });
-    //     console.log(err);
-    //   });
+      const id = category.id;
+
+      const config = {
+        headers: { Authorization: `Bearer ${jwt}` },
+      };
+      Axios.delete(`/api/sub-categories/v1/${id}`, config)
+        .then((res) => {
+          getCategories();
+          alertDispatch({
+            type: "showAlert",
+            payload: {
+              message: "Successfully Deleted Sub Category!",
+              severity: "success",
+            },
+          });
+        })
+        .catch((err) => {
+          alertDispatch({
+            type: "showAlert",
+            payload: {
+              message: "Failed To Delete Sub Category!",
+              severity: "danger",
+            },
+          });
+          console.log(err);
+        });
+    }
   }
 
   return (
