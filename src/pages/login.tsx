@@ -81,7 +81,10 @@ const login = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      title="Best skelbimai | Login"
+      description="Login to best skelbimai website"
+    >
       <Container>
         <Box pt={3}>
           <Card className={classes.Card}>

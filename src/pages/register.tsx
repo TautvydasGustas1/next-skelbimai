@@ -74,7 +74,10 @@ const register = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      title="Best skelbimai | Register"
+      description="Register to best skelbimai"
+    >
       <Container>
         <Box pt={3}>
           <Card className={classes.Card}>

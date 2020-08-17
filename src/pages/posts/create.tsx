@@ -31,7 +31,10 @@ const create = ({ jwt }: createProps) => {
   }, []);
 
   return (
-    <Layout>
+    <Layout
+      title={"Best skelbimai | Create ads"}
+      description="Create an ad for best skelbimai"
+    >
       <Container>
         <Box mt={3}>
           <StepperComp

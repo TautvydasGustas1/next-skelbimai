@@ -7,7 +7,10 @@ import { Box } from "@material-ui/core";
 
 export default function Home({ queryParams }: any) {
   return (
-    <Layout>
+    <Layout
+      title="Best skelbimai | Advertisements"
+      description="Best ads in the world"
+    >
       <Container>
         <Box mt={2}>
           <Advertisements queryParams={queryParams} />

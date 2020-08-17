@@ -77,7 +77,6 @@ const Profile = ({ jwt }: IProfileProps) => {
     axios
       .get("/api/users/information/v1", config)
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           const obj: IUserInfo = {
             name: res.data.name,
@@ -87,7 +86,6 @@ const Profile = ({ jwt }: IProfileProps) => {
             number: res.data.number,
             id: res.data.id,
           };
-          console.log(res.data);
           setUserInfoState(obj);
           setProfileEmpty(false);
         }
@@ -168,7 +166,10 @@ const Profile = ({ jwt }: IProfileProps) => {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Best skelbimai | Profile"
+      description="Best skelbimai profile page"
+    >
       <Container>
         <Box mt={3}>
           <Card>

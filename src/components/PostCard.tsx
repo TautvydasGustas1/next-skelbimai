@@ -82,7 +82,7 @@ const PostCard = ({
             <CardMedia
               className={classes.media}
               image={images[0] ? images[0].url : "/photos/noImage.png"}
-              title="Image name"
+              title="Advertisement image"
             />
           </Box>
         </Grid>

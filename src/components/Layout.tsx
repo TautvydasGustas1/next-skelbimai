@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import PropTypes from "prop-types";
 import Header from "./Header";
 import { makeStyles } from "@material-ui/core/styles";
+import Head from "next/head";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,11 +20,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = ({
+  children,
+  title,
+  description,
+}: {
+  children: ReactNode;
+  title?: string;
+  description?: string;
+}) => {
   const classes = useStyles();
 
   return (
     <>
+      {title && (
+        <Head>
+          <title>{title}</title>
+          <meta name="description" content={description} />
+        </Head>
+      )}
       <Header />
       <div className={classes.content}>
         <main>{children}</main>

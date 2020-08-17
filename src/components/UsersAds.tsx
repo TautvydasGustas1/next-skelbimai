@@ -122,12 +122,8 @@ const UsersAds = ({ jwt, userID }: any) => {
     if (dataState!.length === 0) {
       return renderNoAds();
     } else {
-      {
-        console.log(dataState);
-      }
       return dataState!.map((ad: any) => (
         <Grid key={`${ad.categorySlug}-${ad.id}`} item container>
-          {console.log(dataState)}
           <Link
             as={`/posts/${ad.categorySlug}/${ad.id}`}
             href={`/posts/[categories]/[id]`}
