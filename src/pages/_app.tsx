@@ -10,6 +10,10 @@ import "react-dropzone-uploader/dist/styles.css";
 import { AuthProvider } from "../context/AuthContext";
 import AlertComp from "../components/AlertComp";
 import { AlertProvider } from "../context/AlertContext";
+import Router from "next/router";
+import NProgress from "nprogress"; //nprogress module
+import "nprogress/nprogress.css";
+import "../Styles/progressBar.css";
 
 axios.defaults.baseURL =
   "http://totaurestapi-env.eba-dfyvcstc.eu-central-1.elasticbeanstalk.com/";
@@ -26,6 +30,14 @@ export default function MyApp(props: any) {
       jssStyles.parentElement!.removeChild(jssStyles);
     }
   }, []);
+
+  //Progress bar
+  NProgress.configure({ showSpinner: false });
+  NProgress.configure({ parent: "#progress_cont" });
+
+  Router.events.on("routeChangeStart", () => NProgress.start());
+  Router.events.on("routeChangeComplete", () => NProgress.done());
+  Router.events.on("routeChangeError", () => NProgress.done());
 
   return (
     <React.Fragment>

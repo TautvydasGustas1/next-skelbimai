@@ -275,7 +275,8 @@ const Header = ({ is_adminView }: HeaderProps) => {
           </div>
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
+      <div style={{ width: "100%", height: "5px" }} id="progress_cont"></div>
+      <nav className={classes.drawer} aria-label="Drawer">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
