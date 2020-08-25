@@ -43,10 +43,6 @@ const Layout = ({
       <div className={classes.content}>
         <main>{children}</main>
       </div>
-      <footer>
-        © {new Date().getFullYear()}
-        {` `}
-      </footer>
     </>
   );
 };

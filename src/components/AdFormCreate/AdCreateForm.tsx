@@ -25,16 +25,15 @@ export interface IAdCreateFormProps {
   initialValues: any;
   jwt?: String;
   handleBack?: () => void;
-  citiesState: any;
+  citiesState: ICities[];
   ValidationSchema: any;
-  handleSubmit: any;
+  handleSubmit: (arg1: any, arg2: () => void, arg3: string) => void;
   title?: string;
   url: string;
 }
 
 const AdCreateForm = ({
   initialValues,
-  jwt,
   handleBack,
   citiesState,
   ValidationSchema,

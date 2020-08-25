@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -12,6 +12,7 @@ import { selectedForm } from "./CategorySelect";
 import Axios from "axios";
 import { useRouter } from "next/router";
 import { Box } from "@material-ui/core";
+import { ICities } from "../../types/CitiesInterface";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +33,15 @@ function getSteps() {
   return ["Choose a category", "Create an ad", "Upload images"];
 }
 
+interface IStepperCompProps {
+  setSelectedCategoryState: Dispatch<string>;
+  jwt: string;
+  selectedCategoryState: string;
+  citiesState: ICities[];
+  advID: string;
+  setAdvID: Dispatch<string>;
+}
+
 export default function StepperComp({
   setSelectedCategoryState,
   jwt,
@@ -39,7 +49,7 @@ export default function StepperComp({
   citiesState,
   advID,
   setAdvID,
-}: any) {
+}: IStepperCompProps) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());

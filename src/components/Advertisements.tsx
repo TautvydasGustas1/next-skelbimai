@@ -44,8 +44,7 @@ export default function Advertisements({
   const [currentCategory, setCurrentCategory] = useState("Kompiuteriai");
   const [currentSubCategory, setCurrentSubCategory] = useState("all");
   const [currentURL, setCurrentURL] = useState(computersURL);
-  const didMountPage = useRef(false);
-  const didMountSub = useRef(false);
+  const didMount = useRef(false);
 
   const handlePageChange = (e: object, page: number) => {
     setPage(page - 1);
@@ -100,20 +99,20 @@ export default function Advertisements({
   };
 
   useEffect(() => {
-    if (didMountSub.current) {
+    if (didMount.current) {
       if (currentSubCategory !== "all") {
         getAds(currentURL, currentSubCategory);
       } else {
         getAds(currentURL);
       }
       setPage(0);
-    } else didMountSub.current = true;
+    } else didMount.current = true;
   }, [currentSubCategory]);
 
   useEffect(() => {
-    if (didMountPage.current) {
+    if (didMount.current) {
       getAds(currentURL);
-    } else didMountPage.current = true;
+    } else didMount.current = true;
   }, [page]);
 
   useEffect(() => {
@@ -203,25 +202,29 @@ export default function Advertisements({
             currentURL={currentURL}
           />
         </Grid>
-        <Grid container spacing={2} item xs={12}>
-          <Grid item xs={12}>
-            {loadingPagination ? (
-              <Skeleton variant="rect" width={450} height={40} />
-            ) : dataState && dataState.page.totalPages > 0 ? (
-              <Pagination
-                onChange={(e: object, page: number) =>
-                  handlePageChange(e, page)
-                }
-                color="primary"
-                count={dataState?.page.totalPages}
-                page={page + 1}
-              />
-            ) : (
-              ""
-            )}
-          </Grid>
-          <Grid container item xs={12} spacing={3}>
-            {!loading && dataState ? renderAds() : renderSkeletonsForAds()}
+        <Grid item spacing={2} xs={12}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              {loadingPagination ? (
+                <Skeleton variant="rect" width={450} height={40} />
+              ) : dataState && dataState.page.totalPages > 0 ? (
+                <Pagination
+                  onChange={(e: object, page: number) =>
+                    handlePageChange(e, page)
+                  }
+                  color="primary"
+                  count={dataState?.page.totalPages}
+                  page={page + 1}
+                />
+              ) : (
+                ""
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={3}>
+                {!loading && dataState ? renderAds() : renderSkeletonsForAds()}
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

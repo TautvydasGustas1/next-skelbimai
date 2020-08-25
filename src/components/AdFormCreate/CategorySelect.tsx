@@ -27,13 +27,14 @@ import {
   monitorsURL,
   consolURL,
 } from "../../Utils/GlobalVariales";
+import { ICities } from "../../types/CitiesInterface";
 
 export const selectedForm = (
   handleBack: () => void,
-  selectedCategoryState: any,
-  citiesState: any,
-  jwt: any,
-  handleSubmit: any
+  selectedCategoryState: string,
+  citiesState: ICities[],
+  jwt: string,
+  handleSubmit: (arg1: any, arg2: () => void, arg3: string) => void
 ) => {
   switch (selectedCategoryState) {
     case "nesiojami":

@@ -51,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
   },
   title: {
-    marginRight: "5%",
     cursor: "pointer",
   },
   toolbar: theme.mixins.toolbar,
@@ -75,10 +74,14 @@ const useStyles = makeStyles((theme) => ({
 const authRoutes = (
   <div>
     <Link href="/login">
-      <Button color="inherit">Login</Button>
+      <Button size="small" color="inherit">
+        Login
+      </Button>
     </Link>
     <Link href="/register">
-      <Button color="inherit">Register</Button>
+      <Button size="small" color="inherit">
+        Register
+      </Button>
     </Link>
   </div>
 );

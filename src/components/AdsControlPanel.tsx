@@ -69,7 +69,6 @@ const AdsControlPanel = ({
 }: AdsControlPanelProps) => {
   const classes = useStyles();
 
-  const [typeState, setTypeState] = useState("any");
   const [subCategoriesState, setSubCategoriesState] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -107,14 +106,16 @@ const AdsControlPanel = ({
 
   const skeletonPanelParams = (
     <>
-      <Grid item xs={12}>
-        <Skeleton variant="rect" height={50} />
-      </Grid>
-      <Grid item xs={12}>
-        <Skeleton variant="rect" height={50} />
-      </Grid>
-      <Grid item xs={12}>
-        <Skeleton variant="rect" height={50} />
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Skeleton variant="rect" height={50} />
+        </Grid>
+        <Grid item xs={12}>
+          <Skeleton variant="rect" height={50} />
+        </Grid>
+        <Grid item xs={12}>
+          <Skeleton variant="rect" height={50} />
+        </Grid>
       </Grid>
     </>
   );
@@ -262,7 +263,7 @@ const AdsControlPanel = ({
     <Paper className={classes.root} variant="outlined">
       <Box p={4}>
         <Grid container spacing={1}>
-          <Grid container item xs={12} spacing={2}>
+          <Grid item xs={12}>
             {categories ? renderPanelData : skeletonPanelParams}
           </Grid>
           <Grid item xs={12}>
